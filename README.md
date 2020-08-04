@@ -11,7 +11,7 @@ Birthday-Bot is a bot that automatically sends birthday greetings to people thro
 
 ### Step by step
 
-* Deploy **proactive-bot** on **Azure Portal**
+* Deploy **proactive-bot** on **Azure Portal**. For **deployment via CLI** refer to [Deployment via CLI](./docs/deploy-birthday-bot.md) documentation.
 
     ![Deploy on azure portal](images/deploy.png)
 
