@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -46,20 +47,20 @@ namespace Birthday_Bot.Controllers
         {
             if (_conversationReferences.Values.Count == 0)
             {
-                // Analyze if possible to load the ConversationState with ConversationID as a Key
-                // Check how much conversations are saved in oStore (related to channels where the bots is added)
-                // and foreach channel send the message (channels in the same Workspace?)
                 var storedConvState = await _oStore.LoadAsync(); // _store.LoadAsync();
                 if (storedConvState != null && !string.IsNullOrEmpty(storedConvState.ToString()))
                 {
                     try
                     {
-                        var des = JsonConvert.DeserializeObject<ConversationReference>(storedConvState.ToString());
-                        var oldConversation = des.Conversation;
-                        des.ServiceUrl = "null";
-                        des.Conversation = new ConversationAccount(oldConversation.IsGroup, oldConversation.ConversationType,
-                            oldConversation.Id, oldConversation.Name, oldConversation.AadObjectId, oldConversation.Role, oldConversation.TenantId);
-                        _conversationReferences.AddOrUpdate(des.User.Id, des, (key, newValue) => des);
+                        var des = JsonConvert.DeserializeObject<List<ConversationReference>>(storedConvState.ToString());
+                        foreach (var oldConv in des)
+                        {
+                            var oldConversation = oldConv.Conversation;
+                            oldConv.ServiceUrl = "null";
+                            oldConv.Conversation = new ConversationAccount(oldConversation.IsGroup, oldConversation.ConversationType,
+                                oldConversation.Id, oldConversation.Name, oldConversation.AadObjectId, oldConversation.Role, oldConversation.TenantId);
+                            _conversationReferences.AddOrUpdate(oldConv.Conversation.Id, oldConv, (key, newValue) => oldConv);
+                        }
                     }
                     catch (Exception ex)
                     {
