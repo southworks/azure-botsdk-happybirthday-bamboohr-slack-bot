@@ -17,9 +17,11 @@ namespace Birthday_Bot
     public class AdapterWithErrorHandler : SlackAdapter
     {
         //private List<Birthday> Birthdays;
+        private readonly IConfiguration _configuration;
         public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger, List<Birthday> birthdays)
             : base(configuration, logger)
         {
+            _configuration = configuration;
             //Birthdays = birthdays;
             OnTurnError = async (turnContext, exception) =>
             {
@@ -43,20 +45,15 @@ namespace Birthday_Bot
                 var bambooUsers = getTodayBirthdaysBambooUsers();
                 if (bambooUsers.Any())
                 {
-                    var slackUsers = getSlackUserIDFromEmail("");
-                    if (slackUsers.Any())
+                    foreach(var bambooUser in bambooUsers)
                     {
-                        var joined = from bU in bambooUsers
-                                     join sU in slackUsers on bU.Email equals sU.Email
-                                     select new Birthday()
-                                     {
-                                         slackUser = sU,
-                                         bambooUser = bU
-                                     };
-
-                        if (joined.Any())
+                        var slackUser = await SlackInterop.GetSlackUserByEmailAsync(_configuration["SlackBotToken"], bambooUser.Email);
+                        if (slackUser != null)
                         {
-                            Birthdays = joined.ToList();
+                            Birthdays.Add(new Birthday() { 
+                            bambooUser = bambooUser,
+                            slackUser = slackUser,
+                            });
                         }
                     }
                 }
@@ -85,42 +82,6 @@ namespace Birthday_Bot
             }
         }
 
-        public List<SlackUser> getSlackUserIDFromEmail(string email)
-        {
-            try
-            {
-                #region Slack API
-                // Here we use the Bot endpoint
-                //string botendpoint = "https://slack.com/api/users.list";
-
-                //var client = new HttpClient();
-                //var request = new HttpRequestMessage()
-                //{
-                //    RequestUri = new Uri(botendpoint),
-                //    Method = HttpMethod.Post,
-                //};
-                //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "xoxb-1172066589573-1231858313910-dFClUcBz283AjVTd7ovFbxzr");
-                //client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                //HttpResponseMessage responseMessage = await client.SendAsync(request);
-                //String response = await responseMessage.Content.ReadAsStringAsync();
-                //Debug.WriteLine(response);
-                //Console.WriteLine(response);
-                #endregion Slack API
-
-                return new List<SlackUser>() {
-                    new SlackUser(){ Email = "german.gonzalez@southworks.com", Id = "UD5S2KKGX", Is_Bot = false, Is_Restricted = false },
-                    new SlackUser(){ Email = "denise.scollo@southworks.com", Id = "U92C18XNX", Is_Bot = false, Is_Restricted = false },
-                    new SlackUser(){ Email = "mariano.stinson@southworks.com", Id = "UE1HFMS04", Is_Bot = false, Is_Restricted = false },
-                    new SlackUser(){ Email = "gabriel.antelo@southworks.com", Id = "UHK1D4TK9", Is_Bot = false, Is_Restricted = false },
-                    new SlackUser(){ Email = "bernardo.ortiz@southworks.com", Id = "UGHB2U1NK", Is_Bot = false, Is_Restricted = false },
-                };
-            }
-            catch (Exception e)
-            {
-                return new List<SlackUser>() { };
-            }
-        }
-
         public List<BambooHRUser> getTodayBirthdaysBambooUsers()
         {
             try
@@ -129,11 +90,11 @@ namespace Birthday_Bot
                 #endregion BambooHR
 
                 var users = new List<BambooHRUser>() {
-                    new BambooHRUser(){ Email = "german.gonzalez@southworks.com", Birthday = new DateTime(2020,7,23) },
-                    new BambooHRUser(){ Email = "denise.scollo@southworks.com", Birthday = new DateTime(2020,7,28) },
-                    new BambooHRUser(){ Email = "mariano.stinson@southworks.com", Birthday = new DateTime(2020,7,30) },
-                    new BambooHRUser(){ Email = "gabriel.antelo@southworks.com", Birthday = new DateTime(2020,7,26) },
-                    new BambooHRUser(){ Email = "bernardo.ortiz@southworks.com", Birthday = new DateTime(2020,7,26) },
+                    new BambooHRUser(){ Email = "rodrigo.funes@southworks.com", Birthday = new DateTime(2020,8,5) },
+                    new BambooHRUser(){ Email = "melisa.onofri@southworks.com", Birthday = new DateTime(2020,8,5) },
+                    new BambooHRUser(){ Email = "lazaro.ansaldi@southworks.com", Birthday = new DateTime(2020,8,7) },
+                    new BambooHRUser(){ Email = "adrian.juri@southworks.com", Birthday = new DateTime(2020,8,8) },
+                    new BambooHRUser(){ Email = "alejandro.daza@southworks.com", Birthday = new DateTime(2020,8,9) },
                 };
                 return users.Where(r => r.Birthday.Date.CompareTo(DateTime.Now.Date) == 0).ToList();
             }
