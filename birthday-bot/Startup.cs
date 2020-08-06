@@ -27,8 +27,8 @@ namespace Birthday_Bot
             // Create a global hashset for our ConversationReferences
             services.AddSingleton<ConcurrentDictionary<string, ConversationReference>>();
 
-            // Create the storage we'll be using for the Dialog state. (Memory is great for testing purposes.)
-            services.AddSingleton<IOStore, BlobContainerStore>();
+            // Create the storage where we'll be using for the Conversation Reference.
+            services.AddSingleton<IOStore, BlobContainerConversationStore>();
 
             // To work later
             services.AddSingleton<Models.Birthday>();
