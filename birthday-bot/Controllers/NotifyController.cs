@@ -49,7 +49,7 @@ namespace Birthday_Bot.Controllers
 
         public async Task<IActionResult> Get()
         {
-            _specificChannelID = await SlackInterop.getChannelIdByName(_specificChannelName, _slackBotToken);
+            _specificChannelID = await SlackInterop.GetChannelIdByName(_specificChannelName, _slackBotToken);
             if (_conversationReferences.Values.Count == 0)
             {
                 var storedConvState = await _oStore.LoadAsync(); // _store.LoadAsync();
