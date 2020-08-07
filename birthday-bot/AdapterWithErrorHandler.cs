@@ -90,11 +90,11 @@ namespace Birthday_Bot
                 #endregion BambooHR
 
                 var users = new List<BambooHRUser>() {
-                    new BambooHRUser(){ Email = "rodrigo.funes@southworks.com", Birthday = new DateTime(2020,8,5) },
-                    new BambooHRUser(){ Email = "melisa.onofri@southworks.com", Birthday = new DateTime(2020,8,5) },
-                    new BambooHRUser(){ Email = "lazaro.ansaldi@southworks.com", Birthday = new DateTime(2020,8,7) },
-                    new BambooHRUser(){ Email = "adrian.juri@southworks.com", Birthday = new DateTime(2020,8,8) },
-                    new BambooHRUser(){ Email = "alejandro.daza@southworks.com", Birthday = new DateTime(2020,8,9) },
+                    new BambooHRUser(){ Email = "german.gonzalez@southworks.com", Birthday = new DateTime(2020,7,23) },
+                    new BambooHRUser(){ Email = "denise.scollo@southworks.com", Birthday = new DateTime(2020,7,28) },
+                    new BambooHRUser(){ Email = "mariano.stinson@southworks.com", Birthday = new DateTime(2020,7,30) },
+                    new BambooHRUser(){ Email = "gabriel.antelo@southworks.com", Birthday = new DateTime(2020,7,26) },
+                    new BambooHRUser(){ Email = "bernardo.ortiz@southworks.com", Birthday = new DateTime(2020,7,26) },
                 };
                 return users.Where(r => r.Birthday.Date.CompareTo(DateTime.Now.Date) == 0).ToList();
             }
