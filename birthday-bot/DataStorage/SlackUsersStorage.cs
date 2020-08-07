@@ -9,7 +9,26 @@ namespace Birthday_Bot.DataStorage
 {
     public class SlackUsersStorage
     {
-        public List<SlackUser> getSlackUsersBlobFromEmails(List<BambooHRUser> listBambooUsers, string _blobStorageStringConnection, string _blobStorageContainer, string _slackFileName)
+        //
+        // Summary:
+        //     Connect with BlobStorage and consume JSON file with Slack user list.
+        //
+        // Parameters:
+        //   _blobStorageStringConnection:
+        //     A reference blobStorageStringConnection.
+        //
+        //   listBambooUsers:
+        //     A list of Bamboo users.
+        //
+        //   _blobStorageContainer:
+        //     A reference blobStorageContainer.
+        //
+        //   _slackFileName:
+        //     A reference to the name of the JSON file.
+        //
+        // Returns:
+        //     A list user of type List <SlackUser>.
+        public List<SlackUser> GetSlackUsersBlobFromEmails(List<BambooHRUser> listBambooUsers, string _blobStorageStringConnection, string _blobStorageContainer, string _slackFileName)
         {
             var users = new List<SlackUser>();
             try
@@ -26,10 +45,10 @@ namespace Birthday_Bot.DataStorage
                 string contents = blob.DownloadTextAsync().Result;
                 if (!string.IsNullOrEmpty(contents))
                 {
-                    List<SlackUser> myDeserializedClass = JsonConvert.DeserializeObject<List<SlackUser>>(contents);
+                    List<SlackUser> listSlackUsers = JsonConvert.DeserializeObject<List<SlackUser>>(contents);
                     foreach (var bambouser in listBambooUsers)
                     {
-                        foreach (var user in myDeserializedClass)
+                        foreach (var user in listSlackUsers)
                         {
                             if (bambouser.Email == user.Email)
                             {

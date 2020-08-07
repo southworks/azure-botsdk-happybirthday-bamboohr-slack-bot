@@ -11,7 +11,23 @@ namespace Birthday_Bot.DataStorage
 {
     public class BambooUsersStorage
     {
-        public List<BambooHRUser> getBambooUsersBlob(string _blobStorageStringConnection, string _blobStorageContainer, string _bambooFileName)
+        //
+        // Summary:
+        //     Connect with BlobStorage and consume JSON file with BAmbooHR user list.
+        //
+        // Parameters:
+        //   _blobStorageStringConnection:
+        //     A reference blobStorageStringConnection
+        //
+        //   _blobStorageContainer:
+        //     A reference blobStorageContainer
+        //
+        //   _bambooFileName:
+        //     A reference to the name of the JSON file
+        //
+        // Returns:
+        //     A list user of type List <BambooHRUser>.
+        public List<BambooHRUser> GetBambooUsersBlob(string _blobStorageStringConnection, string _blobStorageContainer, string _bambooFileName)
         {
             var users = new List<BambooHRUser>();
             try
@@ -28,9 +44,9 @@ namespace Birthday_Bot.DataStorage
                 string contents = blob.DownloadTextAsync().Result;
                 if (!string.IsNullOrEmpty(contents))
                 {
-                    List<BambooHRUser> myDeserializedClass = JsonConvert.DeserializeObject<List<BambooHRUser>>(contents);
+                    List<BambooHRUser> listBambooHRUsers = JsonConvert.DeserializeObject<List<BambooHRUser>>(contents);
                     string today = DateTime.Now.Date.ToString("MM-dd-yyyy", CultureInfo.InvariantCulture);
-                    foreach (var user in myDeserializedClass)
+                    foreach (var user in listBambooHRUsers)
                     {
                         users.Add(user);
                     }

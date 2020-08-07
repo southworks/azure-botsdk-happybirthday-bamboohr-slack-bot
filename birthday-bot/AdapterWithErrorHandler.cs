@@ -48,11 +48,11 @@ namespace Birthday_Bot
         {
             try
             {
-                var _bambooUsers = bambooUsers.getBambooUsersBlob(_blobStorageStringConnection, _blobStorageContainer, _bambooFileName);
+                var _bambooUsers = bambooUsers.GetBambooUsersBlob(_blobStorageStringConnection, _blobStorageContainer, _bambooFileName);
                 if (_bambooUsers.Any())
                 {
                     SlackUsersStorage slackUsers = new SlackUsersStorage();
-                    users = slackUsers.getSlackUsersBlobFromEmails(_bambooUsers, _blobStorageStringConnection, _blobStorageContainer, _slackFileName);
+                    users = slackUsers.GetSlackUsersBlobFromEmails(_bambooUsers, _blobStorageStringConnection, _blobStorageContainer, _slackFileName);
                 }
             }
             catch (Exception ex)
