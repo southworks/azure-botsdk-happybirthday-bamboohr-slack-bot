@@ -66,13 +66,12 @@ namespace Birthday_Bot
             }
             using (var context = new TurnContext(this, reference.GetContinuationActivity()))
             {
-
                 if (Birthdays.Any())
                 {
-                    await context.SendActivityAsync("Happy Birthday " +
+                    await context.SendActivityAsync("Today's " +
                          string.Join(", ", Birthdays.Select(
                              r => string.Concat("<@", r.slackUser.Id, ">"))
-                             .ToArray()));
+                             .ToArray()) + " Birthday! Let's greet them (only if they bring some :cake: of course)");
                 }
                 // *** Added for testing purpose ***
                 //else
