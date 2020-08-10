@@ -32,7 +32,7 @@ namespace Birthday_Bot
             _blobStorageContainer = configuration["BlobStorageContainer"];
             _bambooFileName = configuration["BambooFileName"];
             _slackFileName = configuration["SlackFileName"];
-            List<SlackUser> users = new List<SlackUser>();
+            users = new List<SlackUser>();
             bambooUsers = new BambooUsersStorage();
             OnTurnError = async (turnContext, exception) =>
             {

@@ -13,7 +13,7 @@ namespace Birthday_Bot.DataStorage
     {
         //
         // Summary:
-        //     Connect with BlobStorage and consume JSON file with BAmbooHR user list.
+        //     Connect with BlobStorage and consume JSON file with BambooHR user list.
         //
         // Parameters:
         //   _blobStorageStringConnection:
