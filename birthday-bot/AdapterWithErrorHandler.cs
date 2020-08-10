@@ -2,12 +2,14 @@
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Adapters.Slack;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
+using Microsoft.Bot.Builder.LanguageGeneration;
 using Microsoft.Bot.Builder.TraceExtensions;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,21 +69,22 @@ namespace Birthday_Bot
             using (var context = new TurnContext(this, reference.GetContinuationActivity()))
             {
 
+                string fullPath = Path.Combine(".", "Resources", "Phrases.lg");
+                Templates lgTemplates = Templates.ParseFile(fullPath, null);
+                
                 if (Birthdays.Any())
                 {
-                    await context.SendActivityAsync("Happy Birthday " +
-                         string.Join(", ", Birthdays.Select(
+                    var slackId = string.Join(", ", Birthdays.Select(
                              r => string.Concat("<@", r.slackUser.Id, ">"))
-                             .ToArray()));
+                             .ToArray());
+                    string phrase = lgTemplates.Evaluate("PhrasesRandom", new
+                    {
+                        users = slackId
+                    }).ToString();
+
+                    await context.SendActivityAsync(phrase);
                 }
-                // *** Added for testing purpose ***
-                //else
-                //{
-                //    await context.SendActivityAsync("There's no birthday for today!");
-                //}
                 await RunPipelineAsync(context, callback, cancellationToken).ConfigureAwait(false);
-                //context.TurnState.Add<IIdentity>(BotIdentityKey, claimsIdentity);
-                //context.TurnState.Add<BotCallbackHandler>(callback);
             }
         }
 

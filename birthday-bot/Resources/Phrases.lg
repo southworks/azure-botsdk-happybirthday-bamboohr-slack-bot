@@ -1,0 +1,10 @@
+﻿> Language Generation definition file. 
+> See https://aka.ms/language-generation to learn more
+
+# PhrasesRandom(users)
+- IF: ${users != null}
+- Someone told me that today's ${users} birthday! Another year older is another year wiser :birthday: :tada: :smile:.
+- Happy Birthday ${users}. I wish you all the happiness in the world :earth_americas: :smile: :clap:.
+- I hope your day is full of fun and celebration. Happy birthday ${users}! :wave: :birthday: :tada:.
+- I wish you a wonderful, joyful and fun-filled happy birthday ${users} :birthday: :champagne: :tada:.
+- Happy Birthday ${users}, I hope today is the start of another wonderful year for you :birthday: :smile: :tada:.
