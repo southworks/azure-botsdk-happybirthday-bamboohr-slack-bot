@@ -23,7 +23,7 @@ namespace Birthday_Bot
         private string _slackFileName;
         private List<SlackUser> users;
 
-        private BambooUsersStorage bambooUsers;
+        private BambooUsersStorage bambooUsersStorage;
 
         public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger)
             : base(configuration, logger)
@@ -33,7 +33,7 @@ namespace Birthday_Bot
             _bambooFileName = configuration["BambooFileName"];
             _slackFileName = configuration["SlackFileName"];
             users = new List<SlackUser>();
-            bambooUsers = new BambooUsersStorage();
+            bambooUsersStorage = new BambooUsersStorage();
             OnTurnError = async (turnContext, exception) =>
             {
                 // Log any leaked exception from the application.
@@ -48,7 +48,7 @@ namespace Birthday_Bot
         {
             try
             {
-                var _bambooUsers = bambooUsers.GetBambooUsersBlob(_blobStorageStringConnection, _blobStorageContainer, _bambooFileName);
+                var _bambooUsers = bambooUsersStorage.GetBambooUsers(_blobStorageStringConnection, _blobStorageContainer, _bambooFileName);
                 if (_bambooUsers.Any())
                 {
                     SlackUsersStorage slackUsers = new SlackUsersStorage();

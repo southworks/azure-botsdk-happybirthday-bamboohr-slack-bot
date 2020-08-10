@@ -27,7 +27,7 @@ namespace Birthday_Bot.DataStorage
         //
         // Returns:
         //     A list user of type List <BambooHRUser>.
-        public List<BambooHRUser> GetBambooUsersBlob(string _blobStorageStringConnection, string _blobStorageContainer, string _bambooFileName)
+        public List<BambooHRUser> GetBambooUsers(string _blobStorageStringConnection, string _blobStorageContainer, string _bambooFileName)
         {
             var users = new List<BambooHRUser>();
             try
