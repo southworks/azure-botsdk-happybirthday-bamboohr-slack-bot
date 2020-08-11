@@ -18,7 +18,7 @@ namespace Birthday_Bot
     public class AdapterWithErrorHandler : SlackAdapter
     {
         //private List<Birthday> Birthdays;
-        private readonly IConfiguration _configuration;
+        private readonly string _slackBotToken;
         private string _blobStorageStringConnection;
         private string _blobStorageContainer;
         private string _bambooFileName;
@@ -27,6 +27,7 @@ namespace Birthday_Bot
         public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger)
             : base(configuration, logger)
         {
+            _slackBotToken = configuration["SlackBotToken"];
             _blobStorageStringConnection = configuration["BlobStorageStringConnection"];
             _blobStorageContainer = configuration["BlobStorageContainer"];
             _bambooFileName = configuration["BambooFileName"];
@@ -51,7 +52,7 @@ namespace Birthday_Bot
                 {
                     foreach (var bambooUser in _bambooUsers)
                     {
-                        var slackUser = await SlackInterop.GetSlackUserByEmailAsync(_configuration["SlackBotToken"], bambooUser.Email);
+                        var slackUser = await SlackInterop.GetSlackUserByEmailAsync(_slackBotToken, bambooUser.Email);
                         if (slackUser != null)
                         {
                             Birthdays.Add(new Birthday()
