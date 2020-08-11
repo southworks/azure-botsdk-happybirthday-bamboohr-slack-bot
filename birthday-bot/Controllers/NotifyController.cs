@@ -21,10 +21,12 @@ namespace Birthday_Bot.Controllers
     {
         private readonly IBotFrameworkHttpAdapter _adapter;
         private readonly string _appId;
-        private readonly string _specificChannelID;
+        private string _specificChannelID;
+        private readonly string _specificChannelName;
         private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
         private readonly IOStore _oStore;
-        // IStore store,
+        private readonly string _slackBotToken;
+        
         public NotifyController(SlackAdapter adapter, IConfiguration configuration,
             ConcurrentDictionary<string, ConversationReference> conversationReferences,
             IOStore ostore)
@@ -32,7 +34,8 @@ namespace Birthday_Bot.Controllers
             _adapter = adapter;
             _conversationReferences = conversationReferences;
             _appId = configuration["MicrosoftAppId"];
-            _specificChannelID = configuration["SpecificChannelID"];
+            _specificChannelName = configuration["SpecificChannelName"];
+            _slackBotToken = configuration["SlackBotToken"];
             _oStore = ostore;
             // If the channel is the Emulator, and authentication is not in use,
             // the AppId will be null.  We generate a random AppId for this case only.
@@ -45,6 +48,7 @@ namespace Birthday_Bot.Controllers
 
         public async Task<IActionResult> Get()
         {
+            _specificChannelID = await SlackInterop.GetChannelIdByName(_specificChannelName, _slackBotToken);
             if (_conversationReferences.Values.Count == 0)
             {
                 var storedConvState = await _oStore.LoadAsync(); // _store.LoadAsync();
