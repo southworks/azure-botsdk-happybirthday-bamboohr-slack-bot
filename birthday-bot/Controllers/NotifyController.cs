@@ -27,7 +27,6 @@ namespace Birthday_Bot.Controllers
         private readonly IOStore _oStore;
         private readonly string _slackBotToken;
         
-        
         public NotifyController(SlackAdapter adapter, IConfiguration configuration,
             ConcurrentDictionary<string, ConversationReference> conversationReferences,
             IOStore ostore)
