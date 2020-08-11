@@ -17,22 +17,20 @@ namespace Birthday_Bot
 {
     public class AdapterWithErrorHandler : SlackAdapter
     {
+        //private List<Birthday> Birthdays;
+        private readonly string _slackBotToken;
         private string _blobStorageStringConnection;
         private string _blobStorageContainer;
         private string _bambooFileName;
-        private string _slackFileName;
-        private List<SlackUser> users;
-
         private BambooUsersStorage bambooUsersStorage;
 
         public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger)
             : base(configuration, logger)
         {
+            _slackBotToken = configuration["SlackBotToken"];
             _blobStorageStringConnection = configuration["BlobStorageStringConnection"];
             _blobStorageContainer = configuration["BlobStorageContainer"];
             _bambooFileName = configuration["BambooFileName"];
-            _slackFileName = configuration["SlackFileName"];
-            users = new List<SlackUser>();
             bambooUsersStorage = new BambooUsersStorage();
             OnTurnError = async (turnContext, exception) =>
             {
@@ -46,13 +44,24 @@ namespace Birthday_Bot
 
         public override async Task ContinueConversationAsync(string botId, ConversationReference reference, BotCallbackHandler callback, CancellationToken cancellationToken)
         {
+            List<Birthday> Birthdays = new List<Birthday>();
             try
             {
                 var _bambooUsers = bambooUsersStorage.GetBambooUsers(_blobStorageStringConnection, _blobStorageContainer, _bambooFileName);
                 if (_bambooUsers.Any())
                 {
-                    SlackUsersStorage slackUsers = new SlackUsersStorage();
-                    users = slackUsers.GetSlackUsersBlobFromEmails(_bambooUsers, _blobStorageStringConnection, _blobStorageContainer, _slackFileName);
+                    foreach (var bambooUser in _bambooUsers)
+                    {
+                        var slackUser = await SlackInterop.GetSlackUserByEmailAsync(_slackBotToken, bambooUser.Email);
+                        if (slackUser != null)
+                        {
+                            Birthdays.Add(new Birthday()
+                            {
+                                bambooUser = bambooUser,
+                                slackUser = slackUser,
+                            });
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -61,11 +70,11 @@ namespace Birthday_Bot
             }
             using (var context = new TurnContext(this, reference.GetContinuationActivity()))
             {
-                if (users.Any())
+                if (Birthdays.Any())
                 {
                     await context.SendActivityAsync("Today's " +
-                         string.Join(", ", users.Select(
-                             r => string.Concat("<@", r.Id, ">"))
+                         string.Join(", ", Birthdays.Select(
+                             r => string.Concat("<@", r.slackUser.Id, ">"))
                              .ToArray()) + " Birthday! Let's greet them (only if they bring some :cake: of course)");
                 }
                 await RunPipelineAsync(context, callback, cancellationToken).ConfigureAwait(false);
