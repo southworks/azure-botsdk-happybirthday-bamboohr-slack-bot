@@ -4,7 +4,6 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace Birthday_Bot.DataStorage
@@ -45,12 +44,11 @@ namespace Birthday_Bot.DataStorage
                 if (!string.IsNullOrEmpty(contents))
                 {
                     List<BambooHRUser> listBambooHRUsers = JsonConvert.DeserializeObject<List<BambooHRUser>>(contents);
-                    string today = DateTime.Now.Date.ToString("MM-dd-yyyy", CultureInfo.InvariantCulture);
                     foreach (var user in listBambooHRUsers)
                     {
                         users.Add(user);
                     }
-                    return users.Where(r => r.Birthday.CompareTo(today) == 0).ToList();
+                    return users.Where(r => r.Birthday.Date.CompareTo(DateTime.Now.Date) == 0).ToList();
                 }
             }
             catch (Exception ex)
