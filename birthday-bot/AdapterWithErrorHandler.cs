@@ -29,8 +29,8 @@ namespace Birthday_Bot
         {
             _slackBotToken = configuration["SlackBotToken"];
             _blobStorageStringConnection = configuration["BlobStorageStringConnection"];
-            _blobStorageContainer = configuration["BlobStorageContainer"];
-            _bambooFileName = configuration["BambooFileName"];
+            _blobStorageContainer = configuration["BlobStorageDataUsersContainer"];
+            _bambooFileName = configuration["BambooHRUsersFileName"];
             bambooUsersStorage = new BambooUsersStorage();
             OnTurnError = async (turnContext, exception) =>
             {
