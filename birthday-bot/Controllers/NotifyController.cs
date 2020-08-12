@@ -21,12 +21,10 @@ namespace Birthday_Bot.Controllers
     {
         private readonly IBotFrameworkHttpAdapter _adapter;
         private readonly string _appId;
-        private string _specificChannelID;
         private readonly string _specificChannelName;
         private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
         private readonly IOStore _oStore;
         private readonly string _slackBotToken;
-        
         public NotifyController(SlackAdapter adapter, IConfiguration configuration,
             ConcurrentDictionary<string, ConversationReference> conversationReferences,
             IOStore ostore)
@@ -48,22 +46,22 @@ namespace Birthday_Bot.Controllers
 
         public async Task<IActionResult> Get()
         {
-            _specificChannelID = await SlackInterop.GetChannelIdByName(_specificChannelName, _slackBotToken);
+            var _specificChannelID = await SlackInterop.GetChannelIdByName(_specificChannelName, _slackBotToken);
             if (_conversationReferences.Values.Count == 0)
             {
-                var storedConvState = await _oStore.LoadAsync(); // _store.LoadAsync();
-                if (storedConvState != null && !string.IsNullOrEmpty(storedConvState.ToString()))
+                var storedConversationReferenciesJson = await _oStore.LoadAsync(); // _store.LoadAsync();
+                if (storedConversationReferenciesJson != null && !string.IsNullOrEmpty(storedConversationReferenciesJson.ToString()))
                 {
                     try
                     {
-                        var des = JsonConvert.DeserializeObject<List<ConversationReference>>(storedConvState.ToString());
-                        foreach (var oldConv in des)
+                        var storedConversationReferencesList = JsonConvert.DeserializeObject<List<ConversationReference>>(storedConversationReferenciesJson.ToString());
+                        foreach (var conversationRef in storedConversationReferencesList)
                         {
-                            var oldConversation = oldConv.Conversation;
-                            oldConv.ServiceUrl = "null";
-                            oldConv.Conversation = new ConversationAccount(oldConversation.IsGroup, oldConversation.ConversationType,
-                                oldConversation.Id, oldConversation.Name, oldConversation.AadObjectId, oldConversation.Role, oldConversation.TenantId);
-                            _conversationReferences.AddOrUpdate(oldConv.Conversation.Id, oldConv, (key, newValue) => oldConv);
+                            var conversation = conversationRef.Conversation;
+                            conversationRef.ServiceUrl = "null";
+                            conversationRef.Conversation = new ConversationAccount(conversation.IsGroup, conversation.ConversationType,
+                                conversation.Id, conversation.Name, conversation.AadObjectId, conversation.Role, conversation.TenantId);
+                            _conversationReferences.AddOrUpdate(conversationRef.Conversation.Id, conversationRef, (key, newValue) => conversationRef);
                         }
                     }
                     catch (Exception ex)

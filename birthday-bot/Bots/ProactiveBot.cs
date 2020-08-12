@@ -20,22 +20,20 @@ namespace Birthday_Bot
 
         // Dependency injected dictionary for storing ConversationReference objects used in NotifyController to proactively message users
         private readonly IOStore _oStore;
-        private readonly ConcurrentDictionary<string, ConversationReference> _conversationReference;
-        public Birthday_Bot(IOStore ostore, ConcurrentDictionary<string, ConversationReference> conversationReference)
+        public Birthday_Bot(IOStore ostore)
         {
             _oStore = ostore ?? throw new ArgumentNullException(nameof(ostore));
-            _conversationReference = conversationReference;
         }
 
         private async void AddConversationReference(Activity activity)
         {
-            List<ConversationReference> storedConvRef = new List<ConversationReference>();
-            var storedObjects = await _oStore.LoadAsync(); // Stored Conversations
-            if (storedObjects != null && !string.IsNullOrEmpty(storedObjects.ToString()))
+            List<ConversationReference> storedConversationReferences = new List<ConversationReference>();
+            var storedConversationsJSON = await _oStore.LoadAsync(); // Stored Conversations
+            if (storedConversationsJSON != null && !string.IsNullOrEmpty(storedConversationsJSON.ToString()))
             {
                 try
                 {
-                    storedConvRef = JsonConvert.DeserializeObject<List<ConversationReference>>(storedObjects.ToString());
+                    storedConversationReferences = JsonConvert.DeserializeObject<List<ConversationReference>>(storedConversationsJSON.ToString());
                 }
                 catch (Exception ex)
                 {
@@ -43,36 +41,32 @@ namespace Birthday_Bot
                 }
             }
 
-            var conversationReference = activity.GetConversationReference();
-            conversationReference.ServiceUrl = "null";
+            var currentActivityConversationReference = activity.GetConversationReference();
+            currentActivityConversationReference.ServiceUrl = "null";
             // Here we set thread_ts in JSON to null, so we avoid to continue on a Thread
-            var oldConversation = conversationReference.Conversation;
-            conversationReference.Conversation = new ConversationAccount(oldConversation.IsGroup, oldConversation.ConversationType,
+            var oldConversation = currentActivityConversationReference.Conversation;
+            currentActivityConversationReference.Conversation = new ConversationAccount(oldConversation.IsGroup, oldConversation.ConversationType,
                 oldConversation.Id, oldConversation.Name, oldConversation.AadObjectId, oldConversation.Role, oldConversation.TenantId);
 
-            if (conversationReference.Conversation.Id == null) // When conversationReference is still in memory
+            if (currentActivityConversationReference.Conversation.Id == null)
             {
-                
                 return;
             }
 
-            var savedData = storedConvRef.ToDictionary(r => r.Conversation.Id, r => r);
-            var concurrentSaveData = new ConcurrentDictionary<string, ConversationReference>(savedData);
+            var concurrentConversationReferences = new ConcurrentDictionary<string, ConversationReference>(storedConversationReferences.ToDictionary(r => r.Conversation.Id, r => r));
 
-            concurrentSaveData.AddOrUpdate(conversationReference.Conversation.Id, conversationReference, (key, newValue) => conversationReference);
-            await SaveState(concurrentSaveData.Values.ToList());
+            concurrentConversationReferences.AddOrUpdate(currentActivityConversationReference.Conversation.Id, currentActivityConversationReference, (key, newValue) => currentActivityConversationReference);
+            await SaveState(concurrentConversationReferences.Values.ToList());
         }
 
         private async Task SaveState(List<ConversationReference> conversationState)
         {
-            // Analyze if possible to save the ConversationState with ConversationID as a Key
             await _oStore.SaveAsync(JsonConvert.SerializeObject(conversationState));
         }
 
         protected override Task OnConversationUpdateActivityAsync(ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
             AddConversationReference(turnContext.Activity as Activity);
-
             return base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);
         }
 
