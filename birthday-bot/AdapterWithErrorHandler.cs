@@ -20,18 +20,18 @@ namespace Birthday_Bot
         //private List<Birthday> Birthdays;
         private readonly string _slackBotToken;
         private string _blobStorageStringConnection;
-        private string _blobStorageContainer;
-        private string _bambooFileName;
-        private BambooUsersStorage bambooUsersStorage;
+        private string _blobStorageDataUserContainer;
+        private string _bambooHRUsersFileName;
+        private BambooUsersStorageInterop _bambooHRUsersStorage;
 
         public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger)
             : base(configuration, logger)
         {
             _slackBotToken = configuration["SlackBotToken"];
             _blobStorageStringConnection = configuration["BlobStorageStringConnection"];
-            _blobStorageContainer = configuration["BlobStorageDataUsersContainer"];
-            _bambooFileName = configuration["BambooHRUsersFileName"];
-            bambooUsersStorage = new BambooUsersStorage();
+            _blobStorageDataUserContainer = configuration["BlobStorageDataUsersContainer"];
+            _bambooHRUsersFileName = configuration["BambooHRUsersFileName"];
+            _bambooHRUsersStorage = new BambooUsersStorageInterop();
             OnTurnError = async (turnContext, exception) =>
             {
                 // Log any leaked exception from the application.
@@ -44,18 +44,18 @@ namespace Birthday_Bot
 
         public override async Task ContinueConversationAsync(string botId, ConversationReference reference, BotCallbackHandler callback, CancellationToken cancellationToken)
         {
-            List<Birthday> Birthdays = new List<Birthday>();
+            List<Birthday> TodaysBirthdays = new List<Birthday>();
             try
             {
-                var _bambooUsers = bambooUsersStorage.GetBambooUsers(_blobStorageStringConnection, _blobStorageContainer, _bambooFileName);
-                if (_bambooUsers.Any())
+                var _bambooHRBirthdays = _bambooHRUsersStorage.GetTodaysBirthdays(_blobStorageStringConnection, _blobStorageDataUserContainer, _bambooHRUsersFileName);
+                if (_bambooHRBirthdays.Any())
                 {
-                    foreach (var bambooUser in _bambooUsers)
+                    foreach (var bambooUser in _bambooHRBirthdays)
                     {
                         var slackUser = await SlackInterop.GetSlackUserByEmailAsync(_slackBotToken, bambooUser.Email);
                         if (slackUser != null)
                         {
-                            Birthdays.Add(new Birthday()
+                            TodaysBirthdays.Add(new Birthday()
                             {
                                 bambooUser = bambooUser,
                                 slackUser = slackUser,
@@ -70,10 +70,10 @@ namespace Birthday_Bot
             }
             using (var context = new TurnContext(this, reference.GetContinuationActivity()))
             {
-                if (Birthdays.Any())
+                if (TodaysBirthdays.Any())
                 {
                     await context.SendActivityAsync("Today's " +
-                         string.Join(", ", Birthdays.Select(
+                         string.Join(", ", TodaysBirthdays.Select(
                              r => string.Concat("<@", r.slackUser.Id, ">"))
                              .ToArray()) + " Birthday! Let's greet them (only if they bring some :cake: of course)");
                 }
