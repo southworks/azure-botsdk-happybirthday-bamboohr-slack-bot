@@ -48,7 +48,7 @@ namespace Birthday_Bot.DataStorage
                     {
                         users.Add(user);
                     }
-                    return users.Where(r => r.Birthday.Date.CompareTo(DateTime.Now.Date) == 0).ToList();
+                    return users.Where(r => r.Birthday.Date == DateTime.Now.Date).ToList();
                 }
             }
             catch (Exception ex)
