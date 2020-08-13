@@ -73,16 +73,16 @@ namespace Birthday_Bot
             using (var context = new TurnContext(this, reference.GetContinuationActivity()))
             {
                 string fullPath = Path.Combine(".", "Resources", "Phrases.lg");
-                Templates lgTemplates = Templates.ParseFile(fullPath, null);
+                Templates birthdayPhrasesTemplate = Templates.ParseFile(fullPath, null);
 
                 if (Birthdays.Any())
                 {
-                    var slackId = string.Join(", ", Birthdays.Select(
+                    var slackUsersIds = string.Join(", ", Birthdays.Select(
                              r => string.Concat("<@", r.slackUser.Id, ">"))
                              .ToArray());
-                    string phrase = lgTemplates.Evaluate("PhrasesRandom", new
+                    string phrase = birthdayPhrasesTemplate.Evaluate("RandomPhrases", new
                     {
-                        users = slackId
+                        users = slackUsersIds
                     }).ToString();
                     await context.SendActivityAsync(phrase);
                 }

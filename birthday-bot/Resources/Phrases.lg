@@ -1,7 +1,7 @@
 ﻿> Language Generation definition file. 
 > See https://aka.ms/language-generation to learn more
 
-# PhrasesRandom(users)
+# RandomPhrases(users)
 - IF: ${users != null}
 - Someone told me that today's ${users} birthday! Another year older is another year wiser :birthday: :tada: :smile:.
 - Happy Birthday ${users}. I wish you all the happiness in the world :earth_americas: :smile: :clap:.
