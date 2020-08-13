@@ -44,14 +44,14 @@ namespace Birthday_Bot
             var currentActivityConversationReference = activity.GetConversationReference();
             currentActivityConversationReference.ServiceUrl = "null";
             // Here we set thread_ts in JSON to null, so we avoid to continue on a Thread
-            var oldConversation = currentActivityConversationReference.Conversation;
-            currentActivityConversationReference.Conversation = new ConversationAccount(oldConversation.IsGroup, oldConversation.ConversationType,
-                oldConversation.Id, oldConversation.Name, oldConversation.AadObjectId, oldConversation.Role, oldConversation.TenantId);
-
-            if (currentActivityConversationReference.Conversation.Id == null)
-            {
-                return;
-            }
+            //var oldConversation = currentActivityConversationReference.Conversation;
+            currentActivityConversationReference.Conversation = new ConversationAccount(currentActivityConversationReference.Conversation.IsGroup, 
+                currentActivityConversationReference.Conversation.ConversationType,
+                currentActivityConversationReference.Conversation.Id,
+                currentActivityConversationReference.Conversation.Name, 
+                currentActivityConversationReference.Conversation.AadObjectId, 
+                currentActivityConversationReference.Conversation.Role, 
+                currentActivityConversationReference.Conversation.TenantId);
 
             var concurrentConversationReferences = new ConcurrentDictionary<string, ConversationReference>(storedConversationReferences.ToDictionary(r => r.Conversation.Id, r => r));
 

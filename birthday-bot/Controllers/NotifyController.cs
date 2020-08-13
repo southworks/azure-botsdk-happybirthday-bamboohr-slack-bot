@@ -57,10 +57,10 @@ namespace Birthday_Bot.Controllers
                         var storedConversationReferencesList = JsonConvert.DeserializeObject<List<ConversationReference>>(storedConversationReferenciesJson.ToString());
                         foreach (var conversationRef in storedConversationReferencesList)
                         {
-                            var conversation = conversationRef.Conversation;
                             conversationRef.ServiceUrl = "null";
-                            conversationRef.Conversation = new ConversationAccount(conversation.IsGroup, conversation.ConversationType,
-                                conversation.Id, conversation.Name, conversation.AadObjectId, conversation.Role, conversation.TenantId);
+                            conversationRef.Conversation = new ConversationAccount(conversationRef.Conversation.IsGroup, conversationRef.Conversation.ConversationType,
+                                conversationRef.Conversation.Id, conversationRef.Conversation.Name, conversationRef.Conversation.AadObjectId, conversationRef.Conversation.Role,
+                                conversationRef.Conversation.TenantId);
                             _conversationReferences.AddOrUpdate(conversationRef.Conversation.Id, conversationRef, (key, newValue) => conversationRef);
                         }
                     }
