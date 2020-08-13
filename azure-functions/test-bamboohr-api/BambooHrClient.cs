@@ -38,7 +38,7 @@ namespace test_bamboohr_api
 
         public async Task<string> GetEmployeesAPI()
         {
-            var jsonHrEmployees = "{\"title\":\"\",\"fields\":[{\"id\":\"firstName\",\"type\":\"text\",\"name\":\"First Name\"},{\"id\":\"middleName\",\"type\":\"text\",\"name\":\"Middle Name\"},{\"id\":\"lastName\",\"type\":\"text\",\"name\":\"Last Name\"},{\"id\":\"preferredName\",\"type\":\"text\",\"name\":\"Nickname\"},{\"id\":\"displayName\",\"type\":\"text\",\"name\":\"Display Name\"},{\"id\":\"dateOfBirth\",\"type\":\"date\",\"name\":\"Birth Date\"},{\"id\":\"workEmail\",\"type\":\"email\",\"name\":\"Work Email\"},{\"id\":\"hireDate\",\"type\":\"date\",\"name\":\"Hire Date\"},{\"id\":\"terminationDate\",\"type\":\"date\",\"name\":\"Termination Date\"}],\"employees\":[{\"id\":\"416\",\"firstName\":\"Juan\",\"middleName\":\"Alejandro\",\"lastName\":\"Arguello\",\"preferredName\":null,\"displayName\":\"Juan Alejandro Arguello\",\"dateOfBirth\":\"1978-04-06\",\"workEmail\":\"juan.arguello@southworks.com\",\"hireDate\":\"2006-10-19\",\"terminationDate\":\"0000-00-00\"},{\"id\":\"439\",\"firstName\":\"Ezequiel\",\"middleName\":null,\"lastName\":\"Jadib\",\"preferredName\":null,\"displayName\":\"Ezequiel Jadib\",\"dateOfBirth\":\"1982-11-07\",\"workEmail\":\"ezequiel.jadib@southworks.com\",\"hireDate\":\"2007-02-19\",\"terminationDate\":\"0000-00-00\"}]}";
+            var jsonHrEmployees = "";
             var url = "/reports/custom?format=json";
             var xml = GenerateUserReportRequestXml();
             var request = GetNewRestRequest(url, Method.POST);
@@ -98,9 +98,6 @@ namespace test_bamboohr_api
 
         public async void StoreData(string employeeData)
         {
-            //string _blobStorageStringConnection = "DefaultEndpointsProtocol=https;AccountName=storeproactivemessages;AccountKey=qXAwckwWvpU7gS4sTK1+RURsXv8hxvk7pSqBnRb+1yiOVxvA2bGcE2Fso/Ob4+EkO7fTp/g7CrWXNP8/tbJLAQ==;EndpointSuffix=core.windows.net";
-            //string _blobStorageContainer = "test-hrdata-api";
-
             string jsonName = "hrDataEmployees.json";
             CloudStorageAccount storageAccount;
             CloudBlobClient client;
