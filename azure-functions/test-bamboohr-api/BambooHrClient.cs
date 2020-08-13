@@ -1,12 +1,15 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using test_bamboohr_api.Extensions;
+using test_bamboohr_api.Models;
 
 namespace test_bamboohr_api
 {
@@ -63,10 +66,34 @@ namespace test_bamboohr_api
 
         public string TransformData(string originalData)
         {
-            /**
-             * Do the magic
-             */
-            return originalData;
+            List<OriginalStructureBambooHR.Employee> listEmployees = DeserializeJsonEmployees(originalData);
+            var jsonFormatEmployees = SerializeJsonEmployees(listEmployees);
+            return jsonFormatEmployees;
+        }
+
+        private static List<OriginalStructureBambooHR.Employee> DeserializeJsonEmployees(string jsonEmployees)
+        {
+            var employees = new List<OriginalStructureBambooHR.Employee>();
+            var listOriginalStructureBambooHR = JsonConvert.DeserializeObject<OriginalStructureBambooHR.Root>(jsonEmployees);
+            foreach (var employee in listOriginalStructureBambooHR.employees)
+            {
+                employees.Add(employee);
+            }
+            return employees;
+        }
+        private static string SerializeJsonEmployees(List<OriginalStructureBambooHR.Employee> users)
+        {
+            List<ModifiedStructureBambooHREmployee> listEmployees = new List<ModifiedStructureBambooHREmployee>();
+            foreach (var employee in users)
+            {
+                listEmployees.Add(new ModifiedStructureBambooHREmployee
+                {
+                    Birthday = employee.dateOfBirth,
+                    Email = employee.workEmail,
+                });
+            }
+            string jsonFormatEmployees = JsonConvert.SerializeObject(listEmployees, Formatting.Indented);
+            return jsonFormatEmployees;
         }
 
         public async void StoreData(string employeeData)
