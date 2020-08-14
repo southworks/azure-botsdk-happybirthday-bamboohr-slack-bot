@@ -1,7 +1,7 @@
 ---
 name: Docs Bug Report
 about: Create a report to help us improve our documentation
-title: "[Docs]"
+title: '[Docs]'
 labels: 'Type: Docs'
 assignees: ''
 
