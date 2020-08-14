@@ -78,7 +78,7 @@ namespace Birthday_Bot
                 if (Birthdays.Any())
                 {
                     var slackUsersIds = string.Join(", ", Birthdays.Select(
-                             r => ("<@", r.slackUser.Id, ">"))
+                             r => $"<@{r.slackUser.Id}>")
                              .ToArray());
                     string phrase = birthdayPhrasesTemplate.Evaluate("RandomPhrases", new
                     {
