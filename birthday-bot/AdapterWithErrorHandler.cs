@@ -2,12 +2,14 @@
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Adapters.Slack;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
+using Microsoft.Bot.Builder.LanguageGeneration;
 using Microsoft.Bot.Builder.TraceExtensions;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -70,12 +72,19 @@ namespace Birthday_Bot
             }
             using (var context = new TurnContext(this, reference.GetContinuationActivity()))
             {
+                string fullPath = Path.Combine(".", "Resources", "Phrases.lg");
+                Templates birthdayPhrasesTemplate = Templates.ParseFile(fullPath);
+
                 if (Birthdays.Any())
                 {
-                    await context.SendActivityAsync("Today's " +
-                         string.Join(", ", Birthdays.Select(
-                             r => string.Concat("<@", r.slackUser.Id, ">"))
-                             .ToArray()) + " Birthday! Let's greet them (only if they bring some :cake: of course)");
+                    var slackUsersIds = string.Join(", ", Birthdays.Select(
+                             r => $"<@{r.slackUser.Id}>")
+                             .ToArray());
+                    string phrase = birthdayPhrasesTemplate.Evaluate("RandomPhrases", new
+                    {
+                        users = slackUsersIds
+                    }).ToString();
+                    await context.SendActivityAsync(phrase);
                 }
                 await RunPipelineAsync(context, callback, cancellationToken).ConfigureAwait(false);
             }
