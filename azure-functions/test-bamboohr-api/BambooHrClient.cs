@@ -30,7 +30,7 @@ namespace test_bamboohr_api
             _config = config;
             _blobStorageStringConnection = config.BlobStorageStringConnection;
             _containerBontainerName = config.ContainerBlobStorage;
-            _iRestClient = new RestClient(_config.BambooApiUrl)
+            _iRestClient = new RestClient(_config.ApiUrl)
             {
                 Authenticator = new HttpBasicAuthenticator(_config.BambooApiKey, "x")
             };

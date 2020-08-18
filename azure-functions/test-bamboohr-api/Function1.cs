@@ -17,7 +17,6 @@ namespace test_bamboohr_api
             var originalData = await bambooClient.GetEmployeesAPI();
             var transformData = bambooClient.TransformData(originalData);
             bambooClient.StoreData(transformData);
-            log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
         }
 
         private static Config GetConfig(ExecutionContext context)

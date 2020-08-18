@@ -2,10 +2,12 @@
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "CompanyName": "southies",
+    "apiUrl": "juanarstaticcontent.blob.core.windows.net/$web"
   },
-  "CompanyName": "",
+  "CompanyName": "southies",
   "BambooApiKey": "",
   "blobStorageStringConnection": "",
-  "containerName": ""
+  "containerName": "testingContainer"
 }
