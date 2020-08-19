@@ -24,13 +24,15 @@ namespace test_bamboohr_api
         private readonly Config _config;
         private readonly string _blobStorageStringConnection;
         private readonly string _containerBontainerName;
+        private readonly string _bambooApiKey;
 
         public BambooHrClient(Config config)
         {
             _config = config;
             _blobStorageStringConnection = config.BlobStorageStringConnection;
             _containerBontainerName = config.ContainerBlobStorage;
-            if (!_config.BambooApiKey.Equals(""))
+            _bambooApiKey = config.BambooApiKey;
+            if (_bambooApiKey != null && !_bambooApiKey.Equals(""))
             {
                 _iRestClient = new RestClient(_config.ApiUrl)
                 {
