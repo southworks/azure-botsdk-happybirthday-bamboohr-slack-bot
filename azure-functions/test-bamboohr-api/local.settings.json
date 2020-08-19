@@ -3,11 +3,9 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-    "CompanyName": "southies",
-    "apiUrl": "juanarstaticcontent.blob.core.windows.net/$web"
-  },
-  "CompanyName": "southies",
-  "BambooApiKey": "",
-  "blobStorageStringConnection": "",
-  "containerName": "testingContainer"
+    "CompanyName": "",
+    "ApiUrl": "",
+    "ContainerName": "",
+    "BambooApiKey": ""
+  }
 }
