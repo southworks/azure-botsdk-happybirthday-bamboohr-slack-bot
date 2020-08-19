@@ -90,7 +90,7 @@ As for the connection to the slack app, the parameters (**SlackVerificationToken
 
 ###  Set up Azure Blob Storage
  
-As part of the configuration of the bot, we need to configure several parameters related to the **Blob Storage** in the **appsettings.json** file:
+As part of the configuration of the bot, we need to configure several parameters related to the **Blob Storage** in the **appsettings.json** file. The first thing would be to enter our **Storage Account** from the [Azure Portal](https://portal.azure.com/). To modify the following parameters:
  
 - **Connection string** into variable **BlobStorageStringConnection**, it is a connection string to the Azure Blob Storage.
 ![](images/blob_storage_string_connection.png)
