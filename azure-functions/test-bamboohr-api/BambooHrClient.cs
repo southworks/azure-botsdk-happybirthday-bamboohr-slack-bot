@@ -30,18 +30,25 @@ namespace test_bamboohr_api
             _config = config;
             _blobStorageStringConnection = config.BlobStorageStringConnection;
             _containerBontainerName = config.ContainerBlobStorage;
-            _iRestClient = new RestClient(_config.ApiUrl)
+            if (!_config.BambooApiKey.Equals(""))
             {
-                Authenticator = new HttpBasicAuthenticator(_config.BambooApiKey, "x")
-            };
+                _iRestClient = new RestClient(_config.ApiUrl)
+                {
+                    Authenticator = new HttpBasicAuthenticator(_config.BambooApiKey, "x")
+                };
+            }
+            else
+            {
+                _iRestClient = new RestClient(_config.ApiUrl);
+            }
+
         }
 
         public async Task<string> GetEmployeesAPI()
         {
             var jsonHrEmployees = "";
-            var url = "/reports/custom?format=json";
             var xml = GenerateUserReportRequestXml();
-            var request = GetNewRestRequest(url, Method.POST);
+            var request = GetNewRestRequest(Method.GET);
             request.AddParameter("text/xml", xml, ParameterType.RequestBody);
             IRestResponse response;
             try
@@ -50,11 +57,11 @@ namespace test_bamboohr_api
             }
             catch (Exception ex)
             {
-                throw new Exception("Error executing Bamboo request to " + url, ex);
+                throw new Exception("Error executing Bamboo request to " + ex);
             }
 
             if (response.ErrorException != null)
-                throw new Exception("Error executing Bamboo request to " + url, response.ErrorException);
+                throw new Exception("Error executing Bamboo request to " + response.ErrorException);
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -117,9 +124,9 @@ namespace test_bamboohr_api
             }
         }
 
-        public static RestRequest GetNewRestRequest(string url, Method method)
+        public static RestRequest GetNewRestRequest(Method method)
         {
-            var request = new RestRequest(url, method);
+            var request = new RestRequest(method);
             request.AddHeader("Accept", "application/json");
             request.AddHeader("Encoding", "utf-8");
             return request;
