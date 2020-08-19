@@ -7,8 +7,7 @@ namespace test_bamboohr_api
 {
     class Config
     {
-        private static readonly string UrlApiFormat = "https://{0}/api/gateway.php/southworks/v1/reports/custom?format=json&onlyCurrent=false";
-        private static readonly string BambooCompanyUrlFormat = "https://{0}.bamboohr.com";
+        private static readonly string UrlApiFormat = "https://{0}/api/gateway.php/{1}/v1/reports/custom?format=json&onlyCurrent=false";
 
         private IConfiguration Configuration { set; get; }
 
@@ -21,18 +20,72 @@ namespace test_bamboohr_api
                 .Build();
         }
 
-        public string BambooApiKey { get { return Environment.GetEnvironmentVariable("apiKey", EnvironmentVariableTarget.Process); } }
+        public string BambooApiKey 
+        { 
+            get 
+            { 
+                if(!Environment.GetEnvironmentVariable("BambooApiKey", EnvironmentVariableTarget.Process).Equals("")){
+                    return Environment.GetEnvironmentVariable("BambooApiKey", EnvironmentVariableTarget.Process);
+                }
+                else{
+                    return Configuration["Values:BambooApiKey"];
+                }
+            } 
+        }
 
-        public string ApiUrl { get { return string.Format(UrlApiFormat, Environment.GetEnvironmentVariable("apiUrl", EnvironmentVariableTarget.Process)); } }
+        public string ApiUrl 
+        { 
+            get 
+            {
+                if(!Environment.GetEnvironmentVariable("ApiUrl", EnvironmentVariableTarget.Process).Equals("")){
+                    return string.Format(UrlApiFormat, Environment.GetEnvironmentVariable("ApiUrl", EnvironmentVariableTarget.Process), Environment.GetEnvironmentVariable("CompanyName", EnvironmentVariableTarget.Process));
+                }
+                else{
+                    return string.Format(UrlApiFormat, Configuration["values:ApiUrl"], Configuration["Values:CompanyName"]);
+                }
+                 
+            } 
+        }
 
-        public string BambooCompanyUrl { get { return string.Format(BambooCompanyUrlFormat, Configuration["CompanyName"]); } }
+        public string CompanyName 
+        { 
+            get 
+            {
+                if (!Environment.GetEnvironmentVariable("CompanyName", EnvironmentVariableTarget.Process).Equals("")){
+                    return Environment.GetEnvironmentVariable("CompanyName", EnvironmentVariableTarget.Process);
+                }
+                else{
+                    return Configuration["Values:CompanyName"];
+                }
+                
+            } 
+        }
 
-        public string CompanyName { get { return Configuration["CompanyName"]; } }
+        public string BlobStorageStringConnection 
+        { 
+            get 
+            {
+                if (!Environment.GetEnvironmentVariable("AzureWebJobsStorage", EnvironmentVariableTarget.Process).Equals("")){
+                    return Environment.GetEnvironmentVariable("AzureWebJobsStorage", EnvironmentVariableTarget.Process);
+                }
+                else{
+                    return Configuration["Values:AzureWebJobsStorage"];
+                }
+            } 
+        }
 
-        public string CompanyNameEnv { get { return Environment.GetEnvironmentVariable("CompanyName", EnvironmentVariableTarget.Process); } }
-
-        public string BlobStorageStringConnection { get { return Configuration["blobStorageStringConnection"]; } }
-
-        public string ContainerBlobStorage { get { return Configuration["containerName"]; } }
+        public string ContainerBlobStorage 
+        { 
+            get 
+            {
+                if(!Environment.GetEnvironmentVariable("ContainerName", EnvironmentVariableTarget.Process).Equals("")){
+                    return Environment.GetEnvironmentVariable("ContainerName", EnvironmentVariableTarget.Process);
+                }
+                else{
+                    return Configuration["Values:ContainerName"];
+                }
+                
+            } 
+        }
     }
 }
