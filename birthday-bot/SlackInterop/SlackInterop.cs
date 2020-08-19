@@ -1,6 +1,5 @@
 using Birthday_Bot.Models.SlackModels;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -72,7 +71,6 @@ namespace Birthday_Bot
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", slackBotToken);
                 var responseMessage = httpClient.GetAsync(botendpoint).Result;
                 var responseJson = await responseMessage.Content.ReadAsStringAsync();
-                Console.WriteLine(responseJson);
                 var jsonSerializerSettings = new JsonSerializerSettings()
                 {
                     MissingMemberHandling = MissingMemberHandling.Ignore,
