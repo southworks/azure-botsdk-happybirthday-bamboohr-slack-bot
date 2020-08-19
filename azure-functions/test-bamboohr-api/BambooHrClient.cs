@@ -48,7 +48,7 @@ namespace test_bamboohr_api
         {
             var jsonHrEmployees = "";
             var xml = GenerateUserReportRequestXml();
-            var request = GetNewRestRequest(Method.GET);
+            var request = GetNewRestRequest(Method.POST);
             request.AddParameter("text/xml", xml, ParameterType.RequestBody);
             IRestResponse response;
             try
