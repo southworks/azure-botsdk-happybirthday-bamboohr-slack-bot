@@ -2,7 +2,7 @@
 {
     public class Birthday
     {
-        public SlackModels.SlackUser slackUser { get; set; }
-        public BambooHRUser bambooUser { get; set; }
+        public SlackModels.SlackUser SlackUser { get; set; }
+        public BambooHRUser BambooUser { get; set; }
     }
 }

@@ -59,8 +59,8 @@ namespace Birthday_Bot
                         {
                             TodaysBirthdays.Add(new Birthday()
                             {
-                                bambooUser = bambooUser,
-                                slackUser = slackUser,
+                                BambooUser = bambooUser,
+                                SlackUser = slackUser,
                             });
                         }
                     }
@@ -78,7 +78,7 @@ namespace Birthday_Bot
                     Templates birthdayPhrasesTemplate = Templates.ParseFile(fullPath);
 
                     var slackUsersIds = string.Join(", ", TodaysBirthdays.Select(
-                             r => $"<@{r.slackUser.Id}>")
+                             r => $"<@{r.SlackUser.Id}>")
                              .ToArray());
                     string phrase = birthdayPhrasesTemplate.Evaluate("RandomPhrases", new
                     {
