@@ -1,6 +1,5 @@
-using Birthday_Bot.Models;
+using Birthday_Bot.Models.SlackModels;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -10,18 +9,6 @@ namespace Birthday_Bot
 {
     public class SlackInterop
     {
-        public class SlackUser
-        {
-            public string Id { get; set; }
-            public string Name { get; set; }
-            public string Real_name { get; set; }
-        }
-        public class SlackUserAPIRequestResponse
-        {
-            public bool Ok { get; set; }
-            public SlackUser User { get; set; }
-        }
-
         /// <summary>
         /// Make a request to SlackAPI: https://slack.com/api/users.lookupByEmail
         /// in order to get userID from Email
@@ -84,16 +71,15 @@ namespace Birthday_Bot
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", slackBotToken);
                 var responseMessage = httpClient.GetAsync(botendpoint).Result;
                 var responseJson = await responseMessage.Content.ReadAsStringAsync();
-                Console.WriteLine(responseJson);
                 var jsonSerializerSettings = new JsonSerializerSettings()
                 {
                     MissingMemberHandling = MissingMemberHandling.Ignore,
                 };
-                SlackModels.SlackChannelAPIRequestResponse listChannelResponse = JsonConvert.DeserializeObject<SlackModels.SlackChannelAPIRequestResponse>(responseJson, jsonSerializerSettings);
+                SlackChannelAPIRequestResponse listChannelResponse = JsonConvert.DeserializeObject<SlackChannelAPIRequestResponse>(responseJson, jsonSerializerSettings);
                 if (listChannelResponse.Ok)
                 {
-                    List<SlackModels.Channel> listChannels = listChannelResponse.Channels;
-                    SlackModels.Channel channel = listChannels.Find(ch => ch.Name.Equals(channelName));
+                    List<SlackChannel> listChannels = listChannelResponse.Channels;
+                    SlackChannel channel = listChannels.Find(ch => ch.Name.Equals(channelName));
                     if(channel != null)
                     {
                         channelId = channel.Id;

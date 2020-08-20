@@ -11,15 +11,15 @@ namespace Birthday_Bot
     {
         private IDictionary<string, object> _store = new Dictionary<string, object>();
         private SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
-        private string _blobStorageStringConnection;
-        private string _blobStorageContainer;
+        private readonly string _blobStorageStringConnection;
+        private readonly string _blobStorageConversationContainer;
      
         private readonly AzureBlobStorage _myStorage;
         public BlobContainerConversationStore(IConfiguration configuration)
         {
             _blobStorageStringConnection = configuration["BlobStorageStringConnection"];
-            _blobStorageContainer = configuration["BlobStorageConversationContainer"];
-            _myStorage = new AzureBlobStorage(_blobStorageStringConnection, _blobStorageContainer);
+            _blobStorageConversationContainer = configuration["BlobStorageConversationContainer"];
+            _myStorage = new AzureBlobStorage(_blobStorageStringConnection, _blobStorageConversationContainer);
         }
         /// <summary>
         /// LoadAsync an array of conversationReference
