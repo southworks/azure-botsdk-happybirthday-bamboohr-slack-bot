@@ -8,10 +8,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using test_bamboohr_api.Extensions;
-using test_bamboohr_api.Models;
+using DataIngestionBambooAPI.Extensions;
+using DataIngestionBambooAPI.Models;
 
-namespace test_bamboohr_api
+namespace DataIngestionBambooAPI
 {
     public interface IBambooHrClient
     {

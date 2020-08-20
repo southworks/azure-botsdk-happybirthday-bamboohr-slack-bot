@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace test_bamboohr_api.Extensions
+namespace DataIngestionBambooAPI.Extensions
 {
     public static class TextExtension
     {

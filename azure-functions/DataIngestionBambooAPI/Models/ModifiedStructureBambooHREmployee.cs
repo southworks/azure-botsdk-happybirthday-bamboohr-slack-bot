@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace test_bamboohr_api.Models
+namespace DataIngestionBambooAPI.Models
 {
     class ModifiedStructureBambooHREmployee
     {

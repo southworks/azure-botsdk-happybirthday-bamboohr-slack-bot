@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
-namespace test_bamboohr_api
+namespace DataIngestionBambooAPI
 {
-    public static class Function1
+    public static class DataIngestionBambooAPI
     {
         static Config config;
 
-        [FunctionName("Function1")]
-        public static async Task Run([TimerTrigger("0 35 * * * *")] TimerInfo myTimer, ILogger log, ExecutionContext context)
+        [FunctionName("DataIngestionBambooAPI")]
+        public static async Task Run([TimerTrigger("0 0 9 * * *")] TimerInfo myTimer, ILogger log, ExecutionContext context)
         {
             var config = GetConfig(context);
             var bambooClient = new BambooHrClient(config);

@@ -1,7 +1,7 @@
 ﻿using RestSharp;
 using System.Linq;
 
-namespace test_bamboohr_api.Extensions
+namespace DataIngestionBambooAPI.Extensions
 {
     public static class IRestResponseExtensions
     {

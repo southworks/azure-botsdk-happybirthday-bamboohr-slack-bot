@@ -3,7 +3,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using System;
 
-namespace test_bamboohr_api
+namespace DataIngestionBambooAPI
 {
     class Config
     {

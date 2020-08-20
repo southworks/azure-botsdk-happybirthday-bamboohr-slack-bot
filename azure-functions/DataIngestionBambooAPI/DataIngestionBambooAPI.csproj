@@ -2,7 +2,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
-    <RootNamespace>test_bamboohr_api</RootNamespace>
+    <RootNamespace>DataIngestionBambooAPI</RootNamespace>
+    <AssemblyName>DataIngestionBambooAPI</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
