@@ -1,11 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using System.Text;
 
 namespace DataIngestionBambooAPI.Extensions
 {
     public static class TextExtension
     {
+        public static T FromJson<T>(this string s)
+        {
+            return JsonConvert.DeserializeObject<T>(s);
+        }
+
+        public static string ToJson<T>(this T source)
+        {
+            return JsonConvert.SerializeObject(source);
+        }
+
         public static string RemoveTroublesomeCharacters(this string inString)
         {
             if (inString == null) return null;

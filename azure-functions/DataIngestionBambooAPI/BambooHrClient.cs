@@ -1,12 +1,7 @@
-﻿using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
 using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using DataIngestionBambooAPI.Extensions;
 using DataIngestionBambooAPI.Models;
@@ -15,22 +10,18 @@ namespace DataIngestionBambooAPI
 {
     public interface IBambooHrClient
     {
-        Task<string> GetEmployeesAPI();
+        Task<List<BambooHrEmployee>> GetEmployees();
     }
 
     class BambooHrClient : IBambooHrClient
     {
         private readonly IRestClient _iRestClient;
         private readonly Config _config;
-        private readonly string _blobStorageStringConnection;
-        private readonly string _containerBontainerName;
         private readonly string _bambooApiKey;
 
         public BambooHrClient(Config config)
         {
             _config = config;
-            _blobStorageStringConnection = config.BlobStorageStringConnection;
-            _containerBontainerName = config.ContainerBlobStorage;
             _bambooApiKey = config.BambooApiKey;
             if (_bambooApiKey != null && !_bambooApiKey.Equals(""))
             {
@@ -46,7 +37,7 @@ namespace DataIngestionBambooAPI
 
         }
 
-        public async Task<string> GetEmployeesAPI()
+        public async Task<List<BambooHrEmployee>> GetEmployees()
         {
             var jsonHrEmployees = "";
             var xml = GenerateUserReportRequestXml();
@@ -68,62 +59,10 @@ namespace DataIngestionBambooAPI
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 jsonHrEmployees = response.Content.Replace("Date\":\"0000-00-00\"", "Date\":null").RemoveTroublesomeCharacters();
-                return jsonHrEmployees;
+                var package = jsonHrEmployees.FromJson<DirectoryResponse>();
+                return package.Employees;
             }
-            throw new Exception($"Bamboo Response threw error code {response.StatusCode} ({response.StatusDescription}) {response.GetBambooHrErrorMessage()} in {nameof(GetEmployeesAPI)}");
-        }
-
-        public string TransformData(string originalData)
-        {
-            List<OriginalStructureBambooHR.Employee> listEmployees = DeserializeJsonEmployees(originalData);
-            var jsonFormatEmployees = SerializeJsonEmployees(listEmployees);
-            return jsonFormatEmployees;
-        }
-
-        private static List<OriginalStructureBambooHR.Employee> DeserializeJsonEmployees(string jsonEmployees)
-        {
-            var employees = new List<OriginalStructureBambooHR.Employee>();
-            var listOriginalStructureBambooHR = JsonConvert.DeserializeObject<OriginalStructureBambooHR.Root>(jsonEmployees);
-            foreach (var employee in listOriginalStructureBambooHR.employees)
-            {
-                employees.Add(employee);
-            }
-            return employees;
-        }
-        private static string SerializeJsonEmployees(List<OriginalStructureBambooHR.Employee> users)
-        {
-            List<ModifiedStructureBambooHREmployee> listEmployees = new List<ModifiedStructureBambooHREmployee>();
-            foreach (var employee in users)
-            {
-                listEmployees.Add(new ModifiedStructureBambooHREmployee
-                {
-                    Birthday = employee.dateOfBirth,
-                    Email = employee.workEmail,
-                });
-            }
-            string jsonFormatEmployees = JsonConvert.SerializeObject(listEmployees, Formatting.Indented);
-            return jsonFormatEmployees;
-        }
-
-        public async void StoreData(string employeeData)
-        {
-            string jsonName = "hrDataEmployees.json";
-            CloudStorageAccount storageAccount;
-            CloudBlobClient client;
-            CloudBlobContainer container;
-            CloudBlockBlob blob;
-
-            storageAccount = CloudStorageAccount.Parse(_blobStorageStringConnection);
-            client = storageAccount.CreateCloudBlobClient();
-            container = client.GetContainerReference(_containerBontainerName);
-            await container.CreateIfNotExistsAsync();
-            blob = container.GetBlockBlobReference(jsonName);
-            blob.Properties.ContentType = "application/json";
-
-            using (Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(employeeData)))
-            {
-                await blob.UploadFromStreamAsync(stream);
-            }
+            throw new Exception($"Bamboo Response threw error code {response.StatusCode} ({response.StatusDescription}) {response.GetBambooHrErrorMessage()} in {nameof(GetEmployees)}");
         }
 
         public static RestRequest GetNewRestRequest(Method method)
@@ -139,18 +78,8 @@ namespace DataIngestionBambooAPI
             const string xml = @"<report>
             <title></title>{0}
             <fields>
-                <field id=""firstName"" />
-                <field id=""middleName"" />
-                <field id=""lastName"" />
-                <field id=""nickname"" />
-                <field id=""displayName"" />
                 <field id=""DateOfBirth"" />
-
                 <field id=""workEmail"" />
-
-                <field id=""hireDate"" />
-                <field id=""terminationDate"" />
-
             </fields> 
             </report>";
             return xml;

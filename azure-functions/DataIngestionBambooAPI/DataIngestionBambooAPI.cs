@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
@@ -14,9 +13,9 @@ namespace DataIngestionBambooAPI
         {
             var config = GetConfig(context);
             var bambooClient = new BambooHrClient(config);
-            var originalData = await bambooClient.GetEmployeesAPI();
-            var transformData = bambooClient.TransformData(originalData);
-            bambooClient.StoreData(transformData);
+            var listEmployees = await bambooClient.GetEmployees();
+            BambooHRStorage bambooStorage = new BambooHRStorage(config.BlobStorageStringConnection, config.ContainerBlobStorage);
+            bambooStorage.StoreData(listEmployees);
         }
 
         private static Config GetConfig(ExecutionContext context)
