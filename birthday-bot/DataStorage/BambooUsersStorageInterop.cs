@@ -39,7 +39,7 @@ namespace Birthday_Bot.DataStorage
                     {
                         usersBirthday.Add(user);
                     }
-                    return usersBirthday.Where(r => r.Birthday.Date == DateTime.Now.Date).ToList();
+                    return usersBirthday.Where(r => r.Birthday.Date.ToString("MMdd").Equals(DateTime.Now.Date.ToString("MMdd"))).ToList();
                 }
             }
             catch (Exception ex)
