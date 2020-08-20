@@ -70,24 +70,22 @@ namespace Birthday_Bot
             {
                 Console.WriteLine(ex.ToString());
             }
-            using (var context = new TurnContext(this, reference.GetContinuationActivity()))
+            using var context = new TurnContext(this, reference.GetContinuationActivity());
+            if (TodaysBirthdays.Any())
             {
-                if (TodaysBirthdays.Any())
-                {
-                    string fullPath = Path.Combine(".", "Resources", "Phrases.lg");
-                    Templates birthdayPhrasesTemplate = Templates.ParseFile(fullPath);
+                string fullPath = Path.Combine(".", "Resources", "Phrases.lg");
+                Templates birthdayPhrasesTemplate = Templates.ParseFile(fullPath);
 
-                    var slackUsersIds = string.Join(", ", TodaysBirthdays.Select(
-                             r => $"<@{r.SlackUser.Id}>")
-                             .ToArray());
-                    string phrase = birthdayPhrasesTemplate.Evaluate("RandomPhrases", new
-                    {
-                        users = slackUsersIds
-                    }).ToString();
-                    await context.SendActivityAsync(phrase);
-                }
-                await RunPipelineAsync(context, callback, cancellationToken).ConfigureAwait(false);
+                var slackUsersIds = string.Join(", ", TodaysBirthdays.Select(
+                         r => $"<@{r.SlackUser.Id}>")
+                         .ToArray());
+                string phrase = birthdayPhrasesTemplate.Evaluate("RandomPhrases", new
+                {
+                    users = slackUsersIds
+                }).ToString();
+                await context.SendActivityAsync(phrase);
             }
+            await RunPipelineAsync(context, callback, cancellationToken).ConfigureAwait(false);
         }
     }
 }
