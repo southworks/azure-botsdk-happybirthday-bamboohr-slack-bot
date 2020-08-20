@@ -10,7 +10,7 @@ namespace Birthday_Bot
     public class BlobContainerConversationStore : IOStore
     {
         private IDictionary<string, object> _store = new Dictionary<string, object>();
-        private SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
+        private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
         private readonly string _blobStorageStringConnection;
         private readonly string _blobStorageConversationContainer;
      

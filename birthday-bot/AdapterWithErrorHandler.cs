@@ -21,10 +21,10 @@ namespace Birthday_Bot
     {
         //private List<Birthday> Birthdays;
         private readonly string _slackBotToken;
-        private string _blobStorageStringConnection;
-        private string _blobStorageDataUserContainer;
-        private string _bambooHRUsersFileName;
-        private BambooUsersStorageInterop _bambooHRUsersStorage;
+        private readonly string _blobStorageStringConnection;
+        private readonly string _blobStorageDataUserContainer;
+        private readonly string _bambooHRUsersFileName;
+        private readonly BambooUsersStorageInterop _bambooHRUsersStorage;
 
         public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger)
             : base(configuration, logger)
