@@ -19,7 +19,6 @@ namespace Birthday_Bot
 {
     public class AdapterWithErrorHandler : SlackAdapter
     {
-        //private List<Birthday> Birthdays;
         private readonly string _slackBotToken;
         private readonly string _blobStorageStringConnection;
         private readonly string _blobStorageDataUserContainer;
