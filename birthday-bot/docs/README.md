@@ -93,4 +93,4 @@ As part of the configuration of the bot, we need to configure several parameters
 
     ![Test Run Log](images/test-run-log.png)
 
- ## [Integration](../../integrations/README.md)
+ ## [Integration](../../integrations#README.md)
