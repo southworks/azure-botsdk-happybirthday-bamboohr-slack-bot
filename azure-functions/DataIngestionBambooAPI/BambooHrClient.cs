@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DataIngestionBambooAPI.Extensions;
 using DataIngestionBambooAPI.Models;
+using System.Linq;
 
 namespace DataIngestionBambooAPI
 {
@@ -60,7 +61,13 @@ namespace DataIngestionBambooAPI
             {
                 jsonHrEmployees = response.Content.Replace("Date\":\"0000-00-00\"", "Date\":null").RemoveTroublesomeCharacters();
                 var package = jsonHrEmployees.FromJson<DirectoryResponse>();
-                return package.Employees;
+                
+                if (package != null)
+                {
+                    var employees = package.Employees.Where(e => e.WorkEmail != null && e.TerminationDate == null).ToList();
+
+                    return employees;
+                }
             }
             throw new Exception($"Bamboo Response threw error code {response.StatusCode} ({response.StatusDescription}) {response.GetBambooHrErrorMessage()} in {nameof(GetEmployees)}");
         }
@@ -80,6 +87,7 @@ namespace DataIngestionBambooAPI
             <fields>
                 <field id=""DateOfBirth"" />
                 <field id=""workEmail"" />
+                <field id=""terminationDate"" />
             </fields> 
             </report>";
             return xml;
