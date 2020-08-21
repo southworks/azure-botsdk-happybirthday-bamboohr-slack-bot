@@ -13,5 +13,6 @@ namespace DataIngestionBambooAPI.Models
     {
         public string WorkEmail { get; set; }
         public string DateOfBirth { get; set; }
+        public string TerminationDate { get; set; }
     }
 }
