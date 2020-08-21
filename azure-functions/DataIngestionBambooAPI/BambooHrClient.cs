@@ -60,7 +60,13 @@ namespace DataIngestionBambooAPI
             {
                 jsonHrEmployees = response.Content.Replace("Date\":\"0000-00-00\"", "Date\":null").RemoveTroublesomeCharacters();
                 var package = jsonHrEmployees.FromJson<DirectoryResponse>();
-                return package.Employees;
+                
+                f (package != null)
+                {
+                    var employees = package.Employees.Where(e => e.WorkEmail != null && e.TerminationDate == null).ToList();
+
+                    return employees;
+                }
             }
             throw new Exception($"Bamboo Response threw error code {response.StatusCode} ({response.StatusDescription}) {response.GetBambooHrErrorMessage()} in {nameof(GetEmployees)}");
         }
@@ -80,6 +86,7 @@ namespace DataIngestionBambooAPI
             <fields>
                 <field id=""DateOfBirth"" />
                 <field id=""workEmail"" />
+                <field id=""terminationDate"" />
             </fields> 
             </report>";
             return xml;
