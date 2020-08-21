@@ -19,7 +19,7 @@ namespace Birthday_Bot
             _oStore = ostore ?? throw new ArgumentNullException(nameof(ostore));
         }
 
-        private async void AddConversationReference(Activity activity)
+        private async Task AddConversationReference(Activity activity)
         {
             List<ConversationReference> storedConversationReferences = new List<ConversationReference>();
             var storedConversationsJSON = await _oStore.LoadAsync(); // Stored Conversations
@@ -64,15 +64,10 @@ namespace Birthday_Bot
             return base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);
         }
 
-        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-        {
-            return;
-        }
-
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             // Every message on the channel where the bot is added
-            AddConversationReference(turnContext.Activity as Activity);
+            await AddConversationReference(turnContext.Activity as Activity);
             return;
         }
 
