@@ -89,14 +89,7 @@ namespace Birthday_Bot.Controllers
 
         private async Task BotCallback(ITurnContext turnContext, CancellationToken cancellationToken)
         {
-            // If you encounter permission-related errors when sending this message, see
-            // https://aka.ms/BotTrustServiceUrl
-            //await turnContext.SendActivityAsync("Happy Birthday! <@U015G20UGHF>");
 
-            //foreach(var item in Birthdays)
-            //{
-            //    await turnContext.SendActivityAsync($"Happy Birthday! <@{item.slackUser.Id}>");
-            //}
         }
 
 
