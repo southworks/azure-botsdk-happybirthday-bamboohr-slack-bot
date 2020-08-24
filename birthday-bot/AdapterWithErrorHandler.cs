@@ -79,18 +79,19 @@ namespace Birthday_Bot
                              r => $"<@{r.slackUser.Id}>")
                              .ToArray());
 
-                    string phrase = "";
                     Templates birthdayPhrasesTemplate = Templates.ParseFile(fullPath);
-                    if (birthdayPhrasesTemplate != null)
-                        phrase = birthdayPhrasesTemplate.Evaluate("RandomPhrases", new
+                    string phrase = birthdayPhrasesTemplate != null ?
+                        birthdayPhrasesTemplate.Evaluate("RandomPhrases", new
                         {
                             users = slackUsersIds
-                        }).ToString();
-                    else
+                        }).ToString() : "";
+
+                    if (string.IsNullOrEmpty(phrase))
+                    {
                         phrase = "Someone told me that today's " +
-                         string.Join(", ", TodaysBirthdays.Select(
-                             r => string.Concat("<@", r.slackUser.Id, ">"))
-                             .ToArray()) + " birthday! Another year older is another year wiser :birthday: :tada: :smile:.";
+                                        slackUsersIds 
+                                        + " birthday! Another year older is another year wiser :birthday: :tada: :smile:.";
+                    }
                     await context.SendActivityAsync(phrase);
                 }
                 await RunPipelineAsync(context, callback, cancellationToken).ConfigureAwait(false);
