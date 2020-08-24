@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Phrases.lg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Phrases.lg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
     <PackageReference Include="Microsoft.Bot.Builder.Adapters.Slack" Version="4.9.3-preview" />
     <PackageReference Include="Microsoft.Bot.Builder.Azure" Version="4.9.3" />
