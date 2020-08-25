@@ -23,29 +23,33 @@ namespace Birthday_Bot
                 // Here we use the Bot endpoint
                 const string botendpoint = "https://slack.com/api/users.lookupByEmail";
 
-                using var httpClient = new HttpClient();
-                List<KeyValuePair<string, string>> postData = new List<KeyValuePair<string, string>> {
+                using (var httpClient = new HttpClient())
+                {
+                    List<KeyValuePair<string, string>> postData = new List<KeyValuePair<string, string>> {
                         new KeyValuePair<string, string>("email", email)
-                };
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", slackBotToken);
-                using var content = new FormUrlEncodedContent(postData);
-                content.Headers.Clear();
-                content.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+                    };
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", slackBotToken);
+                    using (var content = new FormUrlEncodedContent(postData))
+                    {
+                        content.Headers.Clear();
+                        content.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
 
-                HttpResponseMessage responseMessage = httpClient.PostAsync(botendpoint, content).Result;
-                var response = await responseMessage.Content.ReadAsStringAsync();
-                var jsonSerializerSettings = new JsonSerializerSettings()
-                {
-                    MissingMemberHandling = MissingMemberHandling.Ignore,
-                };
-                var slackUser = JsonConvert.DeserializeObject<SlackUserAPIRequestResponse>(response, jsonSerializerSettings);
-                if (slackUser.Ok)
-                {
-                    return slackUser.User;
-                }
-                else
-                {
-                    return null;
+                        HttpResponseMessage responseMessage = httpClient.PostAsync(botendpoint, content).Result;
+                        var response = await responseMessage.Content.ReadAsStringAsync();
+                        var jsonSerializerSettings = new JsonSerializerSettings()
+                        {
+                            MissingMemberHandling = MissingMemberHandling.Ignore,
+                        };
+                        var slackUser = JsonConvert.DeserializeObject<SlackUserAPIRequestResponse>(response, jsonSerializerSettings);
+                        if (slackUser.Ok)
+                        {
+                            return slackUser.User;
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
                 }
             }
             catch
