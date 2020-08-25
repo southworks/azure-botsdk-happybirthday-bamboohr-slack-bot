@@ -10,7 +10,7 @@ Birthday-Bot is a bot that automatically sends birthday greetings to people thro
 - Generation of Random Phrases
 
 ### Birthday Bot Archictecture 
-![Diagram Flow](images/diagram-flow.png)
+![Diagram Flow](docs/images/diagram-flow.png)
 
 
-## [Birthday Bot Readme](birthday-bot/docs/README.md)
+## [Birthday Bot Readme](docs/README.md)
