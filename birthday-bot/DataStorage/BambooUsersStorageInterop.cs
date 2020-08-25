@@ -34,12 +34,13 @@ namespace Birthday_Bot.DataStorage
                 string contents = blob.DownloadTextAsync().Result;
                 if (!string.IsNullOrEmpty(contents))
                 {
-                    var bambooHRUsersList = JsonConvert.DeserializeObject<List<BambooHRUser>>(contents);
+                    string cleanContent = contents.Replace("Birthday\":\"0000-00-00\"", "Birthday\":null");
+                    var bambooHRUsersList = JsonConvert.DeserializeObject<List<BambooHRUser>>(cleanContent);
                     foreach (var user in bambooHRUsersList)
                     {
                         usersBirthday.Add(user);
                     }
-                    return usersBirthday.Where(r => r.Birthday.Date.ToString("MMdd").Equals(DateTime.Now.Date.ToString("MMdd"))).ToList();
+                    return usersBirthday.Where(r => r.Birthday.HasValue && r.Birthday.Value.Date.ToString("MMdd").Equals(DateTime.Now.Date.ToString("MMdd"))).ToList();
                 }
             }
             catch (Exception ex)
