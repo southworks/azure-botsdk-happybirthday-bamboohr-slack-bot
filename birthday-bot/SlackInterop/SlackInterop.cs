@@ -26,7 +26,7 @@ namespace Birthday_Bot
                 using (var httpClient = new HttpClient())
                 {
                     List<KeyValuePair<string, string>> postData = new List<KeyValuePair<string, string>> {
-                            new KeyValuePair<string, string>("email", email)
+                        new KeyValuePair<string, string>("email", email)
                     };
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", slackBotToken);
                     using (var content = new FormUrlEncodedContent(postData))
@@ -42,9 +42,13 @@ namespace Birthday_Bot
                         };
                         var slackUser = JsonConvert.DeserializeObject<SlackUserAPIRequestResponse>(response, jsonSerializerSettings);
                         if (slackUser.Ok)
+                        {
                             return slackUser.User;
+                        }
                         else
+                        {
                             return null;
+                        }
                     }
                 }
             }

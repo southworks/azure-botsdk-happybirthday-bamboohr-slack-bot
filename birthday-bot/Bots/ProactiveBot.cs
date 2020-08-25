@@ -1,7 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +12,6 @@ namespace Birthday_Bot
 {
     public class Birthday_Bot : ActivityHandler
     {
-        // Message to send to users when the bot receives a Conversation Update event
-        //private const string WelcomeMessage = "Welcome to the Proactive Bot sample.  Navigate to http://localhost:3978/api/notify to proactively message everyone who has previously messaged this bot.";
-
         // Dependency injected dictionary for storing ConversationReference objects used in NotifyController to proactively message users
         private readonly IOStore _oStore;
         public Birthday_Bot(IOStore ostore)
@@ -25,7 +19,7 @@ namespace Birthday_Bot
             _oStore = ostore ?? throw new ArgumentNullException(nameof(ostore));
         }
 
-        private async void AddConversationReference(Activity activity)
+        private async Task AddConversationReference(Activity activity)
         {
             List<ConversationReference> storedConversationReferences = new List<ConversationReference>();
             var storedConversationsJSON = await _oStore.LoadAsync(); // Stored Conversations
@@ -70,15 +64,10 @@ namespace Birthday_Bot
             return base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);
         }
 
-        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-        {
-            return;
-        }
-
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             // Every message on the channel where the bot is added
-            AddConversationReference(turnContext.Activity as Activity);
+            await AddConversationReference(turnContext.Activity as Activity);
             return;
         }
 

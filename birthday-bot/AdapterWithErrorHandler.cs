@@ -19,12 +19,11 @@ namespace Birthday_Bot
 {
     public class AdapterWithErrorHandler : SlackAdapter
     {
-        //private List<Birthday> Birthdays;
         private readonly string _slackBotToken;
-        private string _blobStorageStringConnection;
-        private string _blobStorageDataUserContainer;
-        private string _bambooHRUsersFileName;
-        private BambooUsersStorageInterop _bambooHRUsersStorage;
+        private readonly string _blobStorageStringConnection;
+        private readonly string _blobStorageDataUserContainer;
+        private readonly string _bambooHRUsersFileName;
+        private readonly BambooUsersStorageInterop _bambooHRUsersStorage;
 
         public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger)
             : base(configuration, logger)
@@ -59,8 +58,8 @@ namespace Birthday_Bot
                         {
                             TodaysBirthdays.Add(new Birthday()
                             {
-                                bambooUser = bambooUser,
-                                slackUser = slackUser,
+                                BambooUser = bambooUser,
+                                SlackUser = slackUser,
                             });
                         }
                     }
@@ -76,7 +75,7 @@ namespace Birthday_Bot
                 {
                     string fullPath = Path.Combine(".", "Resources", "Phrases.lg");
                     var slackUsersIds = string.Join(", ", TodaysBirthdays.Select(
-                             r => $"<@{r.slackUser.Id}>")
+                             r => $"<@{r.SlackUser.Id}>")
                              .ToArray());
 
                     Templates birthdayPhrasesTemplate = Templates.ParseFile(fullPath);
