@@ -1,12 +1,8 @@
-﻿using Microsoft.Bot.Builder;
-using Microsoft.Bot.Builder.Adapters.Slack;
+﻿using Microsoft.Bot.Builder.Adapters.Slack;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Builder.TraceExtensions;
-using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Birthday_Bot
 {
