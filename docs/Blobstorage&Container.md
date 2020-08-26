@@ -1,5 +1,4 @@
-# Birthday Bot
-## Configure blobstorage & container  
+# Configure blobstorage & container  
 - In your browser, navigate to the [Azure Portal](https://portal.azure.com).
   
 - Add new Storage account into your Azure Portal
@@ -13,10 +12,6 @@ Finally, we select Review + Create to review your storage account settings and c
 - Once created the storage account, add a new Container. Enter a name, select in Public access level Private, and then click create.  
 
      ![Storage account](images/add-container.png)
-
-- With the container created, we will upload the corresponding JSON files. We select the file and then click Upload. We repeat the process to upload the second file.  
-
-     ![Storage account](images/upload-json-file.png)
 
 ### Next Steps
 

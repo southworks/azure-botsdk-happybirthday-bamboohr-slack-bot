@@ -5,7 +5,7 @@ This repository contains sections to be able to configure and deploy the bot wit
 
 1. [Azure Portal](https://portal.azure.com) account
 1. [Slack Workspace](https://slack.com/get-started#/create)
-1. The bot in this repository
+1. [The bot in this repository](../birthday-bot)
 
 # Table of contents
 

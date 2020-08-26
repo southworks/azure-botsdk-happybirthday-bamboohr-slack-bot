@@ -1,6 +1,4 @@
-# Birthday Bot
-
-## Create Slack App
+# Create Slack App
 
 * [Connect deployed bot with Slack Channel](https://docs.microsoft.com/en-us/azure/bot-service/bot-service-channel-connect-slack?view=azure-bot-service-4.0&tabs=abs)
 * Add Slack-App to a channel

@@ -1,6 +1,4 @@
-# Birthday Bot
-
-## BambooHR Integration
+# BambooHR Integration
 
 This document explains how to configure an Azure Function in order to retrieve birthdays information from BambooHR.
 
@@ -8,10 +6,11 @@ This document explains how to configure an Azure Function in order to retrieve b
 
 1. [Azure Portal](https://portal.azure.com/) account
 1. Knowledge configuring Azure Functions
+1. Azure Function code
 
 ### Set-up an Azure Function
 
-1. Unzip the code, open the solution with Microsoft Studio Visual Community 2019. (link to zip file)
+1. Open the solution with Microsoft Studio Visual Community 2019.
 1. Right-click on the Project name, and then in Publish.
 1. In the wizard select Azure, select Azure Function App (Windows) and click on next
 1. In the Functions Instances tab, select your existing Azure Function App. Then, click on Finish. If you don't have one, click on Create a New Azure Function.
