@@ -31,7 +31,7 @@
     1. Enter the **Code + Test** option in the left panel
     1. Copy **the function code** and paste it in the code field.
     **Code**:
-        ```
+        ```C#
         using System;
         using System.Net.Http;
         using System.Threading.Tasks;
