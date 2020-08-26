@@ -17,7 +17,7 @@ namespace Birthday_Bot.DataStorage
         /// <param name="_blobStorageDataUserContainer">A reference blobStorageDataUserContainer</param>
         /// <param name="_bambooHRUsersFileName">A reference to the name of the JSON file</param>
         /// <returns>A list user of type List <BambooHRUser></returns>
-        public List<BambooHRUser> GetTodaysBirthdays(string _blobStorageStringConnection, string _blobStorageDataUserContainer, string _bambooHRUsersFileName)
+        public static List<BambooHRUser> GetTodaysBirthdays(string _blobStorageStringConnection, string _blobStorageDataUserContainer, string _bambooHRUsersFileName)
         {
             var usersBirthday = new List<BambooHRUser>();
             try

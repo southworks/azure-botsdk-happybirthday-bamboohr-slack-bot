@@ -12,7 +12,6 @@ namespace Birthday_Bot
     public class BirthdaysHelper
     {
         private readonly string _slackBotToken;
-        private readonly BambooUsersStorageInterop _bambooHRUsersStorage;
         private readonly string _blobStorageStringConnection;
         private readonly string _blobStorageDataUserContainer;
         private readonly string _bambooHRUsersFileName;
@@ -24,7 +23,6 @@ namespace Birthday_Bot
             _blobStorageStringConnection = blobStorageStringConnection;
             _blobStorageDataUserContainer = blobStorageDataUserContainer;
             _bambooHRUsersFileName = bambooHRUsersFileName;
-            _bambooHRUsersStorage = new BambooUsersStorageInterop();
         }
 
         public async Task<string> GetBirthdayMessage()
@@ -42,7 +40,7 @@ namespace Birthday_Bot
             List<Birthday> Birthdays = new List<Birthday>();
             try
             {
-                var _bambooHRBirthdays = _bambooHRUsersStorage.GetTodaysBirthdays(_blobStorageStringConnection, _blobStorageDataUserContainer, _bambooHRUsersFileName);
+                var _bambooHRBirthdays = BambooUsersStorageInterop.GetTodaysBirthdays(_blobStorageStringConnection, _blobStorageDataUserContainer, _bambooHRUsersFileName);
                 if (_bambooHRBirthdays.Any())
                 {
                     foreach (var bambooUser in _bambooHRBirthdays)
