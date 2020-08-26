@@ -56,9 +56,9 @@
                 using (HttpResponseMessage response = await client.GetAsync(botendpoint))
                 using (HttpContent content = response.Content) { }
             }
-            catch
+            catch(Exception e)
             {
-                log.LogInformation(ex.ToString());
+                log.LogInformation(e.message);
             }
         }
         ```
