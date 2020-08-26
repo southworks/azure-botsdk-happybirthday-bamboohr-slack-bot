@@ -12,7 +12,6 @@ namespace Birthday_Bot
 {
     public class AdapterWithErrorHandler : SlackAdapter
     {
-
         public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger)
             : base(configuration, logger)
         {
@@ -24,14 +23,6 @@ namespace Birthday_Bot
                 // Send a trace activity, which will be displayed in the Bot Framework Emulator
                 await turnContext.TraceActivityAsync("OnTurnError Trace", exception.Message, "https://www.botframework.com/schemas/error", "TurnError");
             };
-        }
-
-        public override async Task ContinueConversationAsync(string botId, ConversationReference reference, BotCallbackHandler callback, CancellationToken cancellationToken)
-        {
-            using (var context = new TurnContext(this, reference.GetContinuationActivity()))
-            {
-                await RunPipelineAsync(context, callback, cancellationToken).ConfigureAwait(false);
-            }
         }
     }
 }
