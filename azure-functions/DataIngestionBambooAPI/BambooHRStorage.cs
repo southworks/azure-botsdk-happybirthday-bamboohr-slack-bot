@@ -20,7 +20,13 @@ namespace DataIngestionBambooAPI
         {
             _blobStorageStringConnection = blobStorageConnectionString;
             _containerName = containerName;
-            _storageMethod = storageMethod;
+            if(string.IsNullOrEmpty(storageMethod))
+            {
+                _storageMethod = "JSON";
+            } else
+            {
+                _storageMethod = storageMethod;
+            }
         }
 
         public async void StoreData(List<BambooHrEmployee> employees)
