@@ -73,6 +73,21 @@ namespace DataIngestionBambooAPI
             } 
         }
 
+        public string StorageMethod
+        {
+            get
+            {
+                if (!Environment.GetEnvironmentVariable("StorageMethod", EnvironmentVariableTarget.Process).Equals(""))
+                {
+                    return Environment.GetEnvironmentVariable("StorageMethod", EnvironmentVariableTarget.Process);
+                }
+                else
+                {
+                    return Configuration["Values:StorageMethod"];
+                }
+            }
+        }
+
         public string ContainerBlobStorage 
         { 
             get 

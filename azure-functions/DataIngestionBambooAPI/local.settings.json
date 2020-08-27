@@ -6,6 +6,7 @@
     "CompanyName": "",
     "ApiUrl": "",
     "ContainerName": "",
-    "BambooApiKey": ""
+    "BambooApiKey": "",
+    "StorageMethod":  "JSON"
   }
 }

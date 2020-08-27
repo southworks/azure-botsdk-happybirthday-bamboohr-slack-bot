@@ -14,38 +14,54 @@ namespace DataIngestionBambooAPI
 
         private readonly string _blobStorageStringConnection;
         private readonly string _containerName;
+        private readonly string _storageMethod;
 
-        public BambooHRStorage(string blobStorageConnectionString, string containerName)
+        public BambooHRStorage(string blobStorageConnectionString, string containerName, string storageMethod)
         {
             _blobStorageStringConnection = blobStorageConnectionString;
             _containerName = containerName;
+            if(string.IsNullOrEmpty(storageMethod))
+            {
+                _storageMethod = "JSON";
+            } else
+            {
+                _storageMethod = storageMethod;
+            }
         }
 
         public async void StoreData(List<BambooHrEmployee> employees)
         {
-            string jsonName = "hrDataEmployees.json";
-            CloudStorageAccount storageAccount;
-            CloudBlobClient client;
-            CloudBlobContainer container;
-            CloudBlockBlob blob;
-
-            storageAccount = CloudStorageAccount.Parse(_blobStorageStringConnection);
-            client = storageAccount.CreateCloudBlobClient();
-            container = client.GetContainerReference(_containerName);
-            await container.CreateIfNotExistsAsync();
-            blob = container.GetBlockBlobReference(jsonName);
-            blob.Properties.ContentType = "application/json";
-
-            var employeeJson = employees.Select(r => new
+          
+            if(_storageMethod == "JSON")
             {
-                Birthday = r.DateOfBirth,
-                Email = r.WorkEmail
-            }).ToList().ToJson();
+                string jsonName = "hrDataEmployees.json";
+                CloudStorageAccount storageAccount;
+                CloudBlobClient client;
+                CloudBlobContainer container;
+                CloudBlockBlob blob;
 
-            using (Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(employeeJson)))
+                storageAccount = CloudStorageAccount.Parse(_blobStorageStringConnection);
+                client = storageAccount.CreateCloudBlobClient();
+                container = client.GetContainerReference(_containerName);
+                await container.CreateIfNotExistsAsync();
+                blob = container.GetBlockBlobReference(jsonName);
+                blob.Properties.ContentType = "application/json";
+
+                var employeeJson = employees.Select(r => new
+                {
+                    Birthday = r.DateOfBirth,
+                    Email = r.WorkEmail
+                }).ToList().ToJson();
+
+                using (Stream stream = new MemoryStream(Encoding.UTF8.GetBytes(employeeJson)))
+                {
+                    await blob.UploadFromStreamAsync(stream);
+                }
+            } else
             {
-                await blob.UploadFromStreamAsync(stream);
+                throw new System.ArgumentException("Storage Method not supported", "SupportMethod");
             }
+
         }
     }
 }

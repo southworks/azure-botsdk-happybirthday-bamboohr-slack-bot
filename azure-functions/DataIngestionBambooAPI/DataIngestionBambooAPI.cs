@@ -14,7 +14,7 @@ namespace DataIngestionBambooAPI
             var config = GetConfig(context);
             var bambooClient = new BambooHrClient(config);
             var listEmployees = await bambooClient.GetEmployees();
-            BambooHRStorage bambooStorage = new BambooHRStorage(config.BlobStorageStringConnection, config.ContainerBlobStorage);
+            BambooHRStorage bambooStorage = new BambooHRStorage(config.BlobStorageStringConnection, config.ContainerBlobStorage, config.StorageMethod);
             bambooStorage.StoreData(listEmployees);
         }
 
