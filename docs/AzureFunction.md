@@ -1,4 +1,6 @@
-# Create Azure Function  
+# Create Azure Function 
+This document explains how to create a new Azure Function to trigger the bot in a specified time.
+ 
  - Add new Function App into your [Azure Portal](https://portal.azure.com/) Resource Group
 
     ![Create Function App](images/create-function-app.png)
@@ -18,18 +20,18 @@
     ![Add Function to Function App](images/add-function-to-function-app.png)
     **Schedule** could be configure as the classic cronjob on linux.
 - After creating the function, we continue to create a **new application setting**.
-    1. Enter into the **Configuration** option under the Settings section on the left panel.
-    1. Enter the **New application setting** option.
-    1. Then enter a **name** and **value** for our new application setting. In this case as a name we are going to add **bot_endpoint** and as a value we will enter the **endpoint** of our **App Service**.
-    1. And we click on **Ok** to confirm the creation.
-    1. Save the new configuration
+1. Enter into the **Configuration** option under the Settings section on the left panel.
+1. Enter the **New application setting** option.
+1. Then enter a **name** and **value** for our new application setting. In this case as a name we are going to add **bot_endpoint** and as a value we will enter the **endpoint** of our **App Service**.
+1. And we click on **Ok** to confirm the creation.
+1. Save the new configuration
 
     ![Create Function App Wizard](images/applicaction-setting.png)
 
 - Then edit and save the code to execute every tick of the timer.   
 
-    1. Enter the **Code + Test** option in the left panel
-    1. Copy **the function code** and paste it in the code field.
+1. Enter the **Code + Test** option in the left panel
+1. Copy **the function code** and paste it in the code field.
     **Code**:
         ```C#
         using System;
@@ -62,7 +64,7 @@
             }
         }
         ```
-    1. Click on **Save** to save the changes.
+1. Click on **Save** to save the changes.
 
 
     ![Function Code](images/function-code.png)
@@ -74,3 +76,5 @@
 ### Next Steps
 
 * [BambooHR Integration](BambooHR.md#bambooHR-integration)
+
+[← Back to Table of contents](README.md#table-of-contents)

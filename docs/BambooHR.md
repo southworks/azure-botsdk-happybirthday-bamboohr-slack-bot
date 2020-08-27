@@ -6,11 +6,11 @@ This document explains how to configure an Azure Function in order to retrieve b
 
 1. [Azure Portal](https://portal.azure.com/) account
 1. Knowledge configuring Azure Functions
-1. Azure Function code
+1. [Azure Function code](https://github.com/southworks/azure-botsdk-happybirthday-bot/tree/azure-functions/bamboohrapi/azure-functions/DataIngestionBambooAPI)
 
 ### Set-up an Azure Function
 
-1. Open the solution with Microsoft Studio Visual Community 2019.
+1. Open the solution with Microsoft Visual Studio Community 2019.
 1. Right-click on the Project name, and then in Publish.
 1. In the wizard select Azure, select Azure Function App (Windows) and click on next
 1. In the Functions Instances tab, select your existing Azure Function App. Then, click on Finish. If you don't have one, click on Create a New Azure Function.

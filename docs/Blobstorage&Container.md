@@ -1,4 +1,6 @@
-# Configure blobstorage & container  
+# Configure blobstorage & container
+This document explains how to create a new Storage account and container from the Azure Portal.
+  
 - In your browser, navigate to the [Azure Portal](https://portal.azure.com).
   
 - Add new Storage account into your Azure Portal
@@ -19,3 +21,5 @@ Finally, we select Review + Create to review your storage account settings and c
 * [Deploy on Azure Portal](DeployAzurePortal.md#deploy-on-azure-portal )
 * [Create Azure Function](AzureFunction.md#create-azure-function)
 * [BambooHR Integration](BambooHR.md#bambooHR-integration)
+
+[← Back to Table of contents](README.md#table-of-contents)
