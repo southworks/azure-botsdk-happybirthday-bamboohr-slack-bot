@@ -57,7 +57,7 @@ namespace Birthday_Bot.Controllers
             BirthdaysHelper birthdaysHelper = new BirthdaysHelper(_blobStorageStringConnection, _blobStorageDataUserContainer,
                 _bambooHRUsersFileName, _slackBotToken);
             happyBirthdayMessage = await birthdaysHelper.GetBirthdayMessage();
-            if (!happyBirthdayMessage.Equals(""))
+            if (!string.IsNullOrEmpty(happyBirthdayMessage))
             {
                 var _specificChannelID = await SlackInterop.GetChannelIdByName(_specificChannelName, _slackBotToken);
                 if (_conversationReferences.Values.Count == 0)
