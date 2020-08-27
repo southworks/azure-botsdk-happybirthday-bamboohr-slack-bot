@@ -47,8 +47,7 @@ Add new Function App into your [Azure Portal](https://portal.azure.com/) Resourc
             Task t = new Task(CallEndPointBot);
             t.Start();
             Console.WriteLine("Call endpoint...");
-            log.LogInformation($"C# Timer trigger function executed at: {DateTim
-            Now}"); 
+            log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
         }
 
         static async void CallEndPointBot()
