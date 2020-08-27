@@ -65,7 +65,7 @@ namespace Birthday_Bot
         /// <param name="channelName">The channel name specified on the appsettings.json file</param>
         /// <param name="slackBotToken">The slack bot token specified on the appsettings.json file</param>
         /// <returns>The channel id as a string</returns>
-        public static async Task<string> GetChannelIdByName(string channelName, string slackBotToken)
+        public static async Task<string> GetChannelIdByNameAsync(string channelName, string slackBotToken)
         {
             // Here we use the Bot endpoint
             const string botendpoint = "https://slack.com/api/conversations.list";

@@ -25,9 +25,9 @@ namespace Birthday_Bot
             _bambooHRUsersFileName = bambooHRUsersFileName;
         }
 
-        public async Task<string> GetBirthdayMessage()
+        public async Task<string> GetBirthdayMessageAsync()
         {
-            List<Birthday> TodaysBirthdays = await GetBirthdays();
+            List<Birthday> TodaysBirthdays = await GetBirthdaysAsync();
             string happyBirthdayMsg = "";
             if (TodaysBirthdays.Any()){
                 happyBirthdayMsg = GetHappyBirthdayMsg(TodaysBirthdays);
@@ -35,7 +35,7 @@ namespace Birthday_Bot
             return happyBirthdayMsg;
         }
 
-        private async Task<List<Birthday>> GetBirthdays()
+        private async Task<List<Birthday>> GetBirthdaysAsync()
         {
             List<Birthday> Birthdays = new List<Birthday>();
             try

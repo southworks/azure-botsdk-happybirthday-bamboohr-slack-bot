@@ -56,10 +56,10 @@ namespace Birthday_Bot.Controllers
         {
             BirthdaysHelper birthdaysHelper = new BirthdaysHelper(_blobStorageStringConnection, _blobStorageDataUserContainer,
                 _bambooHRUsersFileName, _slackBotToken);
-            happyBirthdayMessage = await birthdaysHelper.GetBirthdayMessage();
+            happyBirthdayMessage = await birthdaysHelper.GetBirthdayMessageAsync();
             if (!string.IsNullOrEmpty(happyBirthdayMessage))
             {
-                var _specificChannelID = await SlackInterop.GetChannelIdByName(_specificChannelName, _slackBotToken);
+                var _specificChannelID = await SlackInterop.GetChannelIdByNameAsync(_specificChannelName, _slackBotToken);
                 if (_conversationReferences.Values.Count == 0)
                 {
                     var storedConversationReferenciesJson = await _oStore.LoadAsync(); // _store.LoadAsync();
