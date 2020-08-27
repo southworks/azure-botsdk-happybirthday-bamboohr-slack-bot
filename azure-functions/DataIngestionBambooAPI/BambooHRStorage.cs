@@ -2,6 +2,7 @@
 using DataIngestionBambooAPI.Models;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Table;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,17 +32,17 @@ namespace DataIngestionBambooAPI
 
         public async void StoreData(List<BambooHrEmployee> employees)
         {
-          
-            if(_storageMethod == "JSON")
+            CloudStorageAccount storageAccount;
+            storageAccount = CloudStorageAccount.Parse(_blobStorageStringConnection);
+
+            if (_storageMethod == "JSON")
             {
                 string jsonName = "hrDataEmployees.json";
-                CloudStorageAccount storageAccount;
-                CloudBlobClient client;
+                
                 CloudBlobContainer container;
                 CloudBlockBlob blob;
+                CloudBlobClient client = storageAccount.CreateCloudBlobClient();
 
-                storageAccount = CloudStorageAccount.Parse(_blobStorageStringConnection);
-                client = storageAccount.CreateCloudBlobClient();
                 container = client.GetContainerReference(_containerName);
                 await container.CreateIfNotExistsAsync();
                 blob = container.GetBlockBlobReference(jsonName);
@@ -59,7 +60,23 @@ namespace DataIngestionBambooAPI
                 }
             } else
             {
-                throw new System.ArgumentException("Storage Method not supported", "SupportMethod");
+                CloudTableClient client = storageAccount.CreateCloudTableClient();
+                CloudTable table = client.GetTableReference("hrDataEmployees");
+                await table.CreateIfNotExistsAsync();
+                TableOperation insertOp;
+
+                var employeeJson = employees.Select(r => new
+                {
+                    Birthday = r.DateOfBirth,
+                    Email = r.WorkEmail
+                }).ToList();
+
+                foreach (var employee in employeeJson)
+                {
+                    BambooEmployeeEntity employeeEntity = new BambooEmployeeEntity(1, employee.Birthday, employee.Email);
+                    insertOp = TableOperation.InsertOrReplace(employeeEntity);
+                    await table.ExecuteAsync(insertOp);
+                }
             }
 
         }
