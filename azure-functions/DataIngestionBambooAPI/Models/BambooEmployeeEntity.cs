@@ -5,10 +5,10 @@ namespace DataIngestionBambooAPI.Models
     class BambooEmployeeEntity : TableEntity
     {
 
-        public BambooEmployeeEntity(int id, string birthday, string email)
+        public BambooEmployeeEntity(string birthday, string email)
         {
             Birthday = birthday;
-            PartitionKey = id.ToString();
+            PartitionKey = "birthday";
             RowKey = email;
         }
 

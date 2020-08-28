@@ -46,7 +46,7 @@ namespace DataIngestionBambooAPI
 
             foreach (var employee in employeeJson)
             {
-                BambooEmployeeEntity employeeEntity = new BambooEmployeeEntity(1, employee.Birthday, employee.Email);
+                BambooEmployeeEntity employeeEntity = new BambooEmployeeEntity(employee.Birthday, employee.Email);
                 insertOp = TableOperation.InsertOrReplace(employeeEntity);
                 await table.ExecuteAsync(insertOp);
             }
