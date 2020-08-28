@@ -23,6 +23,7 @@ namespace Birthday_Bot
         private readonly string _blobStorageStringConnection;
         private readonly string _blobStorageDataUserContainer;
         private readonly string _bambooHRUsersFileName;
+        private readonly string _storageMethod;
         private readonly BambooUsersStorageInterop _bambooHRUsersStorage;
 
         public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger)
@@ -32,6 +33,7 @@ namespace Birthday_Bot
             _blobStorageStringConnection = configuration["BlobStorageStringConnection"];
             _blobStorageDataUserContainer = configuration["BlobStorageDataUsersContainer"];
             _bambooHRUsersFileName = configuration["BambooHRUsersFileName"];
+            _storageMethod = configuration["StorageMethod"];
             _bambooHRUsersStorage = new BambooUsersStorageInterop();
             OnTurnError = async (turnContext, exception) =>
             {
@@ -48,7 +50,7 @@ namespace Birthday_Bot
             List<Birthday> TodaysBirthdays = new List<Birthday>();
             try
             {
-                var _bambooHRBirthdays = _bambooHRUsersStorage.GetTodaysBirthdays(_blobStorageStringConnection, _blobStorageDataUserContainer, _bambooHRUsersFileName);
+                var _bambooHRBirthdays = _bambooHRUsersStorage.GetTodaysBirthdays(_blobStorageStringConnection, _blobStorageDataUserContainer, _bambooHRUsersFileName, _storageMethod);
                 if (_bambooHRBirthdays.Any())
                 {
                     foreach (var bambooUser in _bambooHRBirthdays)
