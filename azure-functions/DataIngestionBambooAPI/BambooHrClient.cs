@@ -59,7 +59,7 @@ namespace DataIngestionBambooAPI
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                jsonHrEmployees = response.Content.Replace("Date\":\"0000-00-00\"", "Date\":null").RemoveTroublesomeCharacters();
+                jsonHrEmployees = response.Content.Replace("Date\": \"0000-00-00\"", "Date\":null").RemoveTroublesomeCharacters();
                 var package = jsonHrEmployees.FromJson<DirectoryResponse>();
                 
                 if (package != null)
