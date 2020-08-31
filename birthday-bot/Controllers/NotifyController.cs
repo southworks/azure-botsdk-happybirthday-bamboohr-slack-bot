@@ -25,6 +25,11 @@ namespace Birthday_Bot.Controllers
         private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
         private readonly IOStore _oStore;
         private readonly string _slackBotToken;
+        private readonly string _blobStorageStringConnection;
+        private readonly string _blobStorageDataUserContainer;
+        private readonly string _bambooHRUsersFileName;
+        private string happyBirthdayMessage;
+
         public NotifyController(SlackAdapter adapter, IConfiguration configuration,
             ConcurrentDictionary<string, ConversationReference> conversationReferences,
             IOStore ostore)
@@ -35,6 +40,9 @@ namespace Birthday_Bot.Controllers
             _specificChannelName = configuration["SpecificChannelName"];
             _slackBotToken = configuration["SlackBotToken"];
             _oStore = ostore;
+            _blobStorageStringConnection = configuration["BlobStorageStringConnection"];
+            _blobStorageDataUserContainer = configuration["BlobStorageDataUsersContainer"];
+            _bambooHRUsersFileName = configuration["BambooHRUsersFileName"];
             // If the channel is the Emulator, and authentication is not in use,
             // the AppId will be null.  We generate a random AppId for this case only.
             // This is not required for production, since the AppId will have a value.
@@ -46,38 +54,43 @@ namespace Birthday_Bot.Controllers
 
         public async Task<IActionResult> Get()
         {
-            var _specificChannelID = await SlackInterop.GetChannelIdByName(_specificChannelName, _slackBotToken);
-            if (_conversationReferences.Values.Count == 0)
+            BirthdaysHelper birthdaysHelper = new BirthdaysHelper(_blobStorageStringConnection, _blobStorageDataUserContainer,
+                _bambooHRUsersFileName, _slackBotToken);
+            happyBirthdayMessage = await birthdaysHelper.GetBirthdayMessageAsync();
+            if (!string.IsNullOrEmpty(happyBirthdayMessage))
             {
-                var storedConversationReferenciesJson = await _oStore.LoadAsync(); // _store.LoadAsync();
-                if (storedConversationReferenciesJson != null && !string.IsNullOrEmpty(storedConversationReferenciesJson.ToString()))
+                var _specificChannelID = await SlackInterop.GetChannelIdByNameAsync(_specificChannelName, _slackBotToken);
+                if (_conversationReferences.Values.Count == 0)
                 {
-                    try
+                    var storedConversationReferenciesJson = await _oStore.LoadAsync(); // _store.LoadAsync();
+                    if (storedConversationReferenciesJson != null && !string.IsNullOrEmpty(storedConversationReferenciesJson.ToString()))
                     {
-                        var storedConversationReferencesList = JsonConvert.DeserializeObject<List<ConversationReference>>(storedConversationReferenciesJson.ToString());
-                        foreach (var conversationRef in storedConversationReferencesList)
+                        try
                         {
-                            conversationRef.ServiceUrl = "null";
-                            conversationRef.Conversation = new ConversationAccount(conversationRef.Conversation.IsGroup, conversationRef.Conversation.ConversationType,
-                                conversationRef.Conversation.Id, conversationRef.Conversation.Name, conversationRef.Conversation.AadObjectId, conversationRef.Conversation.Role,
-                                conversationRef.Conversation.TenantId);
-                            _conversationReferences.AddOrUpdate(conversationRef.Conversation.Id, conversationRef, (key, newValue) => conversationRef);
+                            var storedConversationReferencesList = JsonConvert.DeserializeObject<List<ConversationReference>>(storedConversationReferenciesJson.ToString());
+                            foreach (var conversationRef in storedConversationReferencesList)
+                            {
+                                conversationRef.ServiceUrl = "null";
+                                conversationRef.Conversation = new ConversationAccount(conversationRef.Conversation.IsGroup, conversationRef.Conversation.ConversationType,
+                                    conversationRef.Conversation.Id, conversationRef.Conversation.Name, conversationRef.Conversation.AadObjectId, conversationRef.Conversation.Role,
+                                    conversationRef.Conversation.TenantId);
+                                _conversationReferences.AddOrUpdate(conversationRef.Conversation.Id, conversationRef, (key, newValue) => conversationRef);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.ToString());
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.ToString());
-                    }
+                }
+
+                // Send message, only, to specific channel
+                if (_conversationReferences.Values.Any(r => r.Conversation.Id == _specificChannelID))
+                {
+                    var _specificChannelConversationRef = _conversationReferences.Values.First(r => r.Conversation.Id == _specificChannelID);
+                    await ((BotAdapter)_adapter).ContinueConversationAsync(_appId, _specificChannelConversationRef, BotCallback, default(CancellationToken));
                 }
             }
-
-            // Send message, only, to specific channel
-            if (_conversationReferences.Values.Any(r => r.Conversation.Id == _specificChannelID))
-            {
-                var _specificChannelConversationRef = _conversationReferences.Values.First(r => r.Conversation.Id == _specificChannelID);
-                await ((BotAdapter)_adapter).ContinueConversationAsync(_appId, _specificChannelConversationRef, BotCallback, default(CancellationToken));
-            }
-
             // Let the caller know proactive messages have been sent
             return new ContentResult()
             {
@@ -89,9 +102,7 @@ namespace Birthday_Bot.Controllers
 
         private async Task BotCallback(ITurnContext turnContext, CancellationToken cancellationToken)
         {
-
+            await turnContext.SendActivityAsync(happyBirthdayMessage);
         }
-
-
     }
 }
