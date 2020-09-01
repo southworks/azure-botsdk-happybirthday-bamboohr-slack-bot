@@ -1,5 +1,5 @@
-# Create Azure Function 
-This document explains how to create a new Azure Function to trigger the bot in a specified time.
+# Create Azure Function
+This topic shows you how to create an Azure Functions in the Azure portal. Which allows us to trigger our bot to behave proactively in a specified time.. 
 
 Add new Function App into your [Azure Portal](https://portal.azure.com/) Resource Group
 
