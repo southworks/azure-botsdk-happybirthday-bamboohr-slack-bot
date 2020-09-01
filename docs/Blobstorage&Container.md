@@ -20,6 +20,5 @@ Finally, we select Review + Create to review your Storage Account settings and c
 * [Configure appsetting.json](ConfigureAppsettings.md#configure-appsetting.json)
 * [Deploy on Azure](DeployAzurePortal.md#deploy-on-azure-portal )
 * [Create Azure Function](AzureFunction.md#create-azure-function)
-* [BambooHR Integration](BambooHR.md#bambooHR-integration)
 
 [← Back to Table of contents](README.md#table-of-contents)

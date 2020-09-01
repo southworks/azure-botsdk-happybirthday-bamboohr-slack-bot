@@ -38,6 +38,5 @@ As part of the configuration of the bot, we need to configure several parameters
 
 * [Deploy on Azure](DeployAzurePortal.md#deploy-on-azure-portal )
 * [Create Azure Function](AzureFunction.md#create-azure-function)
-* [BambooHR Integration](BambooHR.md#bambooHR-integration)
 
 [← Back to Table of contents](README.md#table-of-contents)

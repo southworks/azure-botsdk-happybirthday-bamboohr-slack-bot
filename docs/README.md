@@ -16,6 +16,5 @@ This documentation contains instructions to deploy the Birthday Bot to Azure and
    * [Configure appsetting.json](ConfigureAppsettings.md#configure-appsetting.json)
    * [Deploy on Azure](DeployAzurePortal.md#deploy-on-azure-portal )
    * [Create Azure Function](AzureFunction.md#create-azure-function)
-   * [BambooHR Integration](BambooHR.md#bambooHR-integration)
 <!--te-->
 

@@ -12,6 +12,5 @@ This document explains how to deploy the bot from in Visual Studio.
 ### Next Steps
 
 * [Create Azure Function](AzureFunction.md#create-azure-function)
-* [BambooHR Integration](BambooHR.md#bambooHR-integration)
 
 [← Back to Table of contents](README.md#table-of-contents)
