@@ -1,5 +1,5 @@
 # Configure appsettings.json
-This document explains how to configure the necessary parameters in the appsettings.json file.
+Keeping settings and reading them at runtime is an essential part of any application. In this case, we need to set parameters in the **appsettings.json** file coming from Slack and Azure. Next, it will be shown how to set these parameters.
 
 ### Set Up Specific Channel
 
@@ -36,7 +36,7 @@ As part of the configuration of the bot, we need to configure several parameters
 
 ### Next Steps
 
-* [Deploy on Azure Portal](DeployAzurePortal.md#deploy-on-azure-portal )
+* [Deploy on Azure](DeployAzurePortal.md#deploy-on-azure-portal )
 * [Create Azure Function](AzureFunction.md#create-azure-function)
 * [BambooHR Integration](BambooHR.md#bambooHR-integration)
 

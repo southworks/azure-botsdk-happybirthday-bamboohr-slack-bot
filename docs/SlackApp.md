@@ -10,7 +10,7 @@ Select your channel and click on "Add an app"
 
 * [Configure blobstorage & container  ](Blobstorage&Container.md#configure-blobstorage-&-container)
 * [Configure appsetting.json](ConfigureAppsettings.md#configure-appsetting.json)
-* [Deploy on Azure Portal](DeployAzurePortal.md#deploy-on-azure-portal )
+* [Deploy on Azure](DeployAzurePortal.md#deploy-on-azure-portal )
 * [Create Azure Function](AzureFunction.md#create-azure-function)
 * [BambooHR Integration](BambooHR.md#bambooHR-integration)
 

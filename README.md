@@ -1,16 +1,15 @@
 # Azure Bot SDK Happy Birthday Bot
-## About Birthday Bot
-### Description
-Birthday-Bot is a bot that automatically sends birthday greetings to people through a Slack Channel.  
+## Description
+Birthday-Bot automatically sends birthday greetings to people through a Slack Channel.  
 
-**The Goals**  
+**Features**  
 - Proactive birthday messages.
 - Slack integration
-- Possibility of HR integration
+- Enables HR integration
 - Generation of Random Phrases
 
 ### Birthday Bot Archictecture 
 ![Diagram Flow](docs/images/diagram-flow.png)
 
 
-## [Birthday Bot Readme](docs/README.md)
+## [How to configure Birthday Bot](docs/README.md)

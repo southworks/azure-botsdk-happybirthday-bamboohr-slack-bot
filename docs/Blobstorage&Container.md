@@ -1,24 +1,24 @@
-# Configure blobstorage & container
-This document explains how to create a new Storage account and container from the Azure Portal.
+# Configure Blob storage & container
+Here’s how to create an Azure Storage Account Container and a container, assuming you already have an Azure subscription and a Resource group created.
   
 - In your browser, navigate to the [Azure Portal](https://portal.azure.com).
   
-- Add new Storage account into your Azure Portal
+- Add new Storage Account into your Azure Portal
 
     ![Storage account](images/create-storage-account.png)
 
-- We select our Resource group. We write a name for the storage account. Leave the default settings.
-Finally, we select Review + Create to review your storage account settings and create the account.  
+- We select our Resource group. We write a name for the Storage Account. Leave the default settings.
+Finally, we select Review + Create to review your Storage Account settings and create the account.  
      ![Storage account](images/form_storage_account.png)
 
-- Once created the storage account, add a new Container. Enter a name, select in Public access level Private, and then click create.  
+- Once created the Storage Account, add a new Container. Enter a name, select in Public access level Private, and then click create.  
 
      ![Storage account](images/add-container.png)
 
 ### Next Steps
 
 * [Configure appsetting.json](ConfigureAppsettings.md#configure-appsetting.json)
-* [Deploy on Azure Portal](DeployAzurePortal.md#deploy-on-azure-portal )
+* [Deploy on Azure](DeployAzurePortal.md#deploy-on-azure-portal )
 * [Create Azure Function](AzureFunction.md#create-azure-function)
 * [BambooHR Integration](BambooHR.md#bambooHR-integration)
 

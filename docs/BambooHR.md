@@ -30,7 +30,7 @@ This document explains how to configure an Azure Function in order to retrieve b
 
     ![](images/publish-final-step.png)
 
-1. After published, the Azure Function will be on your Resource Group. We recommend you to trigger it, anyway the Function will execute every day at 1.30am PST.
+1. After published, the Azure Function will be on your Resource Group. We recommend you to trigger it, anyway the Function will execute every Monday at 6am (Buenos Aires, Argentina TZ or 1.30 PST).
 
 
 
