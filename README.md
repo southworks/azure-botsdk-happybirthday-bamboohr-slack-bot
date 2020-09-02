@@ -11,5 +11,4 @@ Birthday-Bot automatically sends birthday greetings to people through a Slack Ch
 ### Birthday Bot Archictecture 
 ![Diagram Flow](docs/images/diagram-flow.png)
 
-
-## [How to configure Birthday Bot](docs/README.md)
+For more information on how to configure Birthday Bot go to [Configure Birthday Bot document](docs/README.md).

@@ -6,4 +6,5 @@ This bot allows you to send a birthday greeting to users of a specific **Slack**
 ### Operation example
 ![](../docs/images/message_happy_birthday.png)
 
-### [How to configure Birthday Bot](docs/README.md) 
+
+For more information on how to configure Birthday Bot go to [Configure Birthday Bot document](../docs/README.md).

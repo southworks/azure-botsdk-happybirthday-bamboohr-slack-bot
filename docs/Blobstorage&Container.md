@@ -18,7 +18,7 @@ Finally, we select Review + Create to review your Storage Account settings and c
 ### Next Steps
 
 * [Configure appsetting.json](ConfigureAppsettings.md#configure-appsetting.json)
-* [Deploy on Azure](DeployAzurePortal.md#deploy-on-azure-portal )
+* [Deploy to Azure](DeployAzurePortal.md#deploy-on-azure-portal )
 * [Create Azure Function](AzureFunction.md#create-azure-function)
 
 [← Back to Table of contents](README.md#table-of-contents)
