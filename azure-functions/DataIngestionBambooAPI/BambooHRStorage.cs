@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CloudStorageAccount = Microsoft.Azure.Cosmos.Table.CloudStorageAccount;
 
 namespace DataIngestionBambooAPI
 {
