@@ -33,8 +33,15 @@ namespace Birthday_Bot
             _blobStorageStringConnection = configuration["BlobStorageStringConnection"];
             _blobStorageDataUserContainer = configuration["BlobStorageDataUsersContainer"];
             _bambooHRUsersFileName = configuration["BambooHRUsersFileName"];
-            _storageMethod = configuration["StorageMethod"];
             _bambooHRUsersStorage = new BambooUsersStorageInterop();
+            if (string.IsNullOrEmpty(configuration["StorageMethod"]))
+            {
+                _storageMethod = "JSON";
+            }
+            else
+            {
+                _storageMethod = configuration["StorageMethod"];
+            }
             OnTurnError = async (turnContext, exception) =>
             {
                 // Log any leaked exception from the application.
@@ -90,7 +97,7 @@ namespace Birthday_Bot
                     if (string.IsNullOrEmpty(phrase))
                     {
                         phrase = "Someone told me that today's " +
-                                        slackUsersIds 
+                                        slackUsersIds
                                         + " birthday! Another year older is another year wiser :birthday: :tada: :smile:.";
                     }
                     await context.SendActivityAsync(phrase);

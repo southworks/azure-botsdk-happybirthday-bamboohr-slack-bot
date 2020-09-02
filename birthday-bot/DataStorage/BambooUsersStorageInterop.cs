@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Birthday_Bot.DataStorage
 {
@@ -25,50 +26,13 @@ namespace Birthday_Bot.DataStorage
             {
                 if (_storageMethod == "JSON")
                 {
+                    usersBirthday = ReadDataFromContainer(_blobStorageStringConnection, _blobStorageDataUserContainer, _bambooHRUsersFileName);
 
-                    // Setup the connection to the storage account
-                    Microsoft.WindowsAzure.Storage.CloudStorageAccount storageAccount = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(_blobStorageStringConnection);
-                    // Connect to the blob storage
-                    CloudBlobClient serviceClient = storageAccount.CreateCloudBlobClient();
-                    // Connect to the blob container
-                    CloudBlobContainer container = serviceClient.GetContainerReference(_blobStorageDataUserContainer);
-                    // Connect to the blob file
-                    CloudBlockBlob blob = container.GetBlockBlobReference(_bambooHRUsersFileName);
-                    // Get the blob file as text
-                    string contents = blob.DownloadTextAsync().Result;
-                    if (!string.IsNullOrEmpty(contents))
-                    {
-                        string cleanContent = contents.Replace("Birthday\":\"0000-00-00\"", "Birthday\":null");
-                        var bambooHRUsersList = JsonConvert.DeserializeObject<List<BambooHRUser>>(cleanContent);
-                        foreach (var user in bambooHRUsersList)
-                        {
-                            usersBirthday.Add(user);
-                        }
-                        return usersBirthday.Where(r => r.Birthday.HasValue && r.Birthday.Value.Date.ToString("MMdd").Equals(DateTime.Now.Date.ToString("MMdd"))).ToList();
-                    }
                 }
                 else
                 {
-                    // Setup the connection to the storage account
-                    CloudStorageAccount storageAccountTable = CloudStorageAccount.Parse(_blobStorageStringConnection);
-                    // Connect to the table storage
-                    CloudTableClient tableClient = storageAccountTable.CreateCloudTableClient();
-                    // Connect to the table file
-                    CloudTable cloudTable = tableClient.GetTableReference("hrDataEmployees");
-
-                    TableQuery<BambooHRUserEntity> query = new TableQuery<BambooHRUserEntity>();
-
-                    foreach (BambooHRUserEntity entity in cloudTable.ExecuteQuery(query))
-                    {
-                        usersBirthday.Add(new BambooHRUser
-                        {
-                            Birthday = Convert.ToDateTime(entity.Birthday),
-                            Email = entity.RowKey
-                        });
-                    }
-
-                    return usersBirthday.Where(r => r.Birthday.HasValue && r.Birthday.Value.Date.ToString("MMdd").Equals(DateTime.Now.Date.ToString("MMdd"))).ToList();
-                 
+                   
+                    usersBirthday = ReadDataFromTable(_blobStorageStringConnection);
 
                 }
             }
@@ -78,6 +42,54 @@ namespace Birthday_Bot.DataStorage
             }
             return usersBirthday;
         }
-        
+
+        private List<BambooHRUser> ReadDataFromContainer(string _blobStorageStringConnection, string _blobStorageDataUserContainer, string _bambooHRUsersFileName)
+        {
+            var usersBirthday = new List<BambooHRUser>();
+            // Setup the connection to the storage account
+            Microsoft.WindowsAzure.Storage.CloudStorageAccount storageAccount = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(_blobStorageStringConnection);
+            // Connect to the blob storage
+            CloudBlobClient serviceClient = storageAccount.CreateCloudBlobClient();
+            // Connect to the blob container
+            CloudBlobContainer container = serviceClient.GetContainerReference(_blobStorageDataUserContainer);
+            // Connect to the blob file
+            CloudBlockBlob blob = container.GetBlockBlobReference(_bambooHRUsersFileName);
+            // Get the blob file as text
+            string contents = blob.DownloadTextAsync().Result;
+            if (!string.IsNullOrEmpty(contents))
+            {
+                string cleanContent = contents.Replace("Birthday\":\"0000-00-00\"", "Birthday\":null");
+                var bambooHRUsersList = JsonConvert.DeserializeObject<List<BambooHRUser>>(cleanContent);
+                foreach (var user in bambooHRUsersList)
+                {
+                    usersBirthday.Add(user);
+                }
+                return usersBirthday.Where(r => r.Birthday.HasValue && r.Birthday.Value.Date.ToString("MMdd").Equals(DateTime.Now.Date.ToString("MMdd"))).ToList();
+            }
+            return null;
+        }
+
+        private List<BambooHRUser> ReadDataFromTable(string _blobStorageStringConnection) {
+            var usersBirthday = new List<BambooHRUser>();
+            // Setup the connection to the storage account
+            CloudStorageAccount storageAccountTable = CloudStorageAccount.Parse(_blobStorageStringConnection);
+            // Connect to the table storage
+            CloudTableClient tableClient = storageAccountTable.CreateCloudTableClient();
+            // Connect to the table file
+            CloudTable cloudTable = tableClient.GetTableReference("hrDataEmployees");
+
+            TableQuery<BambooHRUserEntity> query = new TableQuery<BambooHRUserEntity>();
+
+            foreach (BambooHRUserEntity entity in cloudTable.ExecuteQuery(query))
+            {
+                usersBirthday.Add(new BambooHRUser
+                {
+                    Birthday = Convert.ToDateTime(entity.Birthday),
+                    Email = entity.RowKey
+                });
+            }
+
+            return usersBirthday.Where(r => r.Birthday.HasValue && r.Birthday.Value.Date.ToString("MMdd").Equals(DateTime.Now.Date.ToString("MMdd"))).ToList();
+        }
     }
 }
