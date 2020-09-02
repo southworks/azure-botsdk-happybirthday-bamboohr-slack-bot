@@ -1,13 +1,13 @@
 ﻿using DataIngestionBambooAPI.Extensions;
 using DataIngestionBambooAPI.Models;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.Azure.Cosmos.Table;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CloudStorageAccount = Microsoft.Azure.Cosmos.Table.CloudStorageAccount;
 
 namespace DataIngestionBambooAPI
 {
@@ -31,12 +31,12 @@ namespace DataIngestionBambooAPI
             }
         }
 
-        private async Task StoraDataInTableAsync(CloudStorageAccount storageAccount, List<BambooHrEmployee> employees)
+        private async Task StoraDataInTableAsync(List<BambooHrEmployee> employees)
         {
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(_blobStorageStringConnection);
             CloudTableClient client = storageAccount.CreateCloudTableClient();
             CloudTable table = client.GetTableReference("hrDataEmployees");
             await table.CreateIfNotExistsAsync();
-            TableOperation insertOp;
 
             var employeeJson = employees.Select(r => new
             {
@@ -47,15 +47,15 @@ namespace DataIngestionBambooAPI
             foreach (var employee in employeeJson)
             {
                 BambooEmployeeEntity employeeEntity = new BambooEmployeeEntity(employee.Birthday, employee.Email);
-                insertOp = TableOperation.InsertOrReplace(employeeEntity);
-                await table.ExecuteAsync(insertOp);
+                TableOperation tableOperation = TableOperation.Insert(employeeEntity);
+                await table.ExecuteAsync(tableOperation);
             }
         }
 
-        private async Task StoreDataInContainerAsync(CloudStorageAccount storageAccount, List<BambooHrEmployee> employees)
+        private async Task StoreDataInContainerAsync(List<BambooHrEmployee> employees)
         {
             string jsonName = "hrDataEmployees.json";
-
+            Microsoft.WindowsAzure.Storage.CloudStorageAccount storageAccount = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(_blobStorageStringConnection);
             CloudBlobContainer container;
             CloudBlockBlob blob;
             CloudBlobClient client = storageAccount.CreateCloudBlobClient();
@@ -79,14 +79,15 @@ namespace DataIngestionBambooAPI
 
         public async void StoreData(List<BambooHrEmployee> employees)
         {
-            CloudStorageAccount storageAccount;
-            storageAccount = CloudStorageAccount.Parse(_blobStorageStringConnection);
+          
+           
             if (_storageMethod == "JSON")
             {
-                await StoreDataInContainerAsync(storageAccount, employees);
+                await StoreDataInContainerAsync(employees);
             } else
             {
-                await StoraDataInTableAsync(storageAccount, employees);
+               
+                await StoraDataInTableAsync(employees);
             }
 
         }
