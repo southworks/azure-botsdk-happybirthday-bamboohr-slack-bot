@@ -28,6 +28,7 @@ namespace Birthday_Bot.Controllers
         private readonly string _blobStorageStringConnection;
         private readonly string _blobStorageDataUserContainer;
         private readonly string _bambooHRUsersFileName;
+        private readonly string _storageMethod;
         private string happyBirthdayMessage;
 
         public NotifyController(SlackAdapter adapter, IConfiguration configuration,
@@ -43,6 +44,14 @@ namespace Birthday_Bot.Controllers
             _blobStorageStringConnection = configuration["BlobStorageStringConnection"];
             _blobStorageDataUserContainer = configuration["BlobStorageDataUsersContainer"];
             _bambooHRUsersFileName = configuration["BambooHRUsersFileName"];
+            if (string.IsNullOrEmpty(configuration["StorageMethod"]))
+            {
+                _storageMethod = "JSON";
+            }
+            else
+            {
+                _storageMethod = configuration["StorageMethod"];
+            }
             // If the channel is the Emulator, and authentication is not in use,
             // the AppId will be null.  We generate a random AppId for this case only.
             // This is not required for production, since the AppId will have a value.
@@ -55,7 +64,7 @@ namespace Birthday_Bot.Controllers
         public async Task<IActionResult> Get()
         {
             BirthdaysHelper birthdaysHelper = new BirthdaysHelper(_blobStorageStringConnection, _blobStorageDataUserContainer,
-                _bambooHRUsersFileName, _slackBotToken);
+                _bambooHRUsersFileName, _slackBotToken, _storageMethod);
             happyBirthdayMessage = await birthdaysHelper.GetBirthdayMessageAsync();
             if (!string.IsNullOrEmpty(happyBirthdayMessage))
             {
