@@ -19,7 +19,7 @@ namespace Birthday_Bot.DataStorage
         /// <param name="_bambooHRUsersFileName">A reference to the name of the JSON file</param>
         /// <param name="_storageMethod">A reference to the name of the storage Method</param>
         /// <returns>A list user of type List <BambooHRUser></returns>
-        public List<BambooHRUser> GetTodaysBirthdays(string _blobStorageStringConnection, string _blobStorageDataUserContainer, string _bambooHRUsersFileName, string _storageMethod)
+        public static List<BambooHRUser> GetTodaysBirthdays(string _blobStorageStringConnection, string _blobStorageDataUserContainer, string _bambooHRUsersFileName, string _storageMethod)
         {
             var usersBirthday = new List<BambooHRUser>();
             try
@@ -43,7 +43,7 @@ namespace Birthday_Bot.DataStorage
             return usersBirthday;
         }
 
-        private List<BambooHRUser> ReadDataFromContainer(string _blobStorageStringConnection, string _blobStorageDataUserContainer, string _bambooHRUsersFileName)
+        private static List<BambooHRUser> ReadDataFromContainer(string _blobStorageStringConnection, string _blobStorageDataUserContainer, string _bambooHRUsersFileName)
         {
             var usersBirthday = new List<BambooHRUser>();
             // Setup the connection to the storage account
@@ -69,7 +69,7 @@ namespace Birthday_Bot.DataStorage
             return null;
         }
 
-        private List<BambooHRUser> ReadDataFromTable(string _blobStorageStringConnection) {
+        private static List<BambooHRUser> ReadDataFromTable(string _blobStorageStringConnection) {
             var usersBirthday = new List<BambooHRUser>();
             // Setup the connection to the storage account
             CloudStorageAccount storageAccountTable = CloudStorageAccount.Parse(_blobStorageStringConnection);
