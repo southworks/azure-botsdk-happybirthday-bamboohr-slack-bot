@@ -4,8 +4,10 @@
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
     <RootNamespace>DataIngestionBambooAPI</RootNamespace>
     <AssemblyName>DataIngestionBambooAPI</AssemblyName>
+    <UserSecretsId>036fc6a6-7969-4f85-af89-2fe9e5c3e3b7</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.8" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
     <PackageReference Include="RestSharp" Version="106.11.5-alpha.0.18" />
   </ItemGroup>
