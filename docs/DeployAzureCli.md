@@ -49,3 +49,5 @@
     ````shell
     az webapp deployment source config-zip --resource-group "<YOUR-RESOURCE-GROUP-NAME>" --name "<YOUR-APP-SERVICE-BOT-NAME>" --src "<ZIP-FILE-NAME.zip>"
     ````
+
+[← Back to Table of contents](README.md#table-of-contents)
