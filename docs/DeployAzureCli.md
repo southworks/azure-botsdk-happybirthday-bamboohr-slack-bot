@@ -49,5 +49,8 @@
     ````shell
     az webapp deployment source config-zip --resource-group "<YOUR-RESOURCE-GROUP-NAME>" --name "<YOUR-APP-SERVICE-BOT-NAME>" --src "<ZIP-FILE-NAME.zip>"
     ````
+### Next Steps
+
+* [Create Azure Function](AzureFunction.md#create-azure-function)
 
 [← Back to Table of contents](README.md#table-of-contents)
