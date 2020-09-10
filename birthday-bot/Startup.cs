@@ -1,13 +1,8 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Adapters.Slack;
-using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,20 +17,14 @@ namespace Birthday_Bot
             services.AddControllers().AddNewtonsoftJson();
 
             // Create the Bot Framework Adapter with error handling enabled.
+            // Create the Slack Adapter
             services.AddSingleton<SlackAdapter, AdapterWithErrorHandler>();
 
             // Create a global hashset for our ConversationReferences
             services.AddSingleton<ConcurrentDictionary<string, ConversationReference>>();
 
-            // Create the storage we'll be using for the Dialog state. (Memory is great for testing purposes.)
-            services.AddSingleton<IOStore, BlobContainerStore>();
-
-            // To work later
-            services.AddSingleton<Models.Birthday>();
-            services.AddSingleton<List<Models.Birthday>>();
-            
-            // Create the Slack Adapter
-            //services.AddSingleton<SlackAdapter, SlackAdapterWithErrorHandler>();
+            // Create the storage where we'll be using for the Conversation Reference.
+            services.AddSingleton<IOStore, BlobContainerConversationStore>();
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, Birthday_Bot>();
