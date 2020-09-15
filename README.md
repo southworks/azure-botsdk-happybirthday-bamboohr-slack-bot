@@ -22,7 +22,7 @@ The Birthday Bot is an integration of Azure Bot Service with Slack. Its logic is
 
 ## Getting Started
 
-- [Configure Birthday Bot](docs/README.md).
+- [Start here](docs/README.md).
 
 ## Contributing
 
