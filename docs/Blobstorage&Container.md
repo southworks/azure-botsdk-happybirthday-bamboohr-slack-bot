@@ -19,7 +19,7 @@ To create a new container, we click on add Container. Then enter a name, which i
      ![Storage account](images/add-container.png)
 
 - Finally we need to upload a file to the ** hr-data-container ** container, as follows:
-     1. Download the **hrDataEmployees.json** file from this <a id="raw-url" href="https://raw.githubusercontent.com/southworks/azure-botsdk-happybirthday-bamboohr-slack-bot/update-documentation/docs/resources/hrDataEmployees.json">link</a>.
+     1. Download the **hrDataEmployees.json** file from this <a id="raw-url" href="https://raw.githubusercontent.com/southworks/azure-botsdk-happybirthday-bamboohr-slack-bot/nvila/update-documentation/docs/resources/hrDataEmployees.json">link</a>.
      1. From our container **hr-data-container**, click on **Upload**.  
      ![Storage account](images/upload-file.png)
      1. We **select** the file that we downloaded in step 1.
