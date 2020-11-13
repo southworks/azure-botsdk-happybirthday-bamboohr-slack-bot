@@ -15,7 +15,7 @@ Add new Function App into your [Azure Portal](https://portal.azure.com/) Resourc
     
     ![Create Function App Wizard](images/create-function-app-wizard.png)
 
-> When choosing the **location** for your new resource, remember to use the same region for all new resources to cut costs (it is recommended to use the location **West US**).
+> When choosing the **location** for your new resource, remember to use the same region for all new resources to cut costs.
 
  Once created the **Azure Function**, add a **new Function**, based on **Timer trigger Template**
 

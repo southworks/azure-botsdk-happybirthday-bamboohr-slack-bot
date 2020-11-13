@@ -12,8 +12,8 @@ Finally, we select Review + Create to review your Storage Account settings and c
 
      ![Storage account](images/form_storage_account.png)
 
-> When choosing the **location** for your new resource, remember to use the same region for all new resources to cut costs (it is recommended to use the location **West US**).
-- After the storage account is created, you need to create **two new containers**. The first container **hr-data-container** which will have a json file where the birthday data will be saved. And finally, the **prod-conversations** connector where a file will be saved with the data of the channels where the Birthday Bot was added.
+> When choosing the **location** for your new resource, remember to use the same region for all new resources to cut costs.
+- After the storage account is created, you must create **two new containers**. The first container **hr-data-container** that will have a json file where the birthday data will be saved. And the second container to create would be the **prod-conversations**, where the file with the data of the slack channels where the Birthday Bot was added will be stored.
 To create a new container, we click on add Container. Then enter a name, which in this case would be **hr-data-container** and select at the public access level Private and then click create. We will repeat the same process to create the container **prod-conversations**.  
 
      ![Storage account](images/add-container.png)
