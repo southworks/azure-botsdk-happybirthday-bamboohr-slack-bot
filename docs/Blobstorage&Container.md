@@ -34,6 +34,7 @@ To create a new container, we click on add Container. Then enter a name, which i
 ### Next Steps
 
 * [Configure appsetting.json](ConfigureAppsettings.md#configure-appsetting.json)
+* [Republish Bot](RepublishBot.md#republis-bot)
 * [Create Azure Function](AzureFunction.md#create-azure-function)
 
 [← Back to Table of contents](README.md#table-of-contents)

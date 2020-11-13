@@ -10,6 +10,7 @@ Select your channel and click on "Add an app"
 
 * [Configure blobstorage & container  ](Blobstorage&Container.md#configure-blobstorage-&-container)
 * [Configure appsetting.json](ConfigureAppsettings.md#configure-appsetting.json)
+* [Republish Bot](RepublishBot.md#republis-bot)
 * [Create Azure Function](AzureFunction.md#create-azure-function)
 
 [← Back to Table of contents](README.md#table-of-contents)

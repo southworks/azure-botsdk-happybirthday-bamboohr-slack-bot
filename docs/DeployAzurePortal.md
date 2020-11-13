@@ -68,7 +68,7 @@ This document explains how to implement the bot. In which it can be done through
 * [Create Slack App](SlackApp.md#create-slack-app)
 * [Configure blobstorage & container](Blobstorage&Container.md#configure-blobstorage-&-container)
 * [Configure appsetting.json](ConfigureAppsettings.md#configure-appsetting.json)
-* [Deploy to Azure](DeployAzurePortal.md#deploy-on-azure-portal )
+* [Republish Bot](RepublishBot.md#republis-bot)
 * [Create Azure Function](AzureFunction.md#create-azure-function)
 
 [← Back to Table of contents](README.md#table-of-contents)

@@ -36,6 +36,8 @@ As part of the configuration of the bot, we need to configure several parameters
 
 ### Next Steps
 
+* [Republish Bot](RepublishBot.md#republis-bot)
 * [Create Azure Function](AzureFunction.md#create-azure-function)
+
 
 [← Back to Table of contents](README.md#table-of-contents)
