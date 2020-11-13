@@ -87,7 +87,11 @@ Then **Test/Run** the code and review the log to confirm it runs without problem
 
 ![Test Run Log](images/test-run-log.png)
 
-### Next Steps
+In our **Slack channel**, we can see that the Bot sent the greeting.
+
+![Test Run Log](images/test-birthday-bot.png)
+
+
 
 
 [← Back to Table of contents](README.md#table-of-contents)
