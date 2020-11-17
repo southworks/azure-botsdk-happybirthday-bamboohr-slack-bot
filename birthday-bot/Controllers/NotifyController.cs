@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Birthday_Bot.Events;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Adapters.Slack;
@@ -20,10 +21,11 @@ namespace Birthday_Bot.Controllers
     public class NotifyController : ControllerBase
     {
         private readonly IBotFrameworkHttpAdapter _adapter;
-        private readonly string _appId;
-        private readonly string _specificChannelName;
         private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
         private readonly IOStore _oStore;
+        private readonly IEventProducer _eventProducer;
+        private readonly string _appId;
+        private readonly string _specificChannelName;
         private readonly string _slackBotToken;
         private readonly string _blobStorageStringConnection;
         private readonly string _blobStorageDataUserContainer;
@@ -31,16 +33,20 @@ namespace Birthday_Bot.Controllers
         private readonly string _storageMethod;
         private string happyBirthdayMessage;
 
-        public NotifyController(SlackAdapter adapter, IConfiguration configuration,
+        public NotifyController(
+            SlackAdapter adapter, 
+            IConfiguration configuration,
             ConcurrentDictionary<string, ConversationReference> conversationReferences,
-            IOStore ostore)
+            IOStore ostore,
+            IEventProducer eventProducer)
         {
             _adapter = adapter;
             _conversationReferences = conversationReferences;
+            _oStore = ostore;
+            _eventProducer = eventProducer;
             _appId = configuration["MicrosoftAppId"];
             _specificChannelName = configuration["SpecificChannelName"];
             _slackBotToken = configuration["SlackBotToken"];
-            _oStore = ostore;
             _blobStorageStringConnection = configuration["BlobStorageStringConnection"];
             _blobStorageDataUserContainer = configuration["BlobStorageDataUsersContainer"];
             _bambooHRUsersFileName = configuration["BambooHRUsersFileName"];
@@ -112,6 +118,14 @@ namespace Birthday_Bot.Controllers
         private async Task BotCallback(ITurnContext turnContext, CancellationToken cancellationToken)
         {
             await turnContext.SendActivityAsync(happyBirthdayMessage);
+            try
+            {
+                await _eventProducer.SendEventsAsync(happyBirthdayMessage);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using Birthday_Bot.Events;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;
@@ -25,6 +26,9 @@ namespace Birthday_Bot
 
             // Create the storage where we'll be using for the Conversation Reference.
             services.AddSingleton<IOStore, BlobContainerConversationStore>();
+
+            // Create an event producer to send proactive messages
+            services.AddSingleton<IEventProducer, EventHubProducer>();
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, Birthday_Bot>();
