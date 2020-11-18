@@ -106,6 +106,7 @@ namespace Birthday_Bot.Controllers
                     await ((BotAdapter)_adapter).ContinueConversationAsync(_appId, _specificChannelConversationRef, BotCallback, default(CancellationToken));
                 }
             }
+
             // Let the caller know proactive messages have been sent
             return new ContentResult()
             {
@@ -118,14 +119,7 @@ namespace Birthday_Bot.Controllers
         private async Task BotCallback(ITurnContext turnContext, CancellationToken cancellationToken)
         {
             await turnContext.SendActivityAsync(happyBirthdayMessage);
-            try
-            {
-                await _eventProducer.SendEventsAsync(happyBirthdayMessage);
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
+            await _eventProducer.SendEventsAsync(happyBirthdayMessage);
         }
     }
 }
