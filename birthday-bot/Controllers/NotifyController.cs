@@ -20,6 +20,9 @@ namespace Birthday_Bot.Controllers
     [ApiController]
     public class NotifyController : ControllerBase
     {
+        private const string SLACK = "Slack";
+        private const string EVENT_HUB = "EventHub";
+
         private readonly IBotFrameworkHttpAdapter _adapter;
         private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
         private readonly IOStore _oStore;
@@ -31,6 +34,8 @@ namespace Birthday_Bot.Controllers
         private readonly string _blobStorageDataUserContainer;
         private readonly string _bambooHRUsersFileName;
         private readonly string _storageMethod;
+        private readonly IEnumerable<string> _enabledNotifications;
+
         private string happyBirthdayMessage;
 
         public NotifyController(
@@ -50,6 +55,7 @@ namespace Birthday_Bot.Controllers
             _blobStorageStringConnection = configuration["BlobStorageStringConnection"];
             _blobStorageDataUserContainer = configuration["BlobStorageDataUsersContainer"];
             _bambooHRUsersFileName = configuration["BambooHRUsersFileName"];
+            _enabledNotifications = configuration.GetSection("EnabledNotifications").Get<List<string>>();
             if (string.IsNullOrEmpty(configuration["StorageMethod"]))
             {
                 _storageMethod = "JSON";
@@ -118,8 +124,14 @@ namespace Birthday_Bot.Controllers
 
         private async Task BotCallback(ITurnContext turnContext, CancellationToken cancellationToken)
         {
-            await turnContext.SendActivityAsync(happyBirthdayMessage);
-            await _eventProducer.SendEventsAsync(happyBirthdayMessage);
+            if (_enabledNotifications.Contains(SLACK))
+            {
+                await turnContext.SendActivityAsync(happyBirthdayMessage);
+            }
+            if (_enabledNotifications.Contains(EVENT_HUB))
+            {
+                await _eventProducer.SendEventsAsync(happyBirthdayMessage);
+            }
         }
     }
 }
