@@ -28,7 +28,7 @@ namespace Birthday_Bot
             services.AddSingleton<IOStore, BlobContainerConversationStore>();
 
             // Create an event producer to send proactive messages
-            services.AddSingleton<IEventProducer, EventHubProducer>();
+            services.AddSingleton<IEventProducer, AzureEventHubProducer>();
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, Birthday_Bot>();

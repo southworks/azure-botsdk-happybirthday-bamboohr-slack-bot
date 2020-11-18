@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Birthday_Bot.Events
 {
-    public class EventHubProducer : IEventProducer
+    public class AzureEventHubProducer : IEventProducer
     {
         private readonly string _eventHubConnectionString;
         private readonly string _eventHubName;
 
-        public EventHubProducer(IConfiguration configuration)
+        public AzureEventHubProducer(IConfiguration configuration)
         {
             _eventHubConnectionString = configuration["EventHubConnectionString"];
             _eventHubName = configuration["EventHubName"];
