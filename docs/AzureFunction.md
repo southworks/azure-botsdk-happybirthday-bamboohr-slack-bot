@@ -15,12 +15,12 @@ Add new Function App into your [Azure Portal](https://portal.azure.com/) Resourc
     
     ![Create Function App Wizard](images/create-function-app-wizard.png)
 
-> When choosing the **location** for your new resource, remember to use the same region for all new resources to cut costs.
+> When choosing the **location** for your new resource, remember to use the same region for all new resources to reduce costs.
 
  Once created the **Azure Function**, add a **new Function**, based on **Timer trigger Template**
 
 ![Add Function to Function App](images/add-function-to-function-app.png)
-    **Schedule** could be configure as the classic [cronjob espression](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-timer?tabs=csharp#ncrontab-expressions).
+    **Schedule** could be configure as the classic [cronjob expression](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-timer?tabs=csharp#ncrontab-expressions).
 
 After creating the function, we continue to create a **new application setting**.
 1. Enter into the **Configuration** option under the Settings section on the left panel.

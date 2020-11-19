@@ -1,4 +1,4 @@
-# Republis Bot
+# Republish Bot
 Once the parameters of the **appsettings.json** file of our Bot are complete, it is necessary to republish these changes. This document explains how to republish these changes from **Visual Studio**.
 ### Prerequisites
 * Have the parameters of the **appsettings.json** file configured.

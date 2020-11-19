@@ -12,13 +12,16 @@ Finally, we select Review + Create to review your Storage Account settings and c
 
      ![Storage account](images/form_storage_account.png)
 
-> When choosing the **location** for your new resource, remember to use the same region for all new resources to cut costs.
-- After the storage account is created, you must create **two new containers**. The first container **hr-data-container** that will have a json file where the birthday data will be saved. And the second container to create would be the **prod-conversations**, where the file with the data of the slack channels where the Birthday Bot was added will be stored.
-To create a new container, we click on add Container. Then enter a name, which in this case would be **hr-data-container** and select at the public access level Private and then click create. We will repeat the same process to create the container **prod-conversations**.  
+> When choosing the **location** for your new resource, remember to use the same region for all new resources to reduce costs.
+- After the storage account is created, you need to create **two new containers**:
+  - **hr-data-container** - it will have a JSON file with the users' birthday data.
+  - **prod-conversations** - it will have a JSON file with the Birthday Bot conversations.
+  
+To create a new container, we click on **+ Container**. Then enter a name, which in this case would be **hr-data-container** and select at the public access level Private and then click create. We will repeat the same process to create the container **prod-conversations**.  
 
-     ![Storage account](images/add-container.png)
+![Storage account](images/add-container.png)
 
-- Finally we need to upload a file to the ** hr-data-container ** container, as follows:
+- Finally we need to upload a file to the **hr-data-container** container, as follows:
      1. Download the **hrDataEmployees.json** file from this <a id="raw-url" href="https://raw.githubusercontent.com/southworks/azure-botsdk-happybirthday-bamboohr-slack-bot/nvila/update-documentation/docs/resources/hrDataEmployees.json">link</a>.
      1. From our container **hr-data-container**, click on **Upload**.  
      ![Storage account](images/upload-file.png)
@@ -34,7 +37,7 @@ To create a new container, we click on add Container. Then enter a name, which i
 ### Next Steps
 
 * [Configure appsetting.json](ConfigureAppsettings.md#configure-appsetting.json)
-* [Republish Bot](RepublishBot.md#republis-bot)
+* [Republish Bot](RepublishBot.md#republish-bot)
 * [Create Azure Function](AzureFunction.md#create-azure-function)
 
 [← Back to Table of contents](README.md#table-of-contents)
