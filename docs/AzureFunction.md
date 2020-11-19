@@ -34,7 +34,7 @@ After creating the function, we continue to create a **new application setting**
 
     ![Create Function App Wizard](images/applicaction-setting.png)
 
-It is necessary to change the **TimeZone** of our **Azure Function** to be according to our need, for this we will repeat the previous steps of how to create a **new appication setting**, only that we must change the name of **WEBSITE_TIME_ZONE** and the value for our time zone (which we can search from this [link](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-time-zones)).  
+It is necessary to change the **TimeZone** of our **Azure Function** to be according to our need, for this we will repeat the previous steps of how to create a **new application setting**, only that we must change the name of **WEBSITE_TIME_ZONE** and the value for our time zone (which we can search from this [link](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-time-zones)).  
 
 ![Time Zone](images/time-zone.png)
 
