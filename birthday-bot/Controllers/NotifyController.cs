@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Birthday_Bot.Events;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Adapters.Slack;
@@ -19,31 +20,42 @@ namespace Birthday_Bot.Controllers
     [ApiController]
     public class NotifyController : ControllerBase
     {
+        private const string SLACK = "Slack";
+        private const string EVENT_HUB = "EventHub";
+
         private readonly IBotFrameworkHttpAdapter _adapter;
-        private readonly string _appId;
-        private readonly string _specificChannelName;
         private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
         private readonly IOStore _oStore;
+        private readonly IEventProducer _eventProducer;
+        private readonly string _appId;
+        private readonly string _specificChannelName;
         private readonly string _slackBotToken;
         private readonly string _blobStorageStringConnection;
         private readonly string _blobStorageDataUserContainer;
         private readonly string _bambooHRUsersFileName;
         private readonly string _storageMethod;
+        private readonly IEnumerable<string> _enabledNotifications;
+
         private string happyBirthdayMessage;
 
-        public NotifyController(SlackAdapter adapter, IConfiguration configuration,
+        public NotifyController(
+            SlackAdapter adapter, 
+            IConfiguration configuration,
             ConcurrentDictionary<string, ConversationReference> conversationReferences,
-            IOStore ostore)
+            IOStore ostore,
+            IEventProducer eventProducer)
         {
             _adapter = adapter;
             _conversationReferences = conversationReferences;
+            _oStore = ostore;
+            _eventProducer = eventProducer;
             _appId = configuration["MicrosoftAppId"];
             _specificChannelName = configuration["SpecificChannelName"];
             _slackBotToken = configuration["SlackBotToken"];
-            _oStore = ostore;
             _blobStorageStringConnection = configuration["BlobStorageStringConnection"];
             _blobStorageDataUserContainer = configuration["BlobStorageDataUsersContainer"];
             _bambooHRUsersFileName = configuration["BambooHRUsersFileName"];
+            _enabledNotifications = configuration.GetSection("EnabledNotifications").Get<List<string>>();
             if (string.IsNullOrEmpty(configuration["StorageMethod"]))
             {
                 _storageMethod = "JSON";
@@ -100,6 +112,7 @@ namespace Birthday_Bot.Controllers
                     await ((BotAdapter)_adapter).ContinueConversationAsync(_appId, _specificChannelConversationRef, BotCallback, default(CancellationToken));
                 }
             }
+
             // Let the caller know proactive messages have been sent
             return new ContentResult()
             {
@@ -111,7 +124,14 @@ namespace Birthday_Bot.Controllers
 
         private async Task BotCallback(ITurnContext turnContext, CancellationToken cancellationToken)
         {
-            await turnContext.SendActivityAsync(happyBirthdayMessage);
+            if (_enabledNotifications.Contains(SLACK))
+            {
+                await turnContext.SendActivityAsync(happyBirthdayMessage);
+            }
+            if (_enabledNotifications.Contains(EVENT_HUB))
+            {
+                await _eventProducer.SendEventsAsync(happyBirthdayMessage);
+            }
         }
     }
 }

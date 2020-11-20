@@ -58,10 +58,10 @@ namespace Birthday_Bot
             await _oStore.SaveAsync(JsonConvert.SerializeObject(conversationState));
         }
 
-        protected override Task OnConversationUpdateActivityAsync(ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        protected override async Task OnConversationUpdateActivityAsync(ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            AddConversationReference(turnContext.Activity as Activity);
-            return base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);
+            await AddConversationReference(turnContext.Activity as Activity);
+            await base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);            
         }
 
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
@@ -70,7 +70,5 @@ namespace Birthday_Bot
             await AddConversationReference(turnContext.Activity as Activity);
             return;
         }
-
-
     }
 }
