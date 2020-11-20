@@ -1,6 +1,7 @@
 ﻿using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Producer;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,7 +36,7 @@ namespace Birthday_Bot.Events
 
                 var customEvent = new CustomEventData(_userId, message);
 
-                events.Add(new EventData(Encoding.UTF8.GetBytes(message)));
+                events.Add(new EventData(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(customEvent))));
 
                 await producerClient.SendAsync(events);
             }
