@@ -1,5 +1,5 @@
 # Deploy to Azure
-This document explains how to implement the bot. In which it can be done through 2 methods:
+This document explains how to deploy the bot. In which it can be done through 2 methods:
 - Deploy with Visual Studio.
 - Deploy via CLI.
 
@@ -24,7 +24,7 @@ This document explains how to implement the bot. In which it can be done through
 1. Clone the repository into your file system:
 
     ```shell
-    git clone https://github.com/southworks/azure-botsdk-happybirthday-bot.git
+    git clone https://github.com/southworks/azure-botsdk-happybirthday-bamboohr-slack-bot.git
     ```
 
 1. Open the **Windows PowerShell**.
@@ -66,8 +66,8 @@ This document explains how to implement the bot. In which it can be done through
 ### Next Steps
 
 * [Create Slack App](SlackApp.md#create-slack-app)
-* [Configure blobstorage & container](Blobstorage&Container.md#configure-blobstorage-&-container)
-* [Configure appsetting.json](ConfigureAppsettings.md#configure-appsetting.json)
+* [Configure blobstorage & container](Blobstorage&Container.md#configure-blob-storage--container)
+* [Configure appsetting.json](ConfigureAppsettings.md#configure-appsettingsjson)
 * [Republish Bot](RepublishBot.md#republish-bot)
 * [Create Azure Function](AzureFunction.md#create-azure-function)
 

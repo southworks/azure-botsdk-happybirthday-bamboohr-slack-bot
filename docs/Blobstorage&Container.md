@@ -1,27 +1,27 @@
 # Configure Blob storage & container
 Here’s how to create an Azure Storage Account Container and a container, assuming you already have an Azure subscription and a Resource group created.
   
-- In your browser, navigate to the [Azure Portal](https://portal.azure.com).
+1. In your browser, navigate to the [Azure Portal](https://portal.azure.com).
   
-- Add new Storage Account into your Azure Portal
+1. Add new Storage Account into your Azure Portal
 
     ![Storage account](images/create-storage-account.png)
 
-- We select our Resource group. We write a name for the Storage Account. Leave the default settings.
-Finally, we select Review + Create to review your Storage Account settings and create the account.  
+1. We select our Resource group. We write a name for the Storage Account. Leave the default settings.
+Finally, we select **Review + Create** to review your Storage Account settings and create the account.  
 
      ![Storage account](images/form_storage_account.png)
 
-> When choosing the **location** for your new resource, remember to use the same region for all new resources to reduce costs.
-- After the storage account is created, you need to create **two new containers**:
-  - **hr-data-container** - it will have a JSON file with the users' birthday data.
-  - **prod-conversations** - it will have a JSON file with the Birthday Bot conversations.
+     > When choosing the **location** for your new resource, remember to use the same region for all new resources to reduce costs.
+1. After the storage account is created, you need to create **two new containers**:
+     - **hr-data-container** - it will have a JSON file with the users' birthday data.
+     - **prod-conversations** - it will have a JSON file with the Birthday Bot conversations.
   
-To create a new container, we click on **+ Container**. Then enter a name, which in this case would be **hr-data-container** and select at the public access level Private and then click create. We will repeat the same process to create the container **prod-conversations**.  
+1. To create a new container, we click on **+ Container**. Then enter a name, which in this case would be **hr-data-container** and select at the public access level Private and then click create. We will repeat the same process to create the container **prod-conversations**.  
 
-![Storage account](images/add-container.png)
+     ![Storage account](images/add-container.png)
 
-- Finally we need to upload a file to the **hr-data-container** container, as follows:
+1. Finally we need to upload a file to the **hr-data-container** container, as follows:
      1. Download the **hrDataEmployees.json** file from this <a id="raw-url" href="https://raw.githubusercontent.com/southworks/azure-botsdk-happybirthday-bamboohr-slack-bot/nvila/update-documentation/docs/resources/hrDataEmployees.json">link</a>.
      1. From our container **hr-data-container**, click on **Upload**.  
      ![Storage account](images/upload-file.png)
@@ -29,14 +29,14 @@ To create a new container, we click on **+ Container**. Then enter a name, which
      1. To finish the upload, click on **Upload**.  
      ![Storage account](images/upload-file-choosed.png)
 
-- To edit our file **hrDataEmployees.json** and we will load the data for the birthdays we want to add. To do this, we select our file and go to the **Edit** tab. We edit our files and click on **Save**.
+     - To edit our file **hrDataEmployees.json** and we will load the data for the birthdays we want to add. To do this, we select our file and go to the **Edit** tab. We edit our files and click on **Save**.
 
-     ![Storage account](images/edit-file.png)
+          ![Storage account](images/edit-file.png)
 
-> The added **emails** added to the **hrDataEmployees.json** file, have to be included in the Slack channel.
+     > The added **emails** added to the **hrDataEmployees.json** file, have to be included in the Slack channel.
 ### Next Steps
 
-* [Configure appsetting.json](ConfigureAppsettings.md#configure-appsetting.json)
+* [Configure appsetting.json](ConfigureAppsettings.md#configure-appsettingsjson)
 * [Republish Bot](RepublishBot.md#republish-bot)
 * [Create Azure Function](AzureFunction.md#create-azure-function)
 
