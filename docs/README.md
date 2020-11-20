@@ -11,11 +11,11 @@ This documentation contains instructions to deploy the Birthday Bot to Azure and
 # Table of contents
 
 <!--ts-->
-   * [Create Slack App](SlackApp.md#create-slack-app)
-   * [Configure blobstorage & container  ](Blobstorage&Container.md#configure-blobstorage-&-container)
-   * [Configure appsetting.json](ConfigureAppsettings.md#configure-appsetting.json)
-   * [Deploy to Azure using Visual Studio](DeployAzurePortal.md#deploy-on-azure-portal )
-   * [Deploy to Azure using Azure CLI](DeployAzureCli.md#deploy-using-azure-cli )
-   * [Create Azure Function](AzureFunction.md#create-azure-function)
+   1. [Deploy to Azure](DeployAzurePortal.md#deploy-to-azure)
+   1. [Create Slack App](SlackApp.md#create-slack-app)
+   1. [Configure blobstorage & container  ](Blobstorage&Container.md#configure-blob-storage--container)
+   1. [Configure appsetting.json](ConfigureAppsettings.md#configure-appsettingsjson)
+   1. [Republish Bot](RepublishBot.md#republish-bot)
+   1. [Create Azure Function](AzureFunction.md#create-azure-function)
 <!--te-->
 
