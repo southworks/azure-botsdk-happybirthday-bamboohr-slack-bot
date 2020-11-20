@@ -23,12 +23,6 @@ Once the parameters of the **appsettings.json** file of our Bot are complete, it
 
 ### Steps
 
-1. Clone the repository into your file system:
-
-    ```shell
-    git clone https://github.com/southworks/azure-botsdk-happybirthday-bamboohr-slack-bot.git
-    ```
-
 1. Open the **Windows PowerShell**.
 
 1. Navigate into the the folder where file `.csproj` is located.
