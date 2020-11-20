@@ -39,7 +39,7 @@ namespace Birthday_Bot.Controllers
         private string happyBirthdayMessage;
 
         public NotifyController(
-            SlackAdapter adapter, 
+            SlackAdapter adapter,
             IConfiguration configuration,
             ConcurrentDictionary<string, ConversationReference> conversationReferences,
             IOStore ostore,
@@ -77,39 +77,18 @@ namespace Birthday_Bot.Controllers
         {
             BirthdaysHelper birthdaysHelper = new BirthdaysHelper(_blobStorageStringConnection, _blobStorageDataUserContainer,
                 _bambooHRUsersFileName, _slackBotToken, _storageMethod);
-            happyBirthdayMessage = await birthdaysHelper.GetBirthdayMessageAsync();
-            if (!string.IsNullOrEmpty(happyBirthdayMessage))
-            {
-                var _specificChannelID = await SlackInterop.GetChannelIdByNameAsync(_specificChannelName, _slackBotToken);
-                if (_conversationReferences.Values.Count == 0)
-                {
-                    var storedConversationReferenciesJson = await _oStore.LoadAsync(); // _store.LoadAsync();
-                    if (storedConversationReferenciesJson != null && !string.IsNullOrEmpty(storedConversationReferenciesJson.ToString()))
-                    {
-                        try
-                        {
-                            var storedConversationReferencesList = JsonConvert.DeserializeObject<List<ConversationReference>>(storedConversationReferenciesJson.ToString());
-                            foreach (var conversationRef in storedConversationReferencesList)
-                            {
-                                conversationRef.ServiceUrl = "null";
-                                conversationRef.Conversation = new ConversationAccount(conversationRef.Conversation.IsGroup, conversationRef.Conversation.ConversationType,
-                                    conversationRef.Conversation.Id, conversationRef.Conversation.Name, conversationRef.Conversation.AadObjectId, conversationRef.Conversation.Role,
-                                    conversationRef.Conversation.TenantId);
-                                _conversationReferences.AddOrUpdate(conversationRef.Conversation.Id, conversationRef, (key, newValue) => conversationRef);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.ToString());
-                        }
-                    }
-                }
 
-                // Send message, only, to specific channel
-                if (_conversationReferences.Values.Any(r => r.Conversation.Id == _specificChannelID))
+            happyBirthdayMessage = await birthdaysHelper.GetBirthdayMessageAsync();
+
+            if (!string.IsNullOrWhiteSpace(happyBirthdayMessage))
+            {
+                if (_enabledNotifications.Contains(SLACK))
                 {
-                    var _specificChannelConversationRef = _conversationReferences.Values.First(r => r.Conversation.Id == _specificChannelID);
-                    await ((BotAdapter)_adapter).ContinueConversationAsync(_appId, _specificChannelConversationRef, BotCallback, default(CancellationToken));
+                    await SendBirthdayMessagesToSlack();
+                }
+                if (_enabledNotifications.Contains(EVENT_HUB))
+                {
+                    await SendBirthdayMessageToEventHub();
                 }
             }
 
@@ -122,16 +101,51 @@ namespace Birthday_Bot.Controllers
             };
         }
 
+        private async Task SendBirthdayMessageToEventHub()
+        {
+            await _eventProducer.SendEventsAsync(happyBirthdayMessage);
+        }
+
+        private async Task SendBirthdayMessagesToSlack()
+        {
+            var _specificChannelID = await SlackInterop.GetChannelIdByNameAsync(_specificChannelName, _slackBotToken);
+            if (_conversationReferences.Values.Count == 0)
+            {
+                var storedConversationReferenciesJson = await _oStore.LoadAsync(); // _store.LoadAsync();
+                if (storedConversationReferenciesJson != null && !string.IsNullOrEmpty(storedConversationReferenciesJson.ToString()))
+                {
+                    try
+                    {
+                        var storedConversationReferencesList = JsonConvert.DeserializeObject<List<ConversationReference>>(storedConversationReferenciesJson.ToString());
+                        foreach (var conversationRef in storedConversationReferencesList)
+                        {
+                            conversationRef.ServiceUrl = "null";
+                            conversationRef.Conversation = new ConversationAccount(conversationRef.Conversation.IsGroup, conversationRef.Conversation.ConversationType,
+                                conversationRef.Conversation.Id, conversationRef.Conversation.Name, conversationRef.Conversation.AadObjectId, conversationRef.Conversation.Role,
+                                conversationRef.Conversation.TenantId);
+                            _conversationReferences.AddOrUpdate(conversationRef.Conversation.Id, conversationRef, (key, newValue) => conversationRef);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // This console log only works locally.
+                        // TODO: add AppInsights, maybe?
+                        Console.WriteLine(ex.ToString());
+                    }
+                }
+            }
+
+            // Send message only to specific channel
+            if (_conversationReferences.Values.Any(r => r.Conversation.Id == _specificChannelID))
+            {
+                var _specificChannelConversationRef = _conversationReferences.Values.First(r => r.Conversation.Id == _specificChannelID);
+                await ((BotAdapter)_adapter).ContinueConversationAsync(_appId, _specificChannelConversationRef, BotCallback, default(CancellationToken));
+            }
+        }
+
         private async Task BotCallback(ITurnContext turnContext, CancellationToken cancellationToken)
         {
-            if (_enabledNotifications.Contains(SLACK))
-            {
-                await turnContext.SendActivityAsync(happyBirthdayMessage);
-            }
-            if (_enabledNotifications.Contains(EVENT_HUB))
-            {
-                await _eventProducer.SendEventsAsync(happyBirthdayMessage);
-            }
+            await turnContext.SendActivityAsync(happyBirthdayMessage);
         }
     }
 }
