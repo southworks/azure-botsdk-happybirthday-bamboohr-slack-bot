@@ -1,17 +1,27 @@
-# Deploy the Birthday-Bot via CLI
+# Republish Bot
+Once the parameters of the **appsettings.json** file of our Bot are complete, it is necessary to republish these changes. This document explains the two ways to republish these changes, by means of:
+- Republish with Visual studio.
+- Republish via CLI.  
 
-## Prerequisites
+### Prerequisites
+* Have the parameters of the **appsettings.json** file configured.
 
-* Install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
-* An **App Service** deployed in the [Azure Portal](https://portal.azure.com/)
+## Republish with Visual studio
 
-## Steps
+### Steps
 
-1. Clone the repository into your file system:
+1. In Solution Explorer, right-click in the project node and choose **Publish** (or use the **Build** > **Publish** menu item).
 
-    ```shell
-    git clone https://github.com/southworks/azure-botsdk-happybirthday-bot.git
-    ```
+    ![Republish Bot](images/republish-bot.png)
+
+1. Next, a panel with project properties will be shown, verify they are correct and select **Publish**.
+    ![Republish Bot](images/confirm-republish-bot.png)
+
+> Once the deployment is complete, we will have updated the parameters of the **appsettings.json** file in Azure.
+
+## Republish via CLI
+
+### Steps
 
 1. Open the **Windows PowerShell**.
 
@@ -49,8 +59,11 @@
     ````shell
     az webapp deployment source config-zip --resource-group "<YOUR-RESOURCE-GROUP-NAME>" --name "<YOUR-APP-SERVICE-BOT-NAME>" --src "<ZIP-FILE-NAME.zip>"
     ````
+    > Once the deployment is complete, we will have updated the parameters of the **appsettings.json** file in Azure.
+
 ### Next Steps
 
 * [Create Azure Function](AzureFunction.md#create-azure-function)
+
 
 [← Back to Table of contents](README.md#table-of-contents)
