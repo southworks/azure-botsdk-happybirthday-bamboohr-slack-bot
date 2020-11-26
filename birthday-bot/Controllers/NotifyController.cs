@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Birthday_Bot.Events;
+using Birthday_Bot.Queue;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Adapters.Slack;
@@ -21,12 +22,12 @@ namespace Birthday_Bot.Controllers
     public class NotifyController : ControllerBase
     {
         private const string SLACK = "Slack";
-        private const string EVENT_HUB = "EventHub";
+        private const string QUEUE = "Queue";
 
         private readonly IBotFrameworkHttpAdapter _adapter;
         private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
         private readonly IOStore _oStore;
-        private readonly IEventProducer _eventProducer;
+        private readonly IQueueProducer _queueProducer;
         private readonly string _appId;
         private readonly string _specificChannelName;
         private readonly string _slackBotToken;
@@ -43,12 +44,12 @@ namespace Birthday_Bot.Controllers
             IConfiguration configuration,
             ConcurrentDictionary<string, ConversationReference> conversationReferences,
             IOStore ostore,
-            IEventProducer eventProducer)
+            IQueueProducer queueProducer)
         {
             _adapter = adapter;
             _conversationReferences = conversationReferences;
             _oStore = ostore;
-            _eventProducer = eventProducer;
+            _queueProducer = queueProducer;
             _appId = configuration["MicrosoftAppId"];
             _specificChannelName = configuration["SpecificChannelName"];
             _slackBotToken = configuration["SlackBotToken"];
@@ -86,9 +87,9 @@ namespace Birthday_Bot.Controllers
                 {
                     await SendBirthdayMessagesToSlack();
                 }
-                if (_enabledNotifications.Contains(EVENT_HUB))
+                if (_enabledNotifications.Contains(QUEUE))
                 {
-                    await SendBirthdayMessageToEventHub();
+                    await SendBirthdayMessageToQueue();
                 }
             }
 
@@ -100,12 +101,10 @@ namespace Birthday_Bot.Controllers
                 StatusCode = (int)HttpStatusCode.OK,
             };
         }
-
-        private async Task SendBirthdayMessageToEventHub()
+        private async Task SendBirthdayMessageToQueue()
         {
-            await _eventProducer.SendEventsAsync(happyBirthdayMessage);
+            await _queueProducer.SendMessageAsync(happyBirthdayMessage);
         }
-
         private async Task SendBirthdayMessagesToSlack()
         {
             var _specificChannelID = await SlackInterop.GetChannelIdByNameAsync(_specificChannelName, _slackBotToken);
