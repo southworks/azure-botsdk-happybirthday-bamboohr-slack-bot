@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Birthday-Bot", "Birthday-Bot.csproj", "{E32BB82E-7C2F-4606-B82E-77B637B167F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Birthday-Bot.ProactiveFunction", "..\Birthday-Bot.ProactiveFunction\Birthday-Bot.ProactiveFunction.csproj", "{544318E7-F553-42A9-83A0-A1D54C0E926B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Birthday-Bot.Functions", "..\Birthday-Bot.ProactiveFunction\Birthday-Bot.Functions.csproj", "{544318E7-F553-42A9-83A0-A1D54C0E926B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

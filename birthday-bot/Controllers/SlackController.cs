@@ -28,7 +28,7 @@ namespace Birthday_Bot.Controllers
             select raw and send as a text the slack app token
          */
         [HttpPost]
-        [HttpGet]
+        //[HttpGet]
         public async Task PostAsync()
         {
             try

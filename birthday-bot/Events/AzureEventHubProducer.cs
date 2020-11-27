@@ -40,6 +40,6 @@ namespace Birthday_Bot.Events
 
                 await producerClient.SendAsync(events);
             }
-        }
+        } 
     }
 }

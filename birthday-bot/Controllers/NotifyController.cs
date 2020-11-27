@@ -145,7 +145,7 @@ namespace Birthday_Bot.Controllers
 
         private async Task BotCallback(ITurnContext turnContext, CancellationToken cancellationToken)
         {
-            await turnContext.SendActivityAsync(happyBirthdayMessage);
+            var resposne = await turnContext.SendActivityAsync(happyBirthdayMessage);
         }
     }
 }

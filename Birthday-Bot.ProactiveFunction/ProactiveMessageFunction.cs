@@ -1,15 +1,14 @@
+using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.Extensions.Logging;
 
 namespace Birthday_Bot.ProactiveFunction
 {
-    public static class Function1
+    public static class ProactiveMessageFunction
     {
-        [FunctionName("ProactiveFunction")]
+        [FunctionName("ProactiveMessageFunction")]
         public static void Run([TimerTrigger("%ProactiveMessageSchedule%")]TimerInfo myTimer, ILogger log)
         {
             Task.Run(() => NotifyBirthdayBotAsync(log)).Start();
