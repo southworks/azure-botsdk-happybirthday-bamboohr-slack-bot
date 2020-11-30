@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Birthday_Bot.Events;
+using Birthday_Bot.Queue;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;
@@ -28,7 +29,7 @@ namespace Birthday_Bot
             services.AddSingleton<IOStore, BlobContainerConversationStore>();
 
             // Create an event producer to send proactive messages
-            services.AddSingleton<IEventProducer, AzureEventHubProducer>();
+            services.AddSingleton<IQueueProducer, QueueProducer>();
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, Birthday_Bot>();
