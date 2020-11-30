@@ -44,7 +44,7 @@ namespace Birthday_Bot.Queue
             }
 
             // Async enqueue the message
-            CustomEventData customQueue = new CustomEventData("123", message);
+            CustomEventData customQueue = new CustomEventData("azbirthdaybot", message);
             string queueMessage = Base64Encode(JsonConvert.SerializeObject(customQueue));
             await queueClient.SendMessageAsync(queueMessage);
             Console.WriteLine($"Message added");
