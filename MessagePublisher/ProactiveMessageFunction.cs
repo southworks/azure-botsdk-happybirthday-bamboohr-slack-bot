@@ -4,7 +4,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Birthday_Bot.ProactiveFunction
+namespace ProactiveFunctions
 {
     public static class ProactiveMessageFunction
     {
