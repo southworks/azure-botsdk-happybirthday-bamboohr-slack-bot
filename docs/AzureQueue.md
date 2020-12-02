@@ -46,4 +46,13 @@ After having set these settings, our bot in addition to sending the greetings to
 
 ![](images/queue-operation-sample.png)
 
+- **EnabledNotifications**: This parameter defines the array of destinations where the message will be sent.
+    - ``Slack``: this value indicates that the message will be sent to the configured **Slack channel**.
+    - ``Queue``: this value indicates that the message will be sent to the previously configured **Queue**.
+    
+    Example:
+
+    ![](images/sample-enabledNotifications.png)
+    > In the example you can see that the parameter has both values set (**Slack** and **Queue**), which indicates that the message will be sent to the 2 destinations. It should be clarified that this parameter can also be set with **just one** of these values.
+
 [← Back to Table of contents](README.md#table-of-contents)
