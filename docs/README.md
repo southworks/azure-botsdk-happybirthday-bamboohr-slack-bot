@@ -19,3 +19,9 @@ This documentation contains instructions to deploy the Birthday Bot to Azure and
    1. [Create Azure Function](AzureFunction.md#create-azure-function)
 <!--te-->
 
+# Features <span style="font-size: 60%; color: #2572dd;">[New]</span>
+
+- [Azure Queue](AzureQueue.md#azure-queue)
+
+
+
