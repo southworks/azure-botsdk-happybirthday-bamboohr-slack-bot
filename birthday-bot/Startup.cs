@@ -21,7 +21,6 @@ namespace Birthday_Bot
             // Create the Bot Framework Adapter with error handling enabled.
             // Create the Slack Adapter
             services.AddSingleton<SlackAdapter, AdapterWithErrorHandler>();
-            services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
 
             // Create a global hashset for our ConversationReferences
             services.AddSingleton<ConcurrentDictionary<string, ConversationReference>>();
