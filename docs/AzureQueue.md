@@ -7,8 +7,8 @@ Queue storage gives you asynchronous message queueing for communication between 
 - Data accessible through the REST API.
 - Maximum message size 64kb.
  (It's 64,000 characters. Since the average word in English is 4.7 characters, that allows up to 13,617 words.)
-- Maximum time that the message is sent is 7 days.
-- Possibility so that the message does not expire adding -1.
+- Maximum time a message can remain in a queue is 7 days.
+- Possibility so that the message does not expire adding -1 (setting the ``messagettl=<int-seconds>`` parameter).
 - The capacity to store messages depends on the Storage Account chosen.
 
 ## Components of a Queue
@@ -18,7 +18,7 @@ Queue storage gives you asynchronous message queueing for communication between 
 - **Storage Account**: All access to Azure Storage is done through a storage account. For more information about storage accounts, see [Storage account overview](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-overview).
 - **Queue**: A queue contains a set of messages. All messages must be in a queue. Note that the queue name must be all lowercase. For information on naming queues, see [Naming Queues and Metadata](https://docs.microsoft.com/en-us/rest/api/storageservices/Naming-Queues-and-Metadata).
 - **Message**: A message, in any format, of up to 64 KB. The maximum time that a message can remain in the queue is 7 days. For version 2017-07-29 or later, the maximum time-to-live can be any positive number, or -1 indicating that the message doesn't expire. If this parameter is omitted, the default time-to-live is seven days.
-- **URL format**: Queues are addressable using the following URL format: http://``<storage account>``.queue.core.windows.net/``<queue>``.
+- **URL format**: Queues are addressable using the following URL format: ``http://your-storage-account.queue.core.windows.net/your-queue-name``.
 
 ## To implement this service
 
