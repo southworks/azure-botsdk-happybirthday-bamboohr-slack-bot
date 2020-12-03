@@ -19,7 +19,7 @@ This documentation contains instructions to deploy the Birthday Bot to Azure and
    1. [Create Azure Function](AzureFunction.md#create-azure-function)
 <!--te-->
 
-# Features 
+# Optional features 
 
 - [Azure Queue](AzureQueue.md#azure-queue)
 
