@@ -1,3 +1,6 @@
+# Asynchronous Proactive Messages
+This document explains how to configure the **Birthday Bot** to post messages to an **Azure Queue**. The stored greetings can be consumed later by any other service.
+
 # Azure Queue
 Queue storage gives you asynchronous message queueing for communication between application components, whether they are running in the cloud, on the desktop, on-premises, or on mobile devices.
 

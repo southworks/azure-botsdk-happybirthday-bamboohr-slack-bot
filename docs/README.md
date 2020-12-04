@@ -21,7 +21,7 @@ This documentation contains instructions to deploy the Birthday Bot to Azure and
 
 # Optional features 
 
-- [Azure Queue](AzureQueue.md#azure-queue)
+- [Asynchronous Proactive Messages](AzureQueue.md#azure-queue)
 
 
 
