@@ -11,7 +11,7 @@ Queue storage gives you asynchronous message queueing for communication between 
 - Possibility so that the message does not expire adding -1 (setting the ``messagettl=<int-seconds>`` parameter).
 - The capacity to store messages depends on the Storage Account chosen.
 
-## Components of a Queue
+## Queue Service Concepts
 
 ![](images/azure-queue-service-components.png)
 
