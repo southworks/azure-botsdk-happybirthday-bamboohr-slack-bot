@@ -33,8 +33,8 @@ Queue storage gives you asynchronous message queueing for communication between 
     - Azure.Core
     - System.Configuration.ConfigurationManager
 
-### Add parameters to the ``appsettings.json`` file
-You need to define two new parameters in the appsettings.json file for the connection with Azure Queue:
+### Add parameters to the appsettings.json file
+You need to define two new parameters in the `appsettings.json` file for the connection with Azure Queue:
 - **QueueStorageStringConnection**: Support using a storage connection string to configure endpoints and credentials for accessing storage services. To view your storage account credentials:
     
     1. Navigate to the [Azure portal](https://portal.azure.com/).
