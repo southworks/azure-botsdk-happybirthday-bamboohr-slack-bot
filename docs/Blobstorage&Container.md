@@ -28,10 +28,16 @@ Finally, we select **Review + Create** to review your Storage Account settings a
           [
                {
                 "Birthday": "2020-01-01",
-                "Email": "test@email.com"
-               }
+                "Email": "email1@test.com"
+               },
+               {
+                "Birthday": "2020-01-02",
+                "Email": "email2@test.com"
+               },
           ]
           ```
+          > This **code snippet** is a base template of the json file where birthdays are loaded, which will be modified in a personalized way. In the parameter `Birthday` the date of birth is loaded with the format **yyyy-mm-dd**, and in the parameter `Email` the corresponding email is loaded.
+
      1. From our container **hr-data-container**, click on **Upload**.  
      ![Storage account](images/upload-file.png)
      1. We **select** the file that we downloaded in step 1.
