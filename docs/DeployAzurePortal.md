@@ -47,9 +47,9 @@ This document explains how to deploy the bot. In which it can be done through 2 
 1. Execute the following command to publish the application and its dependencies to a folder for deployment:
 
     ````shell
-    dotnet publish -o <FOLDER-NAME>/
+    dotnet publish -o <FOLDER-NAME>
     ````
-    > **NOTE:** Before executing this command, the `folder-name` path must exist. The `-o` command option indicates the output directory.
+    > **NOTE:** Before executing this command, the `<FOLDER-NAME>` path must exist. Whose path has to be of the **relative type**. The `-o` command option indicates the output directory.
 
 1. Run the following command to compress the publish files generated in the previous step:
 
