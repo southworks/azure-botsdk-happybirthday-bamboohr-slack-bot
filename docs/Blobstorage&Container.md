@@ -22,10 +22,25 @@ Finally, we select **Review + Create** to review your Storage Account settings a
      ![Storage account](images/add-container.png)
 
 1. Finally we need to upload a file to the **hr-data-container** container, as follows:
-     1. Download the **hrDataEmployees.json** file from this <a id="raw-url" href="https://raw.githubusercontent.com/southworks/azure-botsdk-happybirthday-bamboohr-slack-bot/nvila/update-documentation/docs/resources/hrDataEmployees.json">link</a>.
+
+     1. Create a json file with the name of **hrDataEmployees.json** with the following content:
+          ```json
+          [
+               {
+                "Birthday": "2020-01-01",
+                "Email": "email1@test.com"
+               },
+               {
+                "Birthday": "2020-01-02",
+                "Email": "email2@test.com"
+               }
+          ]
+          ```
+          > This **code snippet** is a base template of the json file where birthdays are loaded, which will be modified in a personalized way. In the parameter `Birthday` the date of birth is loaded with the format **yyyy-mm-dd**, and in the parameter `Email` the corresponding email is loaded.
+
      1. From our container **hr-data-container**, click on **Upload**.  
      ![Storage account](images/upload-file.png)
-     1. We **select** the file that we downloaded in step 1.
+     1. We **select** the file that we created in step 1.
      1. To finish the upload, click on **Upload**.  
      ![Storage account](images/upload-file-choosed.png)
 
