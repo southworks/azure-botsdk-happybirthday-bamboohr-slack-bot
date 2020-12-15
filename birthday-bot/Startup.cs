@@ -26,7 +26,7 @@ namespace Birthday_Bot
             services.AddSingleton<ConcurrentDictionary<string, ConversationReference>>();
 
             // Create the storage where we'll be using for the Conversation Reference.
-            services.AddSingleton<IOStore, BlobContainerConversationStore>();
+            services.AddSingleton<IBlobContainerConversationStore, BlobContainerConversationStore>();
 
             // Create an event producer to send proactive messages
             services.AddSingleton<IQueueProducer, QueueProducer>();

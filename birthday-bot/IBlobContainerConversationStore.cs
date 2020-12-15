@@ -2,7 +2,7 @@
 
 namespace Birthday_Bot
 {
-    public interface IOStore
+    public interface IBlobContainerConversationStore
     {
         Task<object> LoadAsync();
         Task<bool> SaveAsync(object content);

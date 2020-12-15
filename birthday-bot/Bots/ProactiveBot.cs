@@ -13,8 +13,8 @@ namespace Birthday_Bot
     public class Birthday_Bot : ActivityHandler
     {
         // Dependency injected dictionary for storing ConversationReference objects used in NotifyController to proactively message users
-        private readonly IOStore _oStore;
-        public Birthday_Bot(IOStore ostore)
+        private readonly IBlobContainerConversationStore _oStore;
+        public Birthday_Bot(IBlobContainerConversationStore ostore)
         {
             _oStore = ostore ?? throw new ArgumentNullException(nameof(ostore));
         }

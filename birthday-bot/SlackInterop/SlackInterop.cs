@@ -5,9 +5,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Birthday_Bot
+namespace Birthday_Bot.SlackInterop
 {
-    public class SlackInterop
+    public class SlackInterop : ISlackInterop
     {
         /// <summary>
         /// Make a request to SlackAPI: https://slack.com/api/users.lookupByEmail
@@ -16,7 +16,7 @@ namespace Birthday_Bot
         /// <param name="slackBotToken">Bot User OAuth Access Token</param>
         /// <param name="email">User Email</param>
         /// <returns>User object deserialized</returns>
-        public static async Task<SlackUser> GetSlackUserByEmailAsync(string slackBotToken, string email)
+        public async Task<SlackUser> GetSlackUserByEmailAsync(string slackBotToken, string email)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace Birthday_Bot
         /// <param name="channelName">The channel name specified on the appsettings.json file</param>
         /// <param name="slackBotToken">The slack bot token specified on the appsettings.json file</param>
         /// <returns>The channel id as a string</returns>
-        public static async Task<string> GetChannelIdByNameAsync(string channelName, string slackBotToken)
+        public async Task<string> GetChannelIdByNameAsync(string channelName, string slackBotToken)
         {
             // Here we use the Bot endpoint
             const string botendpoint = "https://slack.com/api/conversations.list";
@@ -84,7 +84,7 @@ namespace Birthday_Bot
                 {
                     List<SlackChannel> listChannels = listChannelResponse.Channels;
                     SlackChannel channel = listChannels.Find(ch => ch.Name.Equals(channelName));
-                    if(channel != null)
+                    if (channel != null)
                     {
                         channelId = channel.Id;
                     }
