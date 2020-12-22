@@ -5,6 +5,11 @@ trigger:
 
 pr: none
 
+variables:
+  - group: bb-testing-keyvault
+  - name: dummy-var
+    value: $(dummy-var)
+
 stages:
 - stage: Build
   jobs:
@@ -22,7 +27,7 @@ stages:
       displayName: Display dummy var 
       inputs:
         targetType: 'inline'
-        script: 'Write-Host "Version of app: ${env:DUMMYVAR}"' 
+        script: 'Write-Host "Key vault dummy var: $(dummy-var)"' 
         
     - task: NuGetToolInstaller@1
 
