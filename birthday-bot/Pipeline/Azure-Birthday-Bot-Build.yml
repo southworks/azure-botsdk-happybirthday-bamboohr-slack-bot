@@ -7,7 +7,7 @@ pr: none
 
 variables:
   - name: dummy-var
-    value: $(DUMMY-VAR)
+    value: $(DUMMY-VAR-EXTERNAL)
 
 stages:
 - stage: Build
