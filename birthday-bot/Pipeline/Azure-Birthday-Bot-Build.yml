@@ -6,8 +6,7 @@ trigger:
 pr: none
 
 variables:
-  - name: dummy-var
-    value: $(DUMMY-VAR-EXTERNAL)
+  - group: azure-birthday-bot-testing-var-group
 
 stages:
 - stage: Build
