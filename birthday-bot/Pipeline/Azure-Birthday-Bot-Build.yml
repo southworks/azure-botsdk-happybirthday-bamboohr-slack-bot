@@ -8,6 +8,10 @@ pr: none
 variables:
   - group: azure-birthday-bot-testing-var-group
 
+  # Slack
+  - name: DummyToken
+    value: $(AzureDevops-DummyToken)
+
 stages:
 - stage: Build
   jobs:
@@ -22,11 +26,9 @@ stages:
 
     steps:
     - task: NuGetToolInstaller@1
-
     - task: NuGetCommand@2
       inputs:
         restoreSolution: '$(solution)'
-
     - task: VSBuild@1
       inputs:
         solution: '$(solution)'
@@ -35,12 +37,18 @@ stages:
         configuration: '$(buildConfiguration)'
 
 - stage: Deploy
-  jobs:
+  jobs:  
   - job: Deploy
     pool:
       vmImage: 'windows-latest'
 
     steps:
+    - task: FileTransform@1
+      displayName: 'App settings transform' 
+      inputs:
+        folderPath: '$(System.DefaultWorkingDirectory)\birthday-bot'
+        fileType: 'json'
+        targetFiles: 'appsettings.json'
     - task: PowerShell@2
       displayName: 'Login'
       continueOnError: true
