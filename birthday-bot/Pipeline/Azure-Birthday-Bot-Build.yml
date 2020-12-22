@@ -18,6 +18,12 @@ stages:
       buildConfiguration: 'Release'
 
     steps:
+    - task: PowerShell@2
+      displayName: Display dummy var 
+      inputs:
+        targetType: 'inline'
+        script: 'Write-Host "Version of app: ${env:DUMMYVAR}"' 
+        
     - task: NuGetToolInstaller@1
 
     - task: NuGetCommand@2
