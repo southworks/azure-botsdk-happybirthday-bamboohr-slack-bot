@@ -21,12 +21,6 @@ stages:
       buildConfiguration: 'Release'
 
     steps:
-    - task: PowerShell@2
-      displayName: Display dummy var 
-      inputs:
-        targetType: 'inline'
-        script: 'Write-Host "Key vault dummy var: $(dummy-var)"' 
-        
     - task: NuGetToolInstaller@1
 
     - task: NuGetCommand@2
@@ -39,3 +33,26 @@ stages:
         msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
+
+- stage: Deploy
+  jobs:
+  - job: Deploy
+    pool:
+      vmImage: 'windows-latest'
+
+    steps:
+    - task: PowerShell@2
+      displayName: 'Login'
+      continueOnError: true
+      inputs:
+        targetType: inline
+        script: >-
+          az login --service-principal --username "$(AzureDevOps-ServicePrincipal-Username)" --password "$(AzureDevOps-ServicePrincipal-Secret)" --tenant "$(AzureDevOps-ServicePrincipal-Tenant)"
+    - task: PowerShell@2
+      displayName: 'Birthday Bot Publish'
+      inputs:
+        targetType: inline
+        script: .\birthday-bot\Deployment\Scripts\publish.ps1 -name "$(BirthdayBotName)" -resourceGroup "$(BirthdayBotResourceGroup)" -projFolder ".\birthday-bot"
+        errorActionPreference: continue
+        failOnStderr: false
+        pwsh: true
