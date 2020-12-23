@@ -32,6 +32,8 @@ variables:
     value: $(AzureDevops-SlackVerificationToken)
   - name: SpecificChannelName
     value: $(AzureDevops-SpecificChannelName)
+  - name: BlobStorageDataUsersContainer
+    value: $(AzureDevops-BlobStorageDataUsersContainer)
   # Slack
   - name: DummyToken
     value: $(AzureDevops-DummyToken)
