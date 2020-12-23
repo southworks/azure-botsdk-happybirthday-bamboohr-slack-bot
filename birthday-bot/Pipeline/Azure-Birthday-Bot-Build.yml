@@ -7,7 +7,31 @@ pr: none
 
 variables:
   - group: azure-birthday-bot-testing-var-group
-
+   #APPSETTINGS
+  - name: BambooHRUsersFileName
+    value: $(AzureDevops-BambooHRUsersFileName)
+  - name: BlobStorageConversationContainer
+    value: $(AzureDevops-BlobStorageConversationContainer)
+  - name: BlobStorageStringConnection
+    value: $(AzureDevops-BlobStorageStringConnection)
+  - name: EnabledNotifications
+    value: $(AzureDevops-EnabledNotifications)
+  - name: EventHubConnectionString
+    value: $(AzureDevops-EventHubConnectionString)
+  - name: EventHubName
+    value: $(AzureDevops-EventHubName)
+  - name: QueueName
+    value: $(AzureDevops-QueueName)
+  - name: QueueStorageStringConnection
+    value: $(AzureDevops-QueueStorageStringConnection)
+  - name: SlackBotToken
+    value: $(AzureDevops-SlackBotToken)
+  - name: SlackClientSigningSecret
+    value: $(AzureDevops-SlackClientSigningSecret)
+  - name: SlackVerificationToken
+    value: $(AzureDevops-SlackVerificationToken)
+  - name: SpecificChannelName
+    value: $(AzureDevops-SpecificChannelName)
   # Slack
   - name: DummyToken
     value: $(AzureDevops-DummyToken)
