@@ -34,9 +34,6 @@ variables:
     value: $(AzureDevops-SpecificChannelName)
   - name: BlobStorageDataUsersContainer
     value: $(AzureDevops-BlobStorageDataUsersContainer)
-  # Slack
-  - name: DummyToken
-    value: $(AzureDevops-DummyToken)
 
 stages:
 - stage: Build
