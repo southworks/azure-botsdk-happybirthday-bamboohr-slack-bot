@@ -1,0 +1,83 @@
+trigger:
+- sandbox
+
+pr: none
+
+variables:
+  - group: azure-birthday-bot-testing-var-group
+   #APPSETTINGS
+  - name: BambooHRUsersFileName
+    value: $(AzureDevops-BambooHRUsersFileName)
+  - name: BlobStorageConversationContainer
+    value: $(AzureDevops-BlobStorageConversationContainer)
+  - name: BlobStorageStringConnection
+    value: $(AzureDevops-BlobStorageStringConnection)
+  - name: EnabledNotifications
+    value: $(AzureDevops-EnabledNotifications)
+  - name: QueueName
+    value: $(AzureDevops-QueueName)
+  - name: QueueStorageStringConnection
+    value: $(AzureDevops-QueueStorageStringConnection)
+  - name: SlackBotToken
+    value: $(AzureDevops-SlackBotToken)
+  - name: SlackClientSigningSecret
+    value: $(AzureDevops-SlackClientSigningSecret)
+  - name: SlackVerificationToken
+    value: $(AzureDevops-SlackVerificationToken)
+  - name: SpecificChannelName
+    value: $(AzureDevops-SpecificChannelName)
+  - name: BlobStorageDataUsersContainer
+    value: $(AzureDevops-BlobStorageDataUsersContainer)
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'windows-latest'
+
+    variables:
+      solution: '**/Birthday-Bot.sln'
+      buildPlatform: 'Any CPU'
+      buildConfiguration: 'Release'
+
+    steps:
+    - task: NuGetToolInstaller@1
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: '$(solution)'
+    - task: VSBuild@1
+      inputs:
+        solution: '$(solution)'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+
+- stage: Deploy
+  jobs:  
+  - job: Deploy
+    pool:
+      vmImage: 'windows-latest'
+
+    steps:
+    - task: FileTransform@1
+      displayName: 'App settings transform' 
+      inputs:
+        folderPath: '$(System.DefaultWorkingDirectory)\birthday-bot'
+        fileType: 'json'
+        targetFiles: 'appsettings.json'
+    - task: PowerShell@2
+      displayName: 'Login'
+      continueOnError: true
+      inputs:
+        targetType: inline
+        script: >-
+          az login --service-principal --username "$(AzureDevOps-ServicePrincipal-Username)" --password "$(AzureDevOps-ServicePrincipal-Secret)" --tenant "$(AzureDevOps-ServicePrincipal-Tenant)"
+    - task: PowerShell@2
+      displayName: 'Birthday Bot Publish'
+      inputs:
+        targetType: inline
+        script: .\birthday-bot\Deployment\Scripts\publish.ps1 -name "$(BirthdayBotName)" -resourceGroup "$(BirthdayBotResourceGroup)" -projFolder ".\birthday-bot"
+        errorActionPreference: continue
+        failOnStderr: false
+        pwsh: true
