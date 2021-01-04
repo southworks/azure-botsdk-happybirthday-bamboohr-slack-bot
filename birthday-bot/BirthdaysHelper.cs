@@ -1,5 +1,6 @@
 ﻿using Birthday_Bot.DataStorage;
 using Birthday_Bot.Models;
+using Birthday_Bot.SlackInterop;
 using Microsoft.Bot.Builder.LanguageGeneration;
 using System;
 using System.Collections.Generic;
@@ -16,15 +17,19 @@ namespace Birthday_Bot
         private readonly string _blobStorageDataUserContainer;
         private readonly string _bambooHRUsersFileName;
         private readonly string _storageMethod;
+        private readonly ISlackInterop _slackInterop;
+        private readonly IBambooUsersStorageInterop _bambooUsersStorageInterop;
 
         public BirthdaysHelper(string blobStorageStringConnection, string blobStorageDataUserContainer, string bambooHRUsersFileName,
-            string slackBotToken, string storageMethod)
+            string slackBotToken, string storageMethod, ISlackInterop slackInterop, IBambooUsersStorageInterop bambooUsersStorageInterop)
         {
             _slackBotToken = slackBotToken;
             _blobStorageStringConnection = blobStorageStringConnection;
             _blobStorageDataUserContainer = blobStorageDataUserContainer;
             _bambooHRUsersFileName = bambooHRUsersFileName;
             _storageMethod = storageMethod;
+            _slackInterop = slackInterop;
+            _bambooUsersStorageInterop = bambooUsersStorageInterop;
         }
 
         public async Task<string> GetBirthdayMessageAsync()
@@ -42,12 +47,12 @@ namespace Birthday_Bot
             List<Birthday> Birthdays = new List<Birthday>();
             try
             {
-                var _bambooHRBirthdays = BambooUsersStorageInterop.GetTodaysBirthdays(_blobStorageStringConnection, _blobStorageDataUserContainer, _bambooHRUsersFileName, _storageMethod);
+                var _bambooHRBirthdays = _bambooUsersStorageInterop.GetTodaysBirthdays(_blobStorageStringConnection, _blobStorageDataUserContainer, _bambooHRUsersFileName, _storageMethod);
                 if (_bambooHRBirthdays.Any())
                 {
                     foreach (var bambooUser in _bambooHRBirthdays)
                     {
-                        var slackUser = await SlackInterop.GetSlackUserByEmailAsync(_slackBotToken, bambooUser.Email);
+                        var slackUser = await _slackInterop.GetSlackUserByEmailAsync(_slackBotToken, bambooUser.Email);
                         if (slackUser != null)
                         {
                             Birthdays.Add(new Birthday()

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Birthday_Bot
 {
-    public class BlobContainerConversationStore : IOStore
+    public class BlobContainerConversationStore : IBlobContainerConversationStore
     {
         private IDictionary<string, object> _store = new Dictionary<string, object>();
         private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);

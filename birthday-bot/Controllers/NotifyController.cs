@@ -5,8 +5,10 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Birthday_Bot.DataStorage;
 using Birthday_Bot.Events;
 using Birthday_Bot.Queue;
+using Birthday_Bot.SlackInterop;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Adapters.Slack;
@@ -26,7 +28,7 @@ namespace Birthday_Bot.Controllers
 
         private readonly IBotFrameworkHttpAdapter _adapter;
         private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
-        private readonly IOStore _oStore;
+        private readonly IBlobContainerConversationStore _oStore;
         private readonly IQueueProducer _queueProducer;
         private readonly string _appId;
         private readonly string _specificChannelName;
@@ -36,6 +38,8 @@ namespace Birthday_Bot.Controllers
         private readonly string _bambooHRUsersFileName;
         private readonly string _storageMethod;
         private readonly IEnumerable<string> _enabledNotifications;
+        private readonly ISlackInterop _slackInterop;
+        private readonly IBambooUsersStorageInterop _bambooUsersStorageInterop;
 
         private string happyBirthdayMessage;
 
@@ -43,8 +47,11 @@ namespace Birthday_Bot.Controllers
             SlackAdapter adapter,
             IConfiguration configuration,
             ConcurrentDictionary<string, ConversationReference> conversationReferences,
-            IOStore ostore,
-            IQueueProducer queueProducer)
+            IBlobContainerConversationStore ostore,
+            IQueueProducer queueProducer,
+            ISlackInterop slackInterop,
+            IBambooUsersStorageInterop bambooUsersStorageInterop
+            )
         {
             _adapter = adapter;
             _conversationReferences = conversationReferences;
@@ -57,6 +64,9 @@ namespace Birthday_Bot.Controllers
             _blobStorageDataUserContainer = configuration["BlobStorageDataUsersContainer"];
             _bambooHRUsersFileName = configuration["BambooHRUsersFileName"];
             _enabledNotifications = configuration.GetSection("EnabledNotifications").Get<List<string>>();
+            _slackInterop = slackInterop;
+            _bambooUsersStorageInterop = bambooUsersStorageInterop;
+
             if (string.IsNullOrEmpty(configuration["StorageMethod"]))
             {
                 _storageMethod = "JSON";
@@ -77,7 +87,7 @@ namespace Birthday_Bot.Controllers
         public async Task<IActionResult> Get()
         {
             BirthdaysHelper birthdaysHelper = new BirthdaysHelper(_blobStorageStringConnection, _blobStorageDataUserContainer,
-                _bambooHRUsersFileName, _slackBotToken, _storageMethod);
+                _bambooHRUsersFileName, _slackBotToken, _storageMethod, _slackInterop, _bambooUsersStorageInterop);
 
             happyBirthdayMessage = await birthdaysHelper.GetBirthdayMessageAsync();
 
@@ -107,7 +117,7 @@ namespace Birthday_Bot.Controllers
         }
         private async Task SendBirthdayMessagesToSlack()
         {
-            var _specificChannelID = await SlackInterop.GetChannelIdByNameAsync(_specificChannelName, _slackBotToken);
+            var _specificChannelID = await _slackInterop.GetChannelIdByNameAsync(_specificChannelName, _slackBotToken);
             if (_conversationReferences.Values.Count == 0)
             {
                 var storedConversationReferenciesJson = await _oStore.LoadAsync(); // _store.LoadAsync();
