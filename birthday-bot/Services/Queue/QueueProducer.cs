@@ -20,7 +20,7 @@ namespace Birthday_Bot.Queue
 
         }
 
-        public async Task SendMessageAsync(string message)
+        public async Task SendMessageAsync(string key, string message)
         {
             if (string.IsNullOrWhiteSpace(message))
             {
@@ -44,7 +44,7 @@ namespace Birthday_Bot.Queue
             }
 
             // Async enqueue the message
-            CustomEventData customQueue = new CustomEventData("azbirthdaybot", message);
+            CustomEventData customQueue = new CustomEventData(key, message);
             string queueMessage = Base64Encode(JsonConvert.SerializeObject(customQueue));
             await queueClient.SendMessageAsync(queueMessage);
             Console.WriteLine($"Message added");

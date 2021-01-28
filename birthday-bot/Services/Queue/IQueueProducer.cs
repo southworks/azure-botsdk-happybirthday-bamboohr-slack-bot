@@ -5,6 +5,6 @@ namespace Birthday_Bot.Queue
 {
     public interface IQueueProducer
     {
-        Task SendMessageAsync(string message);
+        Task SendMessageAsync(string key, string message);
     }
 }

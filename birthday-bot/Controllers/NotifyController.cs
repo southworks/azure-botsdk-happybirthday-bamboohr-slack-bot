@@ -103,7 +103,9 @@ namespace Birthday_Bot.Controllers
         }
         private async Task SendBirthdayMessageToQueue()
         {
-            await _queueProducer.SendMessageAsync(happyBirthdayMessage);
+            var _specificChannelID = await SlackInterop.GetChannelIdByNameAsync(_specificChannelName, _slackBotToken);
+
+            await _queueProducer.SendMessageAsync(_specificChannelID, happyBirthdayMessage);
         }
         private async Task SendBirthdayMessagesToSlack()
         {

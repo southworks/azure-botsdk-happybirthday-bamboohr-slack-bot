@@ -2,13 +2,13 @@
 {
     public class CustomEventData
     {
-        public CustomEventData(string userId, string message)
+        public CustomEventData(string key, string message)
         {
-            UserId = userId;
+            Key = key;
             Message = message;
         }
 
-        public string UserId { get; set; }
+        public string Key { get; set; }
         public string Message { get; set; }
     }
 }
